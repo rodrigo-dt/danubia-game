@@ -11,7 +11,7 @@ import { EndingScene } from '../scenes/EndingScene';
 
 export const gameConfig: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
-    parent: 'app',
+    parent: 'game-container',
     width: GAME_WIDTH,
     height: GAME_HEIGHT,
     backgroundColor: '#11152b',

@@ -54,6 +54,15 @@ export class MenuScene extends Phaser.Scene {
         }
 
         this.hasStarted = true;
+
+        if (this.scale.game.device.fullscreen.available && !this.scale.isFullscreen) {
+            try {
+                this.scale.startFullscreen();
+            } catch {
+                // Ignore fullscreen failures and continue the game normally.
+            }
+        }
+
         this.cameras.main.fadeOut(250, 0, 0, 0);
         this.time.delayedCall(250, () => {
             this.scene.start(SCENE_KEYS.home);

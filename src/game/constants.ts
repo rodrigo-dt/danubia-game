@@ -1,8 +1,14 @@
 export const GAME_WIDTH = 960;
 export const GAME_HEIGHT = 540;
 
-export const PLAYER_SPEED = 260;
+export const PLAYER_SPEED = 240;
 export const PLAYER_JUMP_VELOCITY = -620;
+export const PLAYER_VERTICAL_SPEED = 120;
+
+export const DANUBIA_BASE_SCALE = 2;
+export const DANUBIA_MIN_SCALE = 1.6;
+export const DANUBIA_MAX_SCALE = 2.16;
+export const DEBUG_ROOM_GEOMETRY = false;
 
 export const ASSET_PATH = '/assets';
 

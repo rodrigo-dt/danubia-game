@@ -79,16 +79,16 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 2.1 Constantes globais
 
-* [ ] Revisar `src/game/constants.ts`.
+* [x] Revisar `src/game/constants.ts`.
 
-* [ ] Confirmar valores:
+* [x] Confirmar valores:
 
-    * [ ] largura interna: `960`
-    * [ ] altura interna: `540`
-    * [ ] velocidade da Danubia
-    * [ ] força do pulo
-    * [ ] caminho base dos assets
-    * [ ] chaves das cenas
+    * [x] largura interna: `960`
+    * [x] altura interna: `540`
+    * [x] velocidade da Danubia
+    * [x] força do pulo
+    * [x] caminho base dos assets
+    * [x] chaves das cenas
 
 * [ ] Adicionar constantes de gameplay:
 
@@ -309,18 +309,18 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 3.1 Estrutura da cena
 
-* [ ] Garantir que `BootScene` seja exportada corretamente.
-* [ ] Garantir que a cena use a chave correta.
-* [ ] Criar método de preload.
-* [ ] Criar método de create.
-* [ ] Desativar suavização de pixel art quando necessário.
+* [x] Garantir que `BootScene` seja exportada corretamente.
+* [x] Garantir que a cena use a chave correta.
+* [x] Criar método de preload.
+* [x] Criar método de create.
+* [x] Desativar suavização de pixel art quando necessário.
 
 ---
 
 ## 3.2 Carregamento de backgrounds
 
-* [ ] Carregar background da capa.
-* [ ] Carregar background da sala.
+* [x] Carregar background da capa.
+* [x] Carregar background da sala.
 * [ ] Carregar background do corredor.
 * [ ] Carregar background do quarto do filho.
 * [ ] Carregar background do quarto da filha.
@@ -334,11 +334,11 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 3.3 Carregamento de Danubia
 
-* [ ] Carregar sprite idle.
-* [ ] Carregar sprite jump.
+* [x] Carregar sprite idle.
+* [x] Carregar sprite jump.
 * [ ] Carregar sprite damage.
 * [ ] Carregar sprite victory.
-* [ ] Carregar frames de caminhada.
+* [x] Carregar frames de caminhada.
 * [ ] Carregar frames do poder temporal.
 * [ ] Carregar retratos de diálogo disponíveis.
 
@@ -417,12 +417,12 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 3.10 Animações globais
 
-* [ ] Criar animação `danubia-walk`.
+* [x] Criar animação `danubia-walk`.
 * [ ] Criar animação `danubia-power`.
 * [ ] Criar animação `monsieur-gesture`.
 * [ ] Criar animação `monsieur-watch`.
-* [ ] Garantir que as animações não sejam recriadas se já existirem.
-* [ ] Após o preload, iniciar `MenuScene`.
+* [x] Garantir que as animações não sejam recriadas se já existirem.
+* [x] Após o preload, iniciar `MenuScene`.
 
 ---
 
@@ -660,42 +660,42 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 6.1 Classe Danubia
 
-* [ ] Criar ou revisar `src/characters/Danubia.ts`.
-* [ ] Criar sprite com física Arcade.
-* [ ] Definir corpo físico.
-* [ ] Ajustar tamanho do corpo para colisão justa.
-* [ ] Ajustar offset do corpo físico.
-* [ ] Definir colisão com limites do mundo.
+* [x] Criar ou revisar `src/characters/Danubia.ts`.
+* [x] Criar sprite com física Arcade.
+* [x] Definir corpo físico.
+* [x] Ajustar tamanho do corpo para colisão justa.
+* [x] Ajustar offset do corpo físico.
+* [x] Definir colisão com limites do mundo.
 * [ ] Configurar profundidade de personagem.
 
 ---
 
 ## 6.2 Movimento lateral
 
-* [ ] Aplicar velocidade para esquerda.
-* [ ] Aplicar velocidade para direita.
-* [ ] Parar horizontalmente quando não houver input.
-* [ ] Virar sprite para esquerda quando andar para esquerda.
-* [ ] Virar sprite para direita quando andar para direita.
-* [ ] Tocar animação de caminhada enquanto anda no chão.
-* [ ] Voltar para idle quando parar.
+* [x] Aplicar velocidade para esquerda.
+* [x] Aplicar velocidade para direita.
+* [x] Parar horizontalmente quando não houver input.
+* [x] Virar sprite para esquerda quando andar para esquerda.
+* [x] Virar sprite para direita quando andar para direita.
+* [x] Tocar animação de caminhada enquanto anda no chão.
+* [x] Voltar para idle quando parar.
 
 ---
 
 ## 6.3 Pulo
 
-* [ ] Permitir pular somente quando estiver no chão.
-* [ ] Aplicar velocidade vertical de pulo.
-* [ ] Trocar sprite/animação para pulo.
-* [ ] Impedir pulo infinito.
-* [ ] Garantir que o pulo seja fácil, não punitivo.
+* [x] Permitir pular somente quando estiver no chão.
+* [x] Aplicar velocidade vertical de pulo.
+* [x] Trocar sprite/animação para pulo.
+* [x] Impedir pulo infinito.
+* [x] Garantir que o pulo seja fácil, não punitivo.
 * [ ] Garantir que o tutorial de pulo funcione em Montmartre ou na casa.
 
 ---
 
 ## 6.4 Bloqueios de estado
 
-* [ ] Criar flag para bloquear movimento.
+* [x] Criar flag para bloquear movimento.
 * [ ] Bloquear movimento durante diálogos.
 * [ ] Bloquear movimento durante transições.
 * [ ] Bloquear movimento durante checklist aberta.
@@ -735,34 +735,34 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 7.1 Estrutura visual
 
-* [ ] Exibir background `cover.png` em tela cheia.
+* [x] Exibir background `cover.png` em tela cheia.
 
-* [ ] Garantir que cubra 960 × 540.
+* [x] Garantir que cubra 960 × 540.
 
-* [ ] Aplicar pixel art sem suavização.
+* [x] Aplicar pixel art sem suavização.
 
-* [ ] Renderizar texto principal:
+* [x] Renderizar texto principal:
 
-    * [ ] `Pressione X ou Espaço para começar`
+    * [x] `Pressione X ou Espaço para começar`
 
-* [ ] Renderizar texto secundário opcional:
+* [x] Renderizar texto secundário opcional:
 
-    * [ ] `Use controle de PlayStation ou teclado`
+    * [x] `Use controle de PlayStation ou teclado`
 
 * [ ] Criar leve piscar no texto principal.
 
-* [ ] Não exibir HUD.
+* [x] Não exibir HUD.
 
-* [ ] Não exibir checklist.
+* [x] Não exibir checklist.
 
 ---
 
 ## 7.2 Entrada do jogador
 
-* [ ] Detectar X do controle.
-* [ ] Detectar Espaço no teclado.
-* [ ] Ao confirmar, fazer fade para preto.
-* [ ] Iniciar `HomeScene`.
+* [x] Detectar X do controle.
+* [x] Detectar Espaço no teclado.
+* [x] Ao confirmar, fazer fade para preto.
+* [x] Iniciar `HomeScene`.
 * [ ] Passar localização inicial `living-room`.
 * [ ] Salvar checkpoint `home` ao iniciar novo jogo.
 * [ ] Garantir que Esc/Options não faça nada crítico no menu.
@@ -799,7 +799,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 8.2 Backgrounds da casa
 
-* [ ] Renderizar sala com `bg-home-living-room`.
+* [x] Renderizar sala com `bg-home-living-room`.
 * [ ] Renderizar corredor com `bg-home-hall`.
 * [ ] Renderizar quarto do filho com `bg-home-son-bedroom`.
 * [ ] Renderizar quarto da filha com `bg-home-daughter-bedroom`.
@@ -812,7 +812,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 ## 8.3 Física da casa
 
 * [ ] Criar chão invisível em cada cômodo.
-* [ ] Criar limites laterais.
+* [x] Criar limites laterais.
 * [ ] Ajustar posição inicial de Danubia por cômodo.
 * [ ] Garantir que Danubia não caia fora da tela.
 * [ ] Garantir que Danubia possa andar e pular em todos os cômodos.
@@ -2302,23 +2302,23 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## Milestone 1 — Jogo abrindo
 
-* [ ] Corrigir exports das cenas.
-* [ ] Registrar cenas no config.
-* [ ] Fazer BootScene carregar somente assets essenciais do menu e sala.
-* [ ] Fazer MenuScene aparecer.
-* [ ] Fazer botão iniciar levar para HomeScene.
-* [ ] Fazer HomeScene renderizar sala.
+* [x] Corrigir exports das cenas.
+* [x] Registrar cenas no config.
+* [x] Fazer BootScene carregar somente assets essenciais do menu e sala.
+* [x] Fazer MenuScene aparecer.
+* [x] Fazer botão iniciar levar para HomeScene.
+* [x] Fazer HomeScene renderizar sala.
 
 ---
 
 ## Milestone 2 — Danubia jogável
 
-* [ ] Criar Danubia.
-* [ ] Implementar movimento lateral.
-* [ ] Implementar pulo.
-* [ ] Implementar chão invisível.
-* [ ] Implementar limites.
-* [ ] Testar movimento na sala.
+* [x] Criar Danubia.
+* [x] Implementar movimento lateral.
+* [x] Implementar pulo.
+* [x] Implementar chão invisível.
+* [x] Implementar limites.
+* [x] Testar movimento na sala.
 
 ---
 

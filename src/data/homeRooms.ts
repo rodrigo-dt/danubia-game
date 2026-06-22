@@ -1,0 +1,126 @@
+import type {HomeRoomConfig, HomeRoomId} from '../game/types';
+
+export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
+    'living-room': {
+        id: 'living-room',
+        backgroundKey: 'bg-home-living-room',
+        playerSpawn: {x: 480, y: 410},
+        walkArea: {
+            x: 20,
+            y: 300,
+            width: 920,
+            height: 235,
+            baseScaleY: 402,
+        },
+        blockers: [
+            {
+                id: 'sofa-01-blocker',
+                x: 191,
+                y: 155,
+                width: 750,
+                height: 210,
+            },
+            {
+                id: 'sofa-02-blocker',
+                x: 630,
+                y: 367,
+                width: 300,
+                height: 50,
+            },
+            {
+                id: 'hall-01-blocker',
+                x: 150,
+                y: 106,
+                width: 40,
+                height: 230,
+            },
+            {
+                id: 'hall-02-blocker',
+                x: 0,
+                y: 106,
+                width: 70,
+                height: 240,
+            },
+        ],
+        shadow: {
+            enabled: true,
+            offsetX: 0,
+            offsetY: 5,
+            width: 100,
+            height: 20,
+            alpha: 0.28,
+            color: 0x000000,
+            scaleWithDepth: true,
+            minScaleMultiplier: 0.9,
+            maxScaleMultiplier: 1.08,
+            shrinkOnJump: true,
+            jumpShrinkFactor: 0.86,
+            fadeOnJump: true,
+            jumpFadeFactor: 0.82,
+        },
+    },
+    hall: {
+        id: 'hall',
+        backgroundKey: 'bg-home-hall',
+        playerSpawn: {x: 480, y: 410},
+        walkArea: {
+            x: 42,
+            y: 300,
+            width: 876,
+            height: 176,
+            baseScaleY: 402,
+        },
+        blockers: [],
+        shadow: {
+            enabled: true,
+        },
+    },
+    'son-bedroom': {
+        id: 'son-bedroom',
+        backgroundKey: 'bg-home-son-bedroom',
+        playerSpawn: {x: 480, y: 410},
+        walkArea: {
+            x: 42,
+            y: 300,
+            width: 876,
+            height: 176,
+            baseScaleY: 402,
+        },
+        blockers: [],
+        shadow: {
+            enabled: true,
+        },
+    },
+    'daughter-bedroom': {
+        id: 'daughter-bedroom',
+        backgroundKey: 'bg-home-daughter-bedroom',
+        playerSpawn: {x: 480, y: 410},
+        walkArea: {
+            x: 42,
+            y: 300,
+            width: 876,
+            height: 176,
+            baseScaleY: 402,
+        },
+        blockers: [],
+        shadow: {
+            enabled: true,
+        },
+    },
+    office: {
+        id: 'office',
+        backgroundKey: 'bg-home-office',
+        playerSpawn: {x: 480, y: 410},
+        walkArea: {
+            x: 42,
+            y: 300,
+            width: 876,
+            height: 176,
+            baseScaleY: 402,
+        },
+        blockers: [],
+        shadow: {
+            enabled: true,
+        },
+    },
+};
