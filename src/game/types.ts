@@ -21,8 +21,26 @@ export type RoomBlocker = RectArea & {
     id: string;
 };
 
+export type RoomDoor = RectArea & {
+    id: string;
+    targetRoom: HomeRoomId;
+    targetSpawn: Point2D;
+    targetFacing?: 'left' | 'right';
+    promptText: string;
+};
+
 export type WalkArea = RectArea & {
     baseScaleY: number;
+};
+
+export type DepthScaleConfig = {
+    farY?: number;
+    nearY?: number;
+    baseY?: number;
+    baseScale?: number;
+    farScale?: number;
+    nearScale?: number;
+    intensity?: number;
 };
 
 export type CharacterShadowConfig = {
@@ -48,5 +66,7 @@ export type HomeRoomConfig = {
     playerSpawn: Point2D;
     walkArea: WalkArea;
     blockers: RoomBlocker[];
+    doors: RoomDoor[];
+    depthScale: DepthScaleConfig;
     shadow?: CharacterShadowConfig;
 };

@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
 import { ASSET_PATH, SCENE_KEYS } from '../game/constants';
 import { DANUBIA_ASSET_KEYS } from '../characters/Danubia';
+import { homeRoomBackgroundPaths, homeRooms } from '../data/homeRooms';
 
 const ASSET_KEYS = {
     cover: 'bg-cover',
-    homeLivingRoom: 'bg-home-living-room',
 } as const;
 
 export class BootScene extends Phaser.Scene {
@@ -14,10 +14,12 @@ export class BootScene extends Phaser.Scene {
 
     preload(): void {
         this.load.image(ASSET_KEYS.cover, `${ASSET_PATH}/backgrounds/cover.png`);
-        this.load.image(
-            ASSET_KEYS.homeLivingRoom,
-            `${ASSET_PATH}/backgrounds/bg-home-living-room.png`,
-        );
+
+        for (const roomId of Object.keys(homeRooms) as Array<keyof typeof homeRooms>) {
+            const room = homeRooms[roomId];
+            this.load.image(room.backgroundKey, homeRoomBackgroundPaths[roomId]);
+        }
+
         this.load.image(
             DANUBIA_ASSET_KEYS.idle,
             `${ASSET_PATH}/characters/danubia/danubia-idle.png`,

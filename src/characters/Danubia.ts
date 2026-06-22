@@ -7,7 +7,14 @@ import {
     PLAYER_SPEED,
     PLAYER_VERTICAL_SPEED,
 } from '../game/constants';
-import type { CharacterShadowConfig, RectArea, RoomBlocker, WalkArea } from '../game/types';
+import type {
+    CharacterShadowConfig,
+    DepthScaleConfig,
+    Point2D,
+    RectArea,
+    RoomBlocker,
+    WalkArea,
+} from '../game/types';
 
 const DANUBIA_ASSET_KEYS = {
     idle: 'danubia-idle',
@@ -46,9 +53,10 @@ const DEFAULT_SHADOW_CONFIG: Required<CharacterShadowConfig> = {
 type DanubiaMovementMode =
     | { type: 'platform' }
     | {
-          type: 'walk-plane';
+      type: 'walk-plane';
           walkArea: WalkArea;
           blockers: RoomBlocker[];
+          depthScale: Required<DepthScaleConfig>;
       };
 
 export class Danubia extends Phaser.Physics.Arcade.Sprite {
@@ -72,6 +80,15 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
     private jumpElapsedMs = 0;
     private currentScale = DANUBIA_BASE_SCALE;
     private shadowConfig: Required<CharacterShadowConfig> = DEFAULT_SHADOW_CONFIG;
+    private depthScaleConfig: Required<DepthScaleConfig> = {
+        farY: 0,
+        nearY: 0,
+        baseY: 0,
+        baseScale: DANUBIA_BASE_SCALE,
+        farScale: DANUBIA_MIN_SCALE,
+        nearScale: DANUBIA_MAX_SCALE,
+        intensity: 1,
+    };
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, DANUBIA_ASSET_KEYS.idle);
@@ -177,15 +194,19 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
     setWalkPlaneMode(
         walkArea: WalkArea,
         blockers: RoomBlocker[],
+        depthScale: DepthScaleConfig,
         shadowConfig?: CharacterShadowConfig,
     ): void {
         const body = this.body;
+        const resolvedDepthScale = this.resolveDepthScaleConfig(walkArea, depthScale);
 
         this.movementMode = {
             type: 'walk-plane',
             walkArea,
             blockers,
+            depthScale: resolvedDepthScale,
         };
+        this.depthScaleConfig = resolvedDepthScale;
 
         this.shadowConfig = {
             ...DEFAULT_SHADOW_CONFIG,
@@ -212,6 +233,45 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
 
     getFootBounds(): RectArea {
         return this.createFootRect(this.logicalX, this.logicalY);
+    }
+
+    getLogicalPosition(): Point2D {
+        return {
+            x: this.logicalX,
+            y: this.logicalY,
+        };
+    }
+
+    setFacing(direction: 'left' | 'right'): void {
+        this.setFacingDirection(direction);
+        this.applyIdleState();
+    }
+
+    setWalkPlaneSpawn(position: Point2D, facing: 'left' | 'right' = 'right'): void {
+        this.logicalX = position.x;
+        this.logicalY = position.y;
+        this.jumpOffsetY = 0;
+        this.isJumping = false;
+        this.jumpElapsedMs = 0;
+        this.setFacingDirection(facing);
+
+        if (this.movementMode.type === 'walk-plane') {
+            this.clampToWalkArea();
+            this.applyScaleForDepth();
+            this.applyRenderedPosition();
+            this.updateShadowVisual();
+
+            const body = this.body;
+            if (body instanceof Phaser.Physics.Arcade.Body) {
+                body.updateFromGameObject();
+            }
+
+            this.applyIdleState();
+            return;
+        }
+
+        this.setPosition(position.x, position.y);
+        this.applyIdleState();
     }
 
     getShadowBounds(): RectArea {
@@ -326,8 +386,9 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
         const walkArea = this.getWalkArea();
         const minX = walkArea.x + FOOT_WIDTH * 0.5;
         const maxX = walkArea.x + walkArea.width - FOOT_WIDTH * 0.5;
-        const minY = walkArea.y + FOOT_HEIGHT;
-        const maxY = walkArea.y + walkArea.height;
+        const halfHeight = this.displayHeight * 0.5;
+        const minY = walkArea.y - halfHeight + FOOT_OFFSET_FROM_BOTTOM + FOOT_HEIGHT;
+        const maxY = walkArea.y + walkArea.height - halfHeight + FOOT_OFFSET_FROM_BOTTOM;
 
         this.logicalX = Phaser.Math.Clamp(this.logicalX, minX, maxX);
         this.logicalY = Phaser.Math.Clamp(this.logicalY, minY, maxY);
@@ -402,9 +463,7 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
             return 1;
         }
 
-        const walkArea = this.movementMode.walkArea;
-        const farY = walkArea.y + FOOT_HEIGHT;
-        const nearY = walkArea.y + walkArea.height;
+        const { farY, nearY } = this.depthScaleConfig;
         const t = Phaser.Math.Clamp((this.logicalY - farY) / Math.max(nearY - farY, 1), 0, 1);
 
         return Phaser.Math.Linear(
@@ -583,33 +642,40 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
             return;
         }
 
-        const clampedY = Phaser.Math.Clamp(
-            this.logicalY,
-            walkSettings.walkArea.y + FOOT_HEIGHT,
-            walkSettings.walkArea.y + walkSettings.walkArea.height,
-        );
-        let scale = DANUBIA_BASE_SCALE;
-
-        if (clampedY < walkSettings.walkArea.baseScaleY) {
-            const t = Phaser.Math.Clamp(
-                (walkSettings.walkArea.baseScaleY - clampedY) /
-                    Math.max(walkSettings.walkArea.baseScaleY - (walkSettings.walkArea.y + FOOT_HEIGHT), 1),
-                0,
-                1,
-            );
-            scale = Phaser.Math.Linear(DANUBIA_BASE_SCALE, DANUBIA_MIN_SCALE, t);
-        } else if (clampedY > walkSettings.walkArea.baseScaleY) {
-            const t = Phaser.Math.Clamp(
-                (clampedY - walkSettings.walkArea.baseScaleY) /
-                    Math.max(walkSettings.walkArea.y + walkSettings.walkArea.height - walkSettings.walkArea.baseScaleY, 1),
-                0,
-                1,
-            );
-            scale = Phaser.Math.Linear(DANUBIA_BASE_SCALE, DANUBIA_MAX_SCALE, t);
-        }
+        const { farY, nearY, farScale, nearScale } = walkSettings.depthScale;
+        const clampedY = Phaser.Math.Clamp(this.logicalY, farY, nearY);
+        const t = Phaser.Math.Clamp((clampedY - farY) / Math.max(nearY - farY, 1), 0, 1);
+        const scale = Phaser.Math.Linear(farScale, nearScale, t);
 
         this.currentScale = Phaser.Math.Clamp(scale, DANUBIA_MIN_SCALE, DANUBIA_MAX_SCALE);
         this.setScale(this.currentScale);
+    }
+
+    private resolveDepthScaleConfig(
+        walkArea: WalkArea,
+        depthScale: DepthScaleConfig,
+    ): Required<DepthScaleConfig> {
+        const farY = depthScale.farY ?? walkArea.y + FOOT_HEIGHT;
+        const nearY = depthScale.nearY ?? walkArea.y + walkArea.height;
+        const baseY = depthScale.baseY ?? walkArea.baseScaleY;
+        const baseScale = depthScale.baseScale ?? DANUBIA_BASE_SCALE;
+        const intensity = depthScale.intensity ?? 1;
+        const referenceSpan = 170;
+        const verticalSpan = Math.max(nearY - farY, 1);
+        const spanRatio = verticalSpan / referenceSpan;
+        const autoRange = Phaser.Math.Clamp(0.08 * spanRatio * intensity, 0.05, 0.22);
+        const farScale = depthScale.farScale ?? baseScale - autoRange;
+        const nearScale = depthScale.nearScale ?? baseScale + autoRange * 0.7;
+
+        return {
+            farY,
+            nearY,
+            baseY,
+            baseScale,
+            farScale,
+            nearScale,
+            intensity,
+        };
     }
 
     private createFootRect(x: number, y: number): RectArea {
