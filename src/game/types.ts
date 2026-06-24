@@ -70,3 +70,13 @@ export type HomeRoomConfig = {
     depthScale: DepthScaleConfig;
     shadow?: CharacterShadowConfig;
 };
+
+export type DialogueLine = {
+    mode: 'narration' | 'portrait' | 'bubble';
+    speaker?: string;
+    text: string;
+    portraitKey?: string;
+    lockMovement?: boolean;
+};
+
+export type DialogueSequence = DialogueLine[];

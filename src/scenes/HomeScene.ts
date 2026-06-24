@@ -1,8 +1,10 @@
 import Phaser from 'phaser';
 import { DEBUG_ROOM_GEOMETRY, GAME_HEIGHT, GAME_WIDTH, SCENE_KEYS } from '../game/constants';
 import { Danubia } from '../characters/Danubia';
+import { homeDialogueTest } from '../data/dialogues';
 import { homeRooms } from '../data/homeRooms';
 import type { HomeRoomConfig, HomeRoomId, RectArea, RoomDoor } from '../game/types';
+import { DialogueController } from '../systems/DialogueController';
 import { InteractionPrompt } from '../ui/InteractionPrompt';
 
 export class HomeScene extends Phaser.Scene {
@@ -18,6 +20,7 @@ export class HomeScene extends Phaser.Scene {
     private activeDoor?: RoomDoor;
     private isTransitioning = false;
     private interactKey?: Phaser.Input.Keyboard.Key;
+    private dialogueController?: DialogueController;
 
     constructor() {
         super(SCENE_KEYS.home);
@@ -33,6 +36,26 @@ export class HomeScene extends Phaser.Scene {
         this.danubia = new Danubia(this, this.currentRoom.playerSpawn.x, this.currentRoom.playerSpawn.y);
         this.interactionPrompt = new InteractionPrompt(this);
         this.interactKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+        this.dialogueController = new DialogueController(this, {
+            onStateChange: (active) => {
+                this.danubia?.setMovementBlocked(active);
+
+                if (active) {
+                    this.interactionPrompt?.hide();
+                }
+            },
+            getBubbleAnchor: () => {
+                if (!this.danubia) {
+                    return undefined;
+                }
+
+                return {
+                    x: this.danubia.x,
+                    y: this.danubia.y - this.danubia.displayHeight * 0.35,
+                };
+            },
+            getBubbleAnimationTarget: () => this.danubia,
+        });
 
         if (DEBUG_ROOM_GEOMETRY) {
             this.debugGraphics = this.add.graphics();
@@ -48,11 +71,15 @@ export class HomeScene extends Phaser.Scene {
 
         this.registerRoomTestHotkeys();
         this.loadRoom(this.currentRoomId);
+        this.time.delayedCall(250, () => {
+            this.startTestDialogue();
+        });
     }
 
     update(): void {
         this.danubia?.update();
         this.updateDoorInteraction();
+        this.dialogueController?.update();
 
         if (DEBUG_ROOM_GEOMETRY) {
             this.drawDebugGeometry();
@@ -177,6 +204,12 @@ export class HomeScene extends Phaser.Scene {
             return;
         }
 
+        if (this.dialogueController?.isActive) {
+            this.activeDoor = undefined;
+            this.interactionPrompt.hide();
+            return;
+        }
+
         const foot = this.danubia.getFootBounds();
         this.activeDoor = this.currentRoom.doors.find((door) => this.rectsIntersect(foot, door));
 
@@ -190,6 +223,14 @@ export class HomeScene extends Phaser.Scene {
         if (this.interactKey && Phaser.Input.Keyboard.JustDown(this.interactKey)) {
             this.transitionToDoor(this.activeDoor);
         }
+    }
+
+    private startTestDialogue(): void {
+        if (this.isTransitioning) {
+            return;
+        }
+
+        this.dialogueController?.start(homeDialogueTest);
     }
 
     private transitionToDoor(door: RoomDoor): void {

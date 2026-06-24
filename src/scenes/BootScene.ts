@@ -14,6 +14,15 @@ export class BootScene extends Phaser.Scene {
 
     preload(): void {
         this.load.image(ASSET_KEYS.cover, `${ASSET_PATH}/backgrounds/cover.png`);
+        this.load.image('ui-dialogue-frame', `${ASSET_PATH}/ui/ui-dialogue-frame.png`);
+        this.load.image(
+            'danubia-portrait-normal',
+            `${ASSET_PATH}/characters/danubia/portrait/danubia-portrait-normal.png`,
+        );
+        this.load.image(
+            'danubia-portrait-sad',
+            `${ASSET_PATH}/characters/danubia/portrait/danubia-portrait-sad.png`,
+        );
 
         for (const roomId of Object.keys(homeRooms) as Array<keyof typeof homeRooms>) {
             const room = homeRooms[roomId];
