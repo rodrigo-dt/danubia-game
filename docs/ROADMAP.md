@@ -104,7 +104,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 2.2 Tipos do jogo
 
-* [ ] Criar ou revisar `src/game/types.ts`.
+* [x] Criar ou revisar `src/game/types.ts`.
 
 * [ ] Definir tipo para checkpoint:
 
@@ -135,11 +135,11 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 * [ ] Definir tipo para `GameProgress`.
 
-* [ ] Definir tipo para fala de diálogo:
+* [x] Definir tipo para fala de diálogo:
 
-    * [ ] personagem
-    * [ ] retrato opcional
-    * [ ] texto
+    * [x] personagem
+    * [x] retrato opcional
+    * [x] texto
     * [ ] expressão opcional
     * [ ] ação pós-fala opcional
 
@@ -151,12 +151,12 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
     * [ ] callback de interação
     * [ ] condição para estar ativa
 
-* [ ] Definir tipo para porta/cômodo:
+* [x] Definir tipo para porta/cômodo:
 
-    * [ ] origem
-    * [ ] destino
-    * [ ] posição de entrada
-    * [ ] texto de interação
+    * [x] origem
+    * [x] destino
+    * [x] posição de entrada
+    * [x] texto de interação
 
 ---
 
@@ -321,10 +321,10 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 * [x] Carregar background da capa.
 * [x] Carregar background da sala.
-* [ ] Carregar background do corredor.
-* [ ] Carregar background do quarto do filho.
-* [ ] Carregar background do quarto da filha.
-* [ ] Carregar background do escritório.
+* [x] Carregar background do corredor.
+* [x] Carregar background do quarto do filho.
+* [x] Carregar background do quarto da filha.
+* [x] Carregar background do escritório.
 * [ ] Carregar background de Montmartre.
 * [ ] Carregar background do Sena.
 * [ ] Carregar background do jardim.
@@ -411,7 +411,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 * [ ] Carregar ícone de cachorro.
 * [ ] Carregar ícone de família.
 * [ ] Carregar coração.
-* [ ] Carregar moldura de diálogo.
+* [x] Carregar moldura de diálogo.
 
 ---
 
@@ -471,7 +471,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
     * [ ] analógico esquerdo
     * [ ] direcional
     * [ ] X para pular/confirmar
-    * [ ] Quadrado para interagir/avançar diálogo
+    * [x] Quadrado para interagir/avançar diálogo
     * [ ] Círculo para poder temporal
     * [ ] Touchpad/Select para celular/checklist
     * [ ] Options para pausa
@@ -490,27 +490,27 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 * [ ] Evitar múltiplas interações no mesmo frame.
 
-* [ ] Permitir bloquear input durante diálogo.
+* [x] Permitir bloquear input durante diálogo.
 
-* [ ] Permitir bloquear movimento mantendo input de avançar diálogo.
+* [x] Permitir bloquear movimento mantendo input de avançar diálogo.
 
 ---
 
 ## 4.4 DialogueController
 
-* [ ] Criar ou revisar `src/systems/dialogueController.ts`.
-* [ ] Receber lista de falas.
-* [ ] Exibir primeira fala.
-* [ ] Avançar para próxima fala com E/Quadrado.
-* [ ] Encerrar diálogo ao final.
-* [ ] Travar movimento da Danubia durante diálogo.
-* [ ] Liberar movimento ao terminar.
-* [ ] Aceitar falas com retrato.
-* [ ] Aceitar falas sem retrato.
-* [ ] Aceitar falas narrativas.
+* [x] Criar ou revisar `src/systems/dialogueController.ts`.
+* [x] Receber lista de falas.
+* [x] Exibir primeira fala.
+* [x] Avançar para próxima fala com E/Quadrado.
+* [x] Encerrar diálogo ao final.
+* [x] Travar movimento da Danubia durante diálogo.
+* [x] Liberar movimento ao terminar.
+* [x] Aceitar falas com retrato.
+* [x] Aceitar falas sem retrato.
+* [x] Aceitar falas narrativas.
 * [ ] Aceitar falas do celular.
-* [ ] Executar callback ao terminar diálogo.
-* [ ] Evitar iniciar dois diálogos ao mesmo tempo.
+* [x] Executar callback ao terminar diálogo.
+* [x] Evitar iniciar dois diálogos ao mesmo tempo.
 
 ---
 
@@ -522,7 +522,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 * [ ] Detectar quando Danubia entra na zona.
 * [ ] Detectar quando Danubia sai da zona.
 * [ ] Mostrar prompt somente quando houver interação disponível.
-* [ ] Esconder prompt durante diálogos.
+* [x] Esconder prompt durante diálogos.
 * [ ] Executar callback quando o jogador apertar E/Quadrado.
 * [ ] Permitir desativar interação após uso.
 * [ ] Permitir interação condicional, por exemplo:
@@ -549,25 +549,25 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 5.1 DialogueBox
 
-* [ ] Criar ou revisar `src/ui/dialogueBox.ts`.
-* [ ] Renderizar moldura de diálogo.
-* [ ] Renderizar retrato quando existir.
-* [ ] Renderizar nome do personagem quando existir.
-* [ ] Renderizar texto da fala.
-* [ ] Renderizar indicador de avanço.
+* [x] Criar ou revisar `src/ui/dialogueBox.ts`.
+* [x] Renderizar moldura de diálogo.
+* [x] Renderizar retrato quando existir.
+* [x] Renderizar nome do personagem quando existir.
+* [x] Renderizar texto da fala.
+* [x] Renderizar indicador de avanço.
 * [ ] Usar profundidade acima do HUD.
-* [ ] Esconder quando não houver diálogo ativo.
+* [x] Esconder quando não houver diálogo ativo.
 * [ ] Garantir leitura confortável na TV.
 * [ ] Não usar efeito de digitação lento demais.
-* [ ] Permitir fala sem retrato.
+* [x] Permitir fala sem retrato.
 
 ---
 
 ## 5.2 InteractionPrompt
 
-* [ ] Criar `src/ui/interactionPrompt.ts`.
+* [x] Criar `src/ui/interactionPrompt.ts`.
 
-* [ ] Renderizar caixa pequena de comando contextual.
+* [x] Renderizar caixa pequena de comando contextual.
 
 * [ ] Exibir textos como:
 
@@ -576,15 +576,15 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
     * [ ] `Pressione Quadrado / E para atravessar o portal`
     * [ ] `Pressione Círculo / F para usar`
 
-* [ ] Posicionar na parte inferior ou próxima ao personagem.
+* [x] Posicionar na parte inferior ou próxima ao personagem.
 
-* [ ] Esconder quando não houver interação.
+* [x] Esconder quando não houver interação.
 
-* [ ] Esconder durante diálogo.
+* [x] Esconder durante diálogo.
 
-* [ ] Esconder durante transição.
+* [x] Esconder durante transição.
 
-* [ ] Usar profundidade correta.
+* [x] Usar profundidade correta.
 
 ---
 
@@ -666,7 +666,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 * [x] Ajustar tamanho do corpo para colisão justa.
 * [x] Ajustar offset do corpo físico.
 * [x] Definir colisão com limites do mundo.
-* [ ] Configurar profundidade de personagem.
+* [x] Configurar profundidade de personagem.
 
 ---
 
@@ -696,8 +696,8 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 ## 6.4 Bloqueios de estado
 
 * [x] Criar flag para bloquear movimento.
-* [ ] Bloquear movimento durante diálogos.
-* [ ] Bloquear movimento durante transições.
+* [x] Bloquear movimento durante diálogos.
+* [x] Bloquear movimento durante transições.
 * [ ] Bloquear movimento durante checklist aberta.
 * [ ] Bloquear movimento durante cutscenes.
 * [ ] Liberar movimento ao terminar cada estado.
@@ -773,39 +773,39 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 8.1 Estrutura interna da cena
 
-* [ ] Criar sistema interno de cômodos.
+* [x] Criar sistema interno de cômodos.
 
 * [ ] Definir cômodos:
 
-    * [ ] `living-room`
-    * [ ] `hall`
-    * [ ] `son-bedroom`
-    * [ ] `daughter-bedroom`
-    * [ ] `office`
+    * [x] `living-room`
+    * [x] `hall`
+    * [x] `son-bedroom`
+    * [x] `daughter-bedroom`
+    * [x] `office`
 
-* [ ] Criar método para trocar background.
+* [x] Criar método para trocar background.
 
 * [ ] Criar método para limpar interações do cômodo anterior.
 
 * [ ] Criar método para criar interações do novo cômodo.
 
-* [ ] Criar método para reposicionar Danubia.
+* [x] Criar método para reposicionar Danubia.
 
-* [ ] Usar fade curto entre cômodos.
+* [x] Usar fade curto entre cômodos.
 
-* [ ] Manter a mesma `HomeScene`, sem criar scene separada por quarto.
+* [x] Manter a mesma `HomeScene`, sem criar scene separada por quarto.
 
 ---
 
 ## 8.2 Backgrounds da casa
 
 * [x] Renderizar sala com `bg-home-living-room`.
-* [ ] Renderizar corredor com `bg-home-hall`.
-* [ ] Renderizar quarto do filho com `bg-home-son-bedroom`.
-* [ ] Renderizar quarto da filha com `bg-home-daughter-bedroom`.
-* [ ] Renderizar escritório com `bg-home-office`.
-* [ ] Remover ou substituir background anterior ao trocar de cômodo.
-* [ ] Garantir que o background fique atrás de tudo.
+* [x] Renderizar corredor com `bg-home-hall`.
+* [x] Renderizar quarto do filho com `bg-home-son-bedroom`.
+* [x] Renderizar quarto da filha com `bg-home-daughter-bedroom`.
+* [x] Renderizar escritório com `bg-home-office`.
+* [x] Remover ou substituir background anterior ao trocar de cômodo.
+* [x] Garantir que o background fique atrás de tudo.
 
 ---
 
@@ -813,8 +813,8 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 * [ ] Criar chão invisível em cada cômodo.
 * [x] Criar limites laterais.
-* [ ] Ajustar posição inicial de Danubia por cômodo.
-* [ ] Garantir que Danubia não caia fora da tela.
+* [x] Ajustar posição inicial de Danubia por cômodo.
+* [x] Garantir que Danubia não caia fora da tela.
 * [ ] Garantir que Danubia possa andar e pular em todos os cômodos.
 * [ ] Não exigir plataforma difícil dentro da casa.
 
@@ -822,32 +822,32 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 8.4 Abertura narrativa da casa
 
-* [ ] Ao entrar pela primeira vez, iniciar tela escura.
+* [x] Ao entrar pela primeira vez, iniciar tela escura.
 
 * [ ] Exibir texto:
 
-    * [ ] `29 de junho de 2026.`
+    * [x] `29 de junho de 2026.`
 
 * [ ] Exibir texto:
 
-    * [ ] `No aniversário de Danubia, algo muito estranho aconteceu.`
+    * [x] `No aniversário de Danubia, algo muito estranho aconteceu.`
 
 * [ ] Exibir texto:
 
-    * [ ] `Todo mundo desapareceu.`
+    * [x] `Todo mundo desapareceu.`
 
 * [ ] Fazer fade para a sala.
 
 * [ ] Posicionar Danubia no centro.
 
-* [ ] Iniciar diálogo inicial:
+* [x] Iniciar diálogo inicial:
 
     * [ ] `Gente?`
     * [ ] `Pudim? Zoe? Alguém?`
     * [ ] `Nove animais nessa casa e nenhum barulho.`
     * [ ] `Ou eu ainda estou dormindo... ou aconteceu alguma coisa muito séria.`
 
-* [ ] Após diálogo, liberar movimento.
+* [x] Após diálogo, liberar movimento.
 
 ---
 
@@ -898,13 +898,13 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 9.1 Entrada no corredor
 
-* [ ] Renderizar background do corredor.
+* [x] Renderizar background do corredor.
 
-* [ ] Posicionar Danubia perto da entrada correta.
+* [x] Posicionar Danubia perto da entrada correta.
 
 * [ ] Criar chão invisível.
 
-* [ ] Criar portas invisíveis.
+* [x] Criar portas invisíveis.
 
 * [ ] Exibir diálogo de primeira entrada:
 
@@ -917,15 +917,15 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 9.2 Portas do corredor
 
-* [ ] Criar porta para sala.
-* [ ] Criar porta para quarto do filho.
-* [ ] Criar porta para quarto da filha.
-* [ ] Criar porta para escritório.
-* [ ] Cada porta deve mostrar prompt de interação.
-* [ ] Cada porta deve trocar cômodo com fade.
-* [ ] Cada porta deve reposicionar Danubia no destino.
-* [ ] Permitir que o jogador visite os quartos em qualquer ordem.
-* [ ] Permitir entrar no escritório antes de ter todos os fragmentos.
+* [x] Criar porta para sala.
+* [x] Criar porta para quarto do filho.
+* [x] Criar porta para quarto da filha.
+* [x] Criar porta para escritório.
+* [x] Cada porta deve mostrar prompt de interação.
+* [x] Cada porta deve trocar cômodo com fade.
+* [x] Cada porta deve reposicionar Danubia no destino.
+* [x] Permitir que o jogador visite os quartos em qualquer ordem.
+* [x] Permitir entrar no escritório antes de ter todos os fragmentos.
 * [ ] Impedir portal antes de coletar os três fragmentos.
 
 ---
@@ -2088,10 +2088,10 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 22.2 Sensação de pixel art
 
-* [ ] Garantir `pixelArt: true`.
-* [ ] Garantir `roundPixels: true`.
+* [x] Garantir `pixelArt: true`.
+* [x] Garantir `roundPixels: true`.
 * [ ] Evitar escala quebrada demais nos sprites principais.
-* [ ] Evitar suavização dos assets.
+* [x] Evitar suavização dos assets.
 * [ ] Conferir backgrounds em tela cheia.
 
 ---
@@ -2324,24 +2324,24 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## Milestone 3 — Interações e cômodos
 
-* [ ] Criar InteractionPrompt.
+* [x] Criar InteractionPrompt.
 * [ ] Criar InteractionController.
-* [ ] Criar troca de cômodo.
-* [ ] Implementar sala.
-* [ ] Implementar corredor.
-* [ ] Implementar portas.
-* [ ] Implementar quartos.
-* [ ] Implementar escritório.
+* [x] Criar troca de cômodo.
+* [x] Implementar sala.
+* [x] Implementar corredor.
+* [x] Implementar portas.
+* [x] Implementar quartos.
+* [x] Implementar escritório.
 
 ---
 
 ## Milestone 4 — Diálogos
 
-* [ ] Criar DialogueBox.
-* [ ] Criar DialogueController.
-* [ ] Implementar diálogo inicial.
-* [ ] Implementar diálogos opcionais da casa.
-* [ ] Implementar diálogos dos quartos.
+* [x] Criar DialogueBox.
+* [x] Criar DialogueController.
+* [x] Implementar diálogo inicial.
+* [x] Implementar diálogos opcionais da casa.
+* [x] Implementar diálogos dos quartos.
 * [ ] Implementar ligação de Monsieur.
 
 ---

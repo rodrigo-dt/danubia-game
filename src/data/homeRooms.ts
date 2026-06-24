@@ -64,6 +64,32 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 promptText: 'Pressione E para interagir',
             },
         ],
+        interactions: [
+            {
+                id: 'living-room-sofa',
+                x: 500,
+                y: 360,
+                width: 200,
+                height: 70,
+                promptText: 'Pressione E para interagir',
+            },
+            {
+                id: 'living-room-bowls',
+                x: 705,
+                y: 445,
+                width: 120,
+                height: 62,
+                promptText: 'Pressione E para interagir',
+            },
+            {
+                id: 'living-room-clock',
+                x: 810,
+                y: 240,
+                width: 110,
+                height: 165,
+                promptText: 'Pressione E para interagir',
+            },
+        ],
         shadow: {
             enabled: true,
             offsetX: 0,
@@ -148,6 +174,7 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 promptText: 'Pressione E para interagir',
             },
         ],
+        interactions: [],
         shadow: {
             enabled: true,
         },
@@ -183,6 +210,16 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 targetRoom: 'hall',
                 targetSpawn: { x: 760, y: 410 },
                 targetFacing: 'left',
+                promptText: 'Pressione E para interagir',
+            },
+        ],
+        interactions: [
+            {
+                id: 'son-bedroom-desk',
+                x: 650,
+                y: 350,
+                width: 210,
+                height: 120,
                 promptText: 'Pressione E para interagir',
             },
         ],
@@ -246,6 +283,16 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 promptText: 'Pressione E para interagir',
             },
         ],
+        interactions: [
+            {
+                id: 'daughter-bedroom-style',
+                x: 585,
+                y: 340,
+                width: 260,
+                height: 120,
+                promptText: 'Pressione E para interagir',
+            },
+        ],
         shadow: {
             enabled: true,
         },
@@ -288,6 +335,16 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 targetRoom: 'hall',
                 targetSpawn: { x: 190, y: 410 },
                 targetFacing: 'right',
+                promptText: 'Pressione E para interagir',
+            },
+        ],
+        interactions: [
+            {
+                id: 'office-desk',
+                x: 215,
+                y: 330,
+                width: 255,
+                height: 120,
                 promptText: 'Pressione E para interagir',
             },
         ],

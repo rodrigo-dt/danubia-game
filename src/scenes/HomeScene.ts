@@ -1,13 +1,26 @@
 import Phaser from 'phaser';
 import { DEBUG_ROOM_GEOMETRY, GAME_HEIGHT, GAME_WIDTH, SCENE_KEYS } from '../game/constants';
 import { Danubia } from '../characters/Danubia';
-import { homeDialogueTest } from '../data/dialogues';
+import {
+    homeRoomInteractionDialogues,
+    homeOpeningDialogue,
+    homeRoomEntryDialogues,
+    livingRoomInteractionDialogues,
+} from '../data/dialogues';
 import { homeRooms } from '../data/homeRooms';
-import type { HomeRoomConfig, HomeRoomId, RectArea, RoomDoor } from '../game/types';
+import type {
+    DialogueSequence,
+    HomeRoomConfig,
+    HomeRoomId,
+    RectArea,
+    RoomDoor,
+    RoomInteraction,
+} from '../game/types';
 import { DialogueController } from '../systems/DialogueController';
 import { InteractionPrompt } from '../ui/InteractionPrompt';
 
 export class HomeScene extends Phaser.Scene {
+    private static readonly DELAYED_ENTRY_DIALOGUE_MS = 950;
     private danubia?: Danubia;
     private background?: Phaser.GameObjects.Image;
     private debugGraphics?: Phaser.GameObjects.Graphics;
@@ -18,9 +31,12 @@ export class HomeScene extends Phaser.Scene {
     private currentRoomId: HomeRoomId = 'living-room';
     private currentRoom: HomeRoomConfig = homeRooms['living-room'];
     private activeDoor?: RoomDoor;
+    private activeInteraction?: RoomInteraction;
     private isTransitioning = false;
     private interactKey?: Phaser.Input.Keyboard.Key;
     private dialogueController?: DialogueController;
+    private readonly visitedRoomDialogues = new Set<HomeRoomId>();
+    private pendingRoomEntryDialogue?: Phaser.Time.TimerEvent;
 
     constructor() {
         super(SCENE_KEYS.home);
@@ -72,7 +88,7 @@ export class HomeScene extends Phaser.Scene {
         this.registerRoomTestHotkeys();
         this.loadRoom(this.currentRoomId);
         this.time.delayedCall(250, () => {
-            this.startTestDialogue();
+            this.startOpeningDialogue();
         });
     }
 
@@ -108,7 +124,10 @@ export class HomeScene extends Phaser.Scene {
 
         this.background?.setTexture(room.backgroundKey);
         this.activeDoor = undefined;
+        this.activeInteraction = undefined;
         this.interactionPrompt?.hide();
+        this.pendingRoomEntryDialogue?.remove(false);
+        this.pendingRoomEntryDialogue = undefined;
 
         if (!this.danubia) {
             return;
@@ -206,31 +225,44 @@ export class HomeScene extends Phaser.Scene {
 
         if (this.dialogueController?.isActive) {
             this.activeDoor = undefined;
+            this.activeInteraction = undefined;
             this.interactionPrompt.hide();
             return;
         }
 
         const foot = this.danubia.getFootBounds();
         this.activeDoor = this.currentRoom.doors.find((door) => this.rectsIntersect(foot, door));
+        this.activeInteraction = this.activeDoor
+            ? undefined
+            : this.currentRoom.interactions?.find((interaction) => this.rectsIntersect(foot, interaction));
 
-        if (!this.activeDoor) {
+        const promptSource = this.activeDoor ?? this.activeInteraction;
+
+        if (!promptSource) {
             this.interactionPrompt.hide();
             return;
         }
 
-        this.interactionPrompt.show(this.activeDoor.promptText);
+        this.interactionPrompt.show(promptSource.promptText);
 
         if (this.interactKey && Phaser.Input.Keyboard.JustDown(this.interactKey)) {
-            this.transitionToDoor(this.activeDoor);
+            if (this.activeDoor) {
+                this.transitionToDoor(this.activeDoor);
+                return;
+            }
+
+            if (this.activeInteraction) {
+                this.startInteractionDialogue(this.activeInteraction);
+            }
         }
     }
 
-    private startTestDialogue(): void {
+    private startOpeningDialogue(): void {
         if (this.isTransitioning) {
             return;
         }
 
-        this.dialogueController?.start(homeDialogueTest);
+        this.dialogueController?.start(homeOpeningDialogue);
     }
 
     private transitionToDoor(door: RoomDoor): void {
@@ -248,10 +280,82 @@ export class HomeScene extends Phaser.Scene {
 
             this.cameras.main.fadeIn(180, 0, 0, 0);
             this.time.delayedCall(180, () => {
-                this.danubia?.setMovementBlocked(false);
                 this.isTransitioning = false;
+                const startedDialogue = this.startRoomEntryDialogueIfNeeded(door.targetRoom);
+
+                if (!startedDialogue) {
+                    this.danubia?.setMovementBlocked(false);
+                }
             });
         });
+    }
+
+    private startRoomEntryDialogueIfNeeded(roomId: HomeRoomId): boolean {
+        if (this.visitedRoomDialogues.has(roomId)) {
+            return false;
+        }
+
+        const dialogue = homeRoomEntryDialogues[roomId as keyof typeof homeRoomEntryDialogues];
+
+        if (!dialogue) {
+            return false;
+        }
+
+        this.visitedRoomDialogues.add(roomId);
+
+        if (roomId === 'son-bedroom' || roomId === 'daughter-bedroom' || roomId === 'office') {
+            this.danubia?.setMovementBlocked(true);
+            this.pendingRoomEntryDialogue = this.time.delayedCall(
+                HomeScene.DELAYED_ENTRY_DIALOGUE_MS,
+                () => {
+                    this.pendingRoomEntryDialogue = undefined;
+                    const started = this.dialogueController?.start(dialogue) ?? false;
+
+                    if (!started) {
+                        this.danubia?.setMovementBlocked(false);
+                    }
+                },
+            );
+
+            return true;
+        }
+
+        const started = this.dialogueController?.start(dialogue) ?? false;
+
+        if (!started) {
+            this.danubia?.setMovementBlocked(false);
+        }
+
+        return started;
+    }
+
+    private startInteractionDialogue(interaction: RoomInteraction): void {
+        const dialogue = this.getInteractionDialogue(interaction.id);
+
+        if (!dialogue) {
+            return;
+        }
+
+        this.dialogueController?.start(dialogue);
+    }
+
+    private getInteractionDialogue(interactionId: string): DialogueSequence | undefined {
+        switch (interactionId) {
+        case 'living-room-sofa':
+            return livingRoomInteractionDialogues.sofa;
+        case 'living-room-bowls':
+            return livingRoomInteractionDialogues.bowls;
+        case 'living-room-clock':
+            return livingRoomInteractionDialogues.clock;
+        case 'son-bedroom-desk':
+            return homeRoomInteractionDialogues['son-bedroom-desk'];
+        case 'daughter-bedroom-style':
+            return homeRoomInteractionDialogues['daughter-bedroom-style'];
+        case 'office-desk':
+            return homeRoomInteractionDialogues['office-desk'];
+        default:
+            return undefined;
+        }
     }
 
     private rectsIntersect(a: RectArea, b: RectArea): boolean {

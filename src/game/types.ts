@@ -29,6 +29,11 @@ export type RoomDoor = RectArea & {
     promptText: string;
 };
 
+export type RoomInteraction = RectArea & {
+    id: string;
+    promptText: string;
+};
+
 export type WalkArea = RectArea & {
     baseScaleY: number;
 };
@@ -67,6 +72,7 @@ export type HomeRoomConfig = {
     walkArea: WalkArea;
     blockers: RoomBlocker[];
     doors: RoomDoor[];
+    interactions?: RoomInteraction[];
     depthScale: DepthScaleConfig;
     shadow?: CharacterShadowConfig;
 };
