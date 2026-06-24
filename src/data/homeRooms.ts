@@ -61,7 +61,7 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 targetRoom: 'hall',
                 targetSpawn: { x: 150, y: 400 },
                 targetFacing: 'right',
-                promptText: 'Pressione E para interagir',
+                promptText: 'Ir para o corredor',
             },
         ],
         interactions: [
@@ -71,7 +71,7 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 y: 360,
                 width: 200,
                 height: 70,
-                promptText: 'Pressione E para interagir',
+                promptText: 'Interagir',
             },
             {
                 id: 'living-room-bowls',
@@ -79,7 +79,7 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 y: 445,
                 width: 120,
                 height: 62,
-                promptText: 'Pressione E para interagir',
+                promptText: 'Interagir',
             },
             {
                 id: 'living-room-clock',
@@ -87,9 +87,10 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 y: 240,
                 width: 110,
                 height: 165,
-                promptText: 'Pressione E para interagir',
+                promptText: 'Interagir',
             },
         ],
+        fragments: [],
         shadow: {
             enabled: true,
             offsetX: 0,
@@ -138,7 +139,7 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 targetRoom: 'living-room',
                 targetSpawn: { x: 150, y: 412 },
                 targetFacing: 'right',
-                promptText: 'Pressione E para interagir',
+                promptText: 'Voltar para a sala',
             },
             {
                 id: 'hall-to-son-bedroom',
@@ -149,7 +150,7 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 targetRoom: 'son-bedroom',
                 targetSpawn: { x: 480, y: 460 },
                 targetFacing: 'right',
-                promptText: 'Pressione E para interagir',
+                promptText: 'Entrar no quarto do Rô',
             },
             {
                 id: 'hall-to-daughter-bedroom',
@@ -160,7 +161,7 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 targetRoom: 'daughter-bedroom',
                 targetSpawn: { x: 480, y: 450 },
                 targetFacing: 'right',
-                promptText: 'Pressione E para interagir',
+                promptText: 'Entrar no quarto da Rafa',
             },
             {
                 id: 'hall-to-office',
@@ -171,10 +172,11 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 targetRoom: 'office',
                 targetSpawn: { x: 180, y: 400 },
                 targetFacing: 'right',
-                promptText: 'Pressione E para interagir',
+                promptText: 'Entrar no escritório',
             },
         ],
         interactions: [],
+        fragments: [],
         shadow: {
             enabled: true,
         },
@@ -210,7 +212,7 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 targetRoom: 'hall',
                 targetSpawn: { x: 760, y: 410 },
                 targetFacing: 'left',
-                promptText: 'Pressione E para interagir',
+                promptText: 'Voltar para o corredor',
             },
         ],
         interactions: [
@@ -220,7 +222,20 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 y: 350,
                 width: 210,
                 height: 120,
-                promptText: 'Pressione E para interagir',
+                promptText: 'Interagir',
+            },
+        ],
+        fragments: [
+            {
+                id: 'home-fragment-son-bedroom',
+                assetKey: 'clock-fragment-01',
+                spriteX: 106,
+                spriteY: 320,
+                x: 121,
+                y: 461,
+                width: 140,
+                height: 72,
+                promptText: 'Coletar fragmento',
             },
         ],
         shadow: {
@@ -256,7 +271,7 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
             },
             {
                 id: 'daughter-02-desk',
-                x: 806,
+                x: 780,
                 y: 429,
                 width: 380,
                 height: 110,
@@ -280,7 +295,7 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 targetRoom: 'hall',
                 targetSpawn: { x: 500, y: 410 },
                 targetFacing: 'left',
-                promptText: 'Pressione E para interagir',
+                promptText: 'Voltar para o corredor',
             },
         ],
         interactions: [
@@ -290,7 +305,20 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 y: 340,
                 width: 260,
                 height: 120,
-                promptText: 'Pressione E para interagir',
+                promptText: 'Interagir',
+            },
+        ],
+        fragments: [
+            {
+                id: 'home-fragment-daughter-bedroom',
+                assetKey: 'clock-fragment-02',
+                spriteX: 288,
+                spriteY: 312,
+                x: 208,
+                y: 442,
+                width: 168,
+                height: 86,
+                promptText: 'Coletar fragmento',
             },
         ],
         shadow: {
@@ -335,7 +363,7 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 targetRoom: 'hall',
                 targetSpawn: { x: 190, y: 410 },
                 targetFacing: 'right',
-                promptText: 'Pressione E para interagir',
+                promptText: 'Voltar para o corredor',
             },
         ],
         interactions: [
@@ -345,7 +373,20 @@ export const homeRooms: Record<HomeRoomId, HomeRoomConfig> = {
                 y: 330,
                 width: 255,
                 height: 120,
-                promptText: 'Pressione E para interagir',
+                promptText: 'Interagir',
+            },
+        ],
+        fragments: [
+            {
+                id: 'home-fragment-office',
+                assetKey: 'clock-fragment-03',
+                spriteX: 625,
+                spriteY: 276,
+                x: 500,
+                y: 438,
+                width: 160,
+                height: 88,
+                promptText: 'Coletar fragmento',
             },
         ],
         shadow: {

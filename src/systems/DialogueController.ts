@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { DEV_SKIP_DIALOGUES } from '../game/constants';
 import type { DialogueLine, DialogueSequence, Point2D } from '../game/types';
 import { DialogueBox } from '../ui/DialogueBox';
 
@@ -70,6 +71,11 @@ export class DialogueController {
             return false;
         }
 
+        if (DEV_SKIP_DIALOGUES) {
+            this.skipDialogue(options.onComplete);
+            return true;
+        }
+
         this.activeDialogue = dialogue;
         this.currentIndex = 0;
         this.onComplete = options.onComplete;
@@ -134,7 +140,9 @@ export class DialogueController {
         this.dialogueBox.showLine(currentLine);
         this.dialogueBox.setDisplayedText('');
         this.dialogueBox.setContinuePromptVisible(
-            currentLine.mode === 'narration' || currentLine.mode === 'portrait',
+            currentLine.mode === 'narration' ||
+            currentLine.mode === 'portrait' ||
+            currentLine.mode === 'phoneCall',
         );
 
         if (currentLine.mode === 'bubble') {
@@ -168,6 +176,18 @@ export class DialogueController {
         this.stopBubbleTalkAnimation();
         this.setMovementLocked(false);
         callback?.();
+    }
+
+    private skipDialogue(onComplete?: () => void): void {
+        this.activeDialogue = undefined;
+        this.currentIndex = 0;
+        this.onComplete = undefined;
+        this.dialogueBox.hide();
+        this.clearLineTimers();
+        this.stopBubbleTalkAnimation();
+        this.movementLocked = false;
+        this.onStateChange?.(false);
+        onComplete?.();
     }
 
     private getCurrentLine(): DialogueLine | undefined {

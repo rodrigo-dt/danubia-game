@@ -162,7 +162,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 2.3 Estado inicial do jogo
 
-* [ ] Criar ou revisar `src/game/states.ts`.
+* [x] Criar ou revisar `src/game/states.ts`.
 
 * [ ] Definir estado inicial:
 
@@ -325,7 +325,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 * [x] Carregar background do quarto do filho.
 * [x] Carregar background do quarto da filha.
 * [x] Carregar background do escritório.
-* [ ] Carregar background de Montmartre.
+* [x] Carregar background de Montmartre.
 * [ ] Carregar background do Sena.
 * [ ] Carregar background do jardim.
 * [ ] Carregar background da oficina.
@@ -379,9 +379,9 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 3.7 Carregamento dos efeitos
 
-* [ ] Carregar fragmento 1.
-* [ ] Carregar fragmento 2.
-* [ ] Carregar fragmento 3.
+* [x] Carregar fragmento 1.
+* [x] Carregar fragmento 2.
+* [x] Carregar fragmento 3.
 * [ ] Carregar relógio completo.
 * [ ] Carregar portal.
 * [ ] Carregar bolha temporal.
@@ -405,8 +405,8 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 3.9 Carregamento da UI
 
-* [ ] Carregar celular compacto.
-* [ ] Carregar celular expandido.
+* [x] Carregar celular compacto.
+* [x] Carregar celular expandido.
 * [ ] Carregar ícone de gato.
 * [ ] Carregar ícone de cachorro.
 * [ ] Carregar ícone de família.
@@ -592,7 +592,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 * [ ] Criar ou revisar `src/ui/gameHud.ts`.
 
-* [ ] Renderizar celular compacto.
+* [x] Renderizar celular compacto.
 
 * [ ] Renderizar ícone de gato.
 
@@ -627,7 +627,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 ## 5.4 PhoneChecklist
 
 * [ ] Criar ou revisar `src/ui/phoneChecklist.ts`.
-* [ ] Renderizar celular expandido.
+* [x] Renderizar celular expandido.
 * [ ] Renderizar título `DESAPARECIDOS`.
 * [ ] Renderizar seção de cachorros.
 * [ ] Renderizar Pudim.
@@ -647,10 +647,10 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 * [ ] Renderizar seção de presente.
 * [ ] Renderizar item `???`.
 * [ ] Marcar itens encontrados com check.
-* [ ] Abrir checklist com Tab/Touchpad/Select.
-* [ ] Fechar checklist com Tab/Touchpad/Select.
+* [x] Abrir checklist com Tab/Touchpad/Select.
+* [x] Fechar checklist com Tab/Touchpad/Select.
 * [ ] Abrir automaticamente por 2 segundos após resgate.
-* [ ] Bloquear movimento enquanto checklist estiver aberta.
+* [x] Bloquear movimento enquanto checklist estiver aberta.
 * [ ] Não permitir que checklist sobreponha diálogo final de forma confusa.
 * [ ] Criar variação final para `Checklist concluída`.
 
@@ -785,7 +785,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 * [x] Criar método para trocar background.
 
-* [ ] Criar método para limpar interações do cômodo anterior.
+* [x] Criar método para limpar interações do cômodo anterior.
 
 * [ ] Criar método para criar interações do novo cômodo.
 
@@ -934,20 +934,20 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 10.1 Sistema de fragmentos
 
-* [ ] Criar controle de fragmentos coletados.
-* [ ] Verificar no estado se fragmento já foi coletado.
-* [ ] Renderizar apenas fragmentos ainda não coletados.
-* [ ] Fazer fragmentos flutuarem levemente.
+* [x] Criar controle de fragmentos coletados.
+* [x] Verificar no estado se fragmento já foi coletado.
+* [x] Renderizar apenas fragmentos ainda não coletados.
+* [x] Fazer fragmentos flutuarem levemente.
 * [ ] Criar brilho ou rotação sutil.
-* [ ] Criar zona de coleta por proximidade.
-* [ ] Mostrar prompt ao se aproximar.
+* [x] Criar zona de coleta por proximidade.
+* [x] Mostrar prompt ao se aproximar.
 * [ ] Ao coletar:
 
-    * [ ] esconder fragmento
-    * [ ] incrementar contador
+    * [x] esconder fragmento
+    * [x] incrementar contador
     * [ ] salvar progresso
-    * [ ] mostrar mensagem de coleta
-    * [ ] atualizar estado da cena
+    * [x] mostrar mensagem de coleta
+    * [x] atualizar estado da cena
 
 ---
 
@@ -964,11 +964,11 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
     * [ ] `Ele não está aqui.`
     * [ ] `E nem arrumou o quarto antes de desaparecer. Interessante.`
 
-* [ ] Criar fragmento 1 próximo à cama ou escrivaninha.
+* [x] Criar fragmento 1 próximo à cama ou escrivaninha.
 
 * [ ] Ao coletar fragmento 1, exibir:
 
-    * [ ] `Fragmento de tempo encontrado: 1/3`
+    * [x] `Fragmento de tempo encontrado: 1/3`
 
 * [ ] Voltar para corredor pela porta.
 
@@ -987,11 +987,11 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
     * [ ] `Também sumiu...`
     * [ ] `Certo. Agora isso definitivamente virou uma missão.`
 
-* [ ] Criar fragmento 2.
+* [x] Criar fragmento 2.
 
 * [ ] Ao coletar fragmento 2, exibir:
 
-    * [ ] `Fragmento de tempo encontrado: 2/3`
+    * [x] `Fragmento de tempo encontrado: 2/3`
 
 * [ ] Voltar para corredor pela porta.
 
@@ -1010,13 +1010,13 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
     * [ ] `Ele também não está aqui.`
     * [ ] `Pronto. Sumiu todo mundo no meu aniversário.`
 
-* [ ] Criar fragmento 3.
+* [x] Criar fragmento 3.
 
 * [ ] Ao coletar fragmento 3, exibir:
 
-    * [ ] `Fragmento de tempo encontrado: 3/3`
+    * [x] `Fragmento de tempo encontrado: 3/3`
 
-* [ ] Se ainda não houver três fragmentos, permitir voltar ao corredor normalmente.
+* [x] Se ainda não houver três fragmentos, permitir voltar ao corredor normalmente.
 
 * [ ] Se os três fragmentos forem coletados, iniciar sequência do relógio completo.
 
@@ -1040,15 +1040,15 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
     * [ ] `Os fragmentos começaram a girar...`
 
-* [ ] Tocar sequência da ligação de Monsieur Minuit.
+* [x] Tocar sequência da ligação de Monsieur Minuit.
 
-* [ ] Garantir que essa sequência aconteça apenas uma vez.
+* [x] Garantir que essa sequência aconteça apenas uma vez.
 
 ---
 
 ## 10.6 Ligação de Monsieur Minuit
 
-* [ ] Abrir diálogo com retratos.
+* [x] Abrir diálogo com retratos.
 
 * [ ] Exibir fala de Monsieur:
 
@@ -1108,34 +1108,34 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 * [ ] Após ligação, exibir:
 
-    * [ ] `Pelo menos é Paris.`
+    * [x] `Pelo menos é Paris.`
 
 ---
 
 ## 10.7 Portal da casa
 
-* [ ] Criar portal com `effect-time-portal`.
+* [x] Criar portal com `effect-time-portal`.
 
-* [ ] Posicionar portal no centro ou próximo ao computador.
+* [x] Posicionar portal no cômodo do último fragmento, perto da Danubia.
 
-* [ ] Animar portal:
+* [x] Animar portal:
 
-    * [ ] escala pulsando
-    * [ ] rotação lenta
+    * [x] escala pulsando
+    * [x] rotação lenta
     * [ ] brilho
     * [ ] partículas simples opcionais
 
-* [ ] Criar zona invisível de interação no portal.
+* [x] Criar zona invisível de interação no portal.
 
-* [ ] Mostrar prompt:
+* [x] Mostrar prompt:
 
-    * [ ] `Pressione Quadrado / E para atravessar o portal.`
+    * [x] `Pressione Quadrado / E para atravessar o portal.`
 
-* [ ] Ao interagir:
+* [x] Ao interagir:
 
     * [ ] salvar checkpoint `paris-montmartre`
-    * [ ] fazer fade branco/azulado
-    * [ ] iniciar `MontmartreScene`
+    * [x] fazer transição temporal/cinematográfica
+    * [x] iniciar `MontmartreScene`
 
 ---
 
@@ -1190,11 +1190,11 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 12.1 Entrada da cena
 
-* [ ] Renderizar `bg-paris-montmartre`.
+* [x] Renderizar `bg-paris-montmartre`.
 
-* [ ] Posicionar Danubia saindo do portal à esquerda.
+* [x] Posicionar Danubia saindo do portal à esquerda.
 
-* [ ] Criar breve efeito de chegada do portal.
+* [x] Criar breve efeito de chegada do portal.
 
 * [ ] Exibir diálogo:
 
@@ -1206,7 +1206,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
     * [ ] `Checklist atualizada.`
     * [ ] `Encontre os desaparecidos.`
 
-* [ ] Liberar movimento.
+* [x] Liberar movimento após a cutscene de chegada.
 
 ---
 
@@ -2342,19 +2342,19 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 * [x] Implementar diálogo inicial.
 * [x] Implementar diálogos opcionais da casa.
 * [x] Implementar diálogos dos quartos.
-* [ ] Implementar ligação de Monsieur.
+* [x] Implementar ligação de Monsieur.
 
 ---
 
 ## Milestone 5 — Fragmentos e portal
 
-* [ ] Implementar fragmento 1.
-* [ ] Implementar fragmento 2.
-* [ ] Implementar fragmento 3.
-* [ ] Implementar contador de fragmentos.
+* [x] Implementar fragmento 1.
+* [x] Implementar fragmento 2.
+* [x] Implementar fragmento 3.
+* [x] Implementar contador de fragmentos.
 * [ ] Implementar relógio completo.
-* [ ] Implementar portal.
-* [ ] Ir para Montmartre.
+* [x] Implementar portal.
+* [x] Ir para Montmartre.
 
 ---
 

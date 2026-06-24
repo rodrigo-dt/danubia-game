@@ -5,6 +5,11 @@ import { homeRoomBackgroundPaths, homeRooms } from '../data/homeRooms';
 
 const ASSET_KEYS = {
     cover: 'bg-cover',
+    clockFragment01: 'clock-fragment-01',
+    clockFragment02: 'clock-fragment-02',
+    clockFragment03: 'clock-fragment-03',
+    homePortal: 'effect-time-portal',
+    bgParisMontmartre: 'bg-paris-montmartre',
 } as const;
 
 export class BootScene extends Phaser.Scene {
@@ -14,14 +19,29 @@ export class BootScene extends Phaser.Scene {
 
     preload(): void {
         this.load.image(ASSET_KEYS.cover, `${ASSET_PATH}/backgrounds/cover.png`);
+        this.load.image(ASSET_KEYS.clockFragment01, `${ASSET_PATH}/effects/clock-fragment-01.png`);
+        this.load.image(ASSET_KEYS.clockFragment02, `${ASSET_PATH}/effects/clock-fragment-02.png`);
+        this.load.image(ASSET_KEYS.clockFragment03, `${ASSET_PATH}/effects/clock-fragment-03.png`);
+        this.load.image(ASSET_KEYS.homePortal, `${ASSET_PATH}/effects/effect-time-portal.png`);
+        this.load.image(ASSET_KEYS.bgParisMontmartre, `${ASSET_PATH}/backgrounds/bg-paris-montmartre.png`);
         this.load.image('ui-dialogue-frame', `${ASSET_PATH}/ui/ui-dialogue-frame.png`);
+        this.load.image('ui-phone-compact', `${ASSET_PATH}/ui/ui-phone-compact.png`);
+        this.load.image('ui-phone-expanded', `${ASSET_PATH}/ui/ui-phone-expanded.png`);
         this.load.image(
             'danubia-portrait-normal',
             `${ASSET_PATH}/characters/danubia/portrait/danubia-portrait-normal.png`,
         );
         this.load.image(
+            'danubia-portrait-angry',
+            `${ASSET_PATH}/characters/danubia/portrait/danubia-portrait-angry.png`,
+        );
+        this.load.image(
             'danubia-portrait-sad',
             `${ASSET_PATH}/characters/danubia/portrait/danubia-portrait-sad.png`,
+        );
+        this.load.image(
+            'monsieur-portrait-normal',
+            `${ASSET_PATH}/characters/monsieur-minuit/portraits/monsieur-portrait-normal.png`,
         );
 
         for (const roomId of Object.keys(homeRooms) as Array<keyof typeof homeRooms>) {

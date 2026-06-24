@@ -34,6 +34,19 @@ export type RoomInteraction = RectArea & {
     promptText: string;
 };
 
+export type FragmentId =
+    | 'home-fragment-son-bedroom'
+    | 'home-fragment-daughter-bedroom'
+    | 'home-fragment-office';
+
+export type RoomFragment = RectArea & {
+    id: FragmentId;
+    assetKey: string;
+    spriteX: number;
+    spriteY: number;
+    promptText: string;
+};
+
 export type WalkArea = RectArea & {
     baseScaleY: number;
 };
@@ -73,16 +86,22 @@ export type HomeRoomConfig = {
     blockers: RoomBlocker[];
     doors: RoomDoor[];
     interactions?: RoomInteraction[];
+    fragments?: RoomFragment[];
     depthScale: DepthScaleConfig;
     shadow?: CharacterShadowConfig;
 };
 
 export type DialogueLine = {
-    mode: 'narration' | 'portrait' | 'bubble';
+    mode: 'narration' | 'portrait' | 'bubble' | 'phoneCall';
     speaker?: string;
     text: string;
     portraitKey?: string;
     lockMovement?: boolean;
+    leftPortraitKey?: string;
+    rightPortraitKey?: string;
+    leftPortraitSilhouette?: boolean;
+    rightPortraitSilhouette?: boolean;
+    activeSpeakerSide?: 'left' | 'right';
 };
 
 export type DialogueSequence = DialogueLine[];

@@ -680,19 +680,22 @@ O celular toca.
 
 ### Ligação de Monsieur Minuit
 
+Após coletar os três fragmentos, antes do portal, o celular expandido deve aparecer na tela com animação de vibração e prompt para aceitar a ligação. Não há opção de recusar.
+
+Na primeira ligação, a identidade de Monsieur Minuit ainda não deve ser revelada.
+
 Usar retratos:
 
 | Personagem | Retrato |
 |---|---|
 | Danubia normal | `danubia-portrait-normal.png` |
+| Danubia triste/preocupada | `danubia-portrait-sad.png` |
 | Danubia irritada | `danubia-portrait-angry.png` |
-| Monsieur normal | `monsieur-portrait-normal.png` |
-| Monsieur irritado/confiante | `monsieur-portrait-angry.png` |
-| Monsieur triste/reflexivo | `monsieur-portrait-sad-01.png` |
+| Interlocutor misterioso | `monsieur-portrait-normal.png` com silhueta preta por código |
 
 Diálogo:
 
-**Monsieur Minuit:**
+**????:**
 
 ```text
 Bon anniversaire, Madame Danubia.
@@ -704,19 +707,31 @@ Bon anniversaire, Madame Danubia.
 Quem é você?
 ```
 
-**Monsieur Minuit:**
+**????:**
 
 ```text
-Pode me chamar de Monsieur Minuit. Sua família está comigo.
+Alguém que sabe reconhecer um momento perfeito.
 ```
 
 **Danubia:**
 
 ```text
-Você sequestrou todo mundo?
+Você sabe onde está minha família?
 ```
 
-**Monsieur Minuit:**
+**????:**
+
+```text
+Digamos que eles estão... preservados.
+```
+
+**Danubia irritada:**
+
+```text
+Preservados? Isso é jeito bonito de falar sequestrados?
+```
+
+**????:**
 
 ```text
 "Sequestro" é uma palavra bastante deselegante.
@@ -725,34 +740,10 @@ Você sequestrou todo mundo?
 **Danubia irritada:**
 
 ```text
-É sério isso? E eu tenho que buscar todo mundo no meu aniversário?
+É sério isso? No meu aniversário?
 ```
 
-**Monsieur Minuit:**
-
-```text
-Tecnicamente...
-```
-
-**Danubia:**
-
-```text
-Não dava para simplesmente mandar eles virem?
-```
-
-**Monsieur Minuit:**
-
-```text
-Mas daí o jogo acaba.
-```
-
-**Danubia normal:**
-
-```text
-Ah. Verdade.
-```
-
-**Monsieur Minuit:**
+**????:**
 
 ```text
 Venha até Paris. Seus fragmentos abrirão o caminho.
@@ -761,13 +752,19 @@ Venha até Paris. Seus fragmentos abrirão o caminho.
 **Danubia irritada:**
 
 ```text
-Você sequestra minha família, aparece com esse bigode e ainda quer que eu vá até Paris?
+Você sequestra minha família e ainda quer que eu vá até Paris?
 ```
 
-**Monsieur Minuit:**
+**????:**
 
 ```text
-Sim.
+Tecnicamente... sim.
+```
+
+**Danubia irritada:**
+
+```text
+Tá bom. Estou indo.
 ```
 
 **Danubia normal:**
@@ -786,10 +783,10 @@ Pelo menos é Paris.
 
 ### Portal
 
-Criar `effect-time-portal.png` no centro ou próximo ao computador. Animar por código:
+Criar `effect-time-portal.png` no mesmo cômodo onde o terceiro fragmento foi coletado, surgindo perto da Danubia no mesmo nível dos pés. Se ela estiver mais à esquerda, o portal aparece à direita; se ela estiver mais à direita, o portal aparece à esquerda. Animar por código:
 
 - escala pulsando;
-- rotação lenta;
+- leve oscilação/rotação;
 - brilho;
 - partículas simples.
 
@@ -803,9 +800,12 @@ Pressione Quadrado / E para atravessar o portal.
 
 Ao interagir com o portal:
 
-1. salvar checkpoint `paris-montmartre`;
-2. fade para branco/azul;
-3. iniciar `MontmartreScene`.
+1. bloquear controle e iniciar uma curta cutscene;
+2. Danubia virar para o portal e ser puxada suavemente até o centro;
+3. usar duas metades do portal para dar sensação de profundidade, com uma metade atrás e outra na frente da personagem;
+4. aplicar fade de alpha na Danubia perto do final, até desaparecer;
+5. disparar uma transição temporal fullscreen com overlays mágicos, anéis e pulso de câmera;
+6. iniciar `MontmartreScene`.
 
 ---
 
@@ -846,7 +846,21 @@ A ordem pode ser flexível se o jogador explorar, mas o level design deve natura
 
 ## 12.5 Entrada da cena
 
-Danubia sai do portal no lado esquerdo.
+Danubia sai de um portal no lado esquerdo da cena. O portal deve continuar a linguagem visual da casa:
+
+- duas metades verticais;
+- uma metade atrás da personagem e a outra na frente;
+- pulso e leve oscilação;
+- saída lenta antes de liberar controle.
+
+Ao chegar em Montmartre:
+
+1. manter por alguns instantes a transição temporal vinda da casa;
+2. criar o portal próximo ao lado esquerdo;
+3. Danubia surgir parcialmente escondida e caminhar para a direita saindo do portal;
+4. restaurar o alpha da personagem até 100%;
+5. fazer o portal desaparecer com fade/scale;
+6. só então devolver o controle ao jogador.
 
 **Danubia normal:**
 

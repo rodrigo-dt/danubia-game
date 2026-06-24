@@ -9,6 +9,8 @@ export const DANUBIA_BASE_SCALE = 2;
 export const DANUBIA_MIN_SCALE = 1.6;
 export const DANUBIA_MAX_SCALE = 2.16;
 export const DEBUG_ROOM_GEOMETRY = false;
+export const DEV_SKIP_DIALOGUES = false;
+export const UI_FONT_FAMILY = 'monospace';
 
 export const ASSET_PATH = '/assets';
 

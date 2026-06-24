@@ -80,6 +80,7 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
     private jumpElapsedMs = 0;
     private currentScale = DANUBIA_BASE_SCALE;
     private shadowConfig: Required<CharacterShadowConfig> = DEFAULT_SHADOW_CONFIG;
+    private visualAlpha = 1;
     private depthScaleConfig: Required<DepthScaleConfig> = {
         farY: 0,
         nearY: 0,
@@ -242,9 +243,65 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
         };
     }
 
+    getWalkPlaneFloorY(): number {
+        if (this.movementMode.type !== 'walk-plane') {
+            const foot = this.getFootBounds();
+            return foot.y + foot.height;
+        }
+
+        return this.movementMode.walkArea.y + this.movementMode.walkArea.height;
+    }
+
+    isAirborne(): boolean {
+        return this.isJumping;
+    }
+
     setFacing(direction: 'left' | 'right'): void {
         this.setFacingDirection(direction);
         this.applyIdleState();
+    }
+
+    setCutscenePosition(position: Point2D): void {
+        this.logicalX = position.x;
+        this.logicalY = position.y;
+        this.jumpOffsetY = 0;
+        this.isJumping = false;
+        this.jumpElapsedMs = 0;
+
+        if (this.movementMode.type === 'walk-plane') {
+            this.clampToWalkArea();
+            this.applyScaleForDepth();
+            this.applyRenderedPosition();
+            this.updateShadowVisual();
+
+            const body = this.body;
+            if (body instanceof Phaser.Physics.Arcade.Body) {
+                body.updateFromGameObject();
+            }
+
+            return;
+        }
+
+        this.setPosition(position.x, position.y);
+    }
+
+    playWalkCutscene(direction: 'left' | 'right'): void {
+        this.setFacingDirection(direction);
+        this.anims.play(DANUBIA_ASSET_KEYS.walkAnimation, true);
+    }
+
+    playIdleCutscene(direction?: 'left' | 'right'): void {
+        if (direction) {
+            this.setFacingDirection(direction);
+        }
+
+        this.applyIdleState();
+    }
+
+    setCharacterAlpha(alpha: number): void {
+        this.visualAlpha = Phaser.Math.Clamp(alpha, 0, 1);
+        this.setAlpha(this.visualAlpha);
+        this.updateShadowVisual();
     }
 
     setWalkPlaneSpawn(position: Point2D, facing: 'left' | 'right' = 'right'): void {
@@ -446,6 +503,7 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
         );
         this.shadow.setDisplaySize(width, height);
         this.shadow.setFillStyle(this.shadowConfig.color, alpha);
+        this.shadow.setAlpha(this.visualAlpha);
         this.shadow.setVisible(true);
         this.shadow.setDepth(Math.max(1, this.depth - 1));
     }
