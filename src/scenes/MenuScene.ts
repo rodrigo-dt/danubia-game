@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH, SCENE_KEYS, UI_FONT_FAMILY } from '../game/constants';
+import { installDevModeHotkeys } from '../game/devMode';
 
 const ASSET_KEYS = {
     cover: 'bg-cover',
@@ -13,6 +14,7 @@ export class MenuScene extends Phaser.Scene {
     }
 
     create(): void {
+        installDevModeHotkeys(this);
         this.add.image(0, 0, ASSET_KEYS.cover).setOrigin(0).setDisplaySize(GAME_WIDTH, GAME_HEIGHT);
 
         const titleGroup = this.add.container(GAME_WIDTH / 2, GAME_HEIGHT - 92);

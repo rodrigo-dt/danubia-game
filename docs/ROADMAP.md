@@ -117,23 +117,23 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 * [ ] Definir tipo para os pets:
 
-    * [ ] `pudim`
-    * [ ] `zoe`
-    * [ ] `drogo`
-    * [ ] `pirata`
-    * [ ] `batata`
-    * [ ] `pituca`
-    * [ ] `brecko`
-    * [ ] `lelo`
-    * [ ] `pure`
+    * [x] `pudim`
+    * [x] `zoe`
+    * [x] `drogo`
+    * [x] `pirata`
+    * [x] `batata`
+    * [x] `pituca`
+    * [x] `brecko`
+    * [x] `lelo`
+    * [x] `pure`
 
 * [ ] Definir tipo para família:
 
-    * [ ] `son`
-    * [ ] `daughter`
-    * [ ] `husband`
+    * [x] `son`
+    * [x] `daughter`
+    * [x] `husband`
 
-* [ ] Definir tipo para `GameProgress`.
+* [x] Definir tipo para `GameProgress`.
 
 * [x] Definir tipo para fala de diálogo:
 
@@ -167,17 +167,17 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 * [ ] Definir estado inicial:
 
     * [ ] checkpoint inicial como `home`
-    * [ ] `collectedFragments` como `0`
-    * [ ] todos os pets como `false`
-    * [ ] todos os familiares como `false`
+    * [x] `collectedFragments` como `0`
+    * [x] todos os pets como `false`
+    * [x] todos os familiares como `false`
     * [ ] `hasTemporalPower` como `false`
     * [ ] vidas como `3`
 
-* [ ] Criar função para clonar o estado inicial.
+* [x] Criar função para clonar o estado inicial.
 
-* [ ] Evitar mutação direta do objeto base.
+* [x] Evitar mutação direta do objeto base.
 
-* [ ] Garantir que o estado seja serializável em `localStorage`.
+* [x] Garantir que o estado seja serializável em `localStorage`.
 
 ---
 
@@ -258,6 +258,20 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
     * [ ] interruptor temporal
     * [ ] âncora temporal
     * [ ] pulso dourado
+
+---
+
+## 2.5 Dev Mode
+
+* [x] Criar preset de boot para desenvolvimento.
+* [x] Permitir iniciar direto na HomeScene.
+* [x] Permitir iniciar direto no teste de ligação recebida.
+* [x] Permitir iniciar direto no diálogo da ligação misteriosa.
+* [x] Permitir iniciar direto com portal pronto.
+* [x] Permitir iniciar direto em Montmartre.
+* [x] Criar atalhos `Shift + 1` a `Shift + 6` para trocar de cena em `DEV_MODE`.
+* [x] Criar atalhos `Shift + 7` a `Shift + 0` para mutar estado de teste em `DEV_MODE`.
+* [x] Garantir que o fluxo normal fique intacto quando `DEV_MODE = false`.
 
 * [ ] Criar chaves para obstáculos:
 
@@ -340,7 +354,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 * [ ] Carregar sprite victory.
 * [x] Carregar frames de caminhada.
 * [ ] Carregar frames do poder temporal.
-* [ ] Carregar retratos de diálogo disponíveis.
+* [x] Carregar retratos de diálogo disponíveis.
 
 ---
 
@@ -383,7 +397,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 * [x] Carregar fragmento 2.
 * [x] Carregar fragmento 3.
 * [ ] Carregar relógio completo.
-* [ ] Carregar portal.
+* [x] Carregar portal.
 * [ ] Carregar bolha temporal.
 * [ ] Carregar barreira temporal.
 * [ ] Carregar interruptor temporal.
@@ -508,7 +522,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 * [x] Aceitar falas com retrato.
 * [x] Aceitar falas sem retrato.
 * [x] Aceitar falas narrativas.
-* [ ] Aceitar falas do celular.
+* [x] Aceitar falas do celular.
 * [x] Executar callback ao terminar diálogo.
 * [x] Evitar iniciar dois diálogos ao mesmo tempo.
 
@@ -555,7 +569,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 * [x] Renderizar nome do personagem quando existir.
 * [x] Renderizar texto da fala.
 * [x] Renderizar indicador de avanço.
-* [ ] Usar profundidade acima do HUD.
+* [x] Usar profundidade acima do HUD.
 * [x] Esconder quando não houver diálogo ativo.
 * [ ] Garantir leitura confortável na TV.
 * [ ] Não usar efeito de digitação lento demais.
@@ -590,21 +604,13 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 5.3 GameHud
 
-* [ ] Criar ou revisar `src/ui/gameHud.ts`.
+* [x] Criar ou revisar `src/ui/gameHud.ts`.
 
 * [x] Renderizar celular compacto.
 
-* [ ] Renderizar ícone de gato.
+* [x] Exibir apenas o celular compacto no HUD.
 
-* [ ] Renderizar contador de gatos encontrados.
-
-* [ ] Renderizar ícone de cachorro.
-
-* [ ] Renderizar contador de cachorros encontrados.
-
-* [ ] Renderizar ícone de família.
-
-* [ ] Renderizar contador de familiares encontrados.
+* [x] Remover contadores fora do celular.
 
 * [ ] Renderizar corações de vida.
 
@@ -618,7 +624,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 * [ ] Esconder HUD no menu.
 
-* [ ] Exibir HUD durante gameplay.
+* [x] Exibir HUD durante gameplay.
 
 * [ ] Permitir esconder HUD durante tela final, se necessário.
 
@@ -626,31 +632,19 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 5.4 PhoneChecklist
 
-* [ ] Criar ou revisar `src/ui/phoneChecklist.ts`.
+* [x] Criar ou revisar `src/ui/phoneChecklist.ts`.
 * [x] Renderizar celular expandido.
-* [ ] Renderizar título `DESAPARECIDOS`.
-* [ ] Renderizar seção de cachorros.
-* [ ] Renderizar Pudim.
-* [ ] Renderizar Drogo.
-* [ ] Renderizar Pirata.
-* [ ] Renderizar seção de gatos.
-* [ ] Renderizar Zoe.
-* [ ] Renderizar Batata.
-* [ ] Renderizar Pituca.
-* [ ] Renderizar Brecko.
-* [ ] Renderizar Lelo.
-* [ ] Renderizar Pure.
-* [ ] Renderizar seção de família.
-* [ ] Renderizar Filho.
-* [ ] Renderizar Filha.
-* [ ] Renderizar Marido.
-* [ ] Renderizar seção de presente.
-* [ ] Renderizar item `???`.
-* [ ] Marcar itens encontrados com check.
+* [x] Renderizar título `ENCONTRADOS`.
+* [x] Renderizar seção de família.
+* [x] Renderizar contadores resumidos de gatos e cachorros.
+* [x] Renderizar contadores individuais de Rafa, Rô e marido.
+* [x] Renderizar indicador do presente.
+* [x] Renderizar contadores em caixas internas do celular.
 * [x] Abrir checklist com Tab/Touchpad/Select.
 * [x] Fechar checklist com Tab/Touchpad/Select.
 * [ ] Abrir automaticamente por 2 segundos após resgate.
 * [x] Bloquear movimento enquanto checklist estiver aberta.
+* [x] Animar abertura do canto até o centro.
 * [ ] Não permitir que checklist sobreponha diálogo final de forma confusa.
 * [ ] Criar variação final para `Checklist concluída`.
 
@@ -698,9 +692,9 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 * [x] Criar flag para bloquear movimento.
 * [x] Bloquear movimento durante diálogos.
 * [x] Bloquear movimento durante transições.
-* [ ] Bloquear movimento durante checklist aberta.
-* [ ] Bloquear movimento durante cutscenes.
-* [ ] Liberar movimento ao terminar cada estado.
+* [x] Bloquear movimento durante checklist aberta.
+* [x] Bloquear movimento durante cutscenes.
+* [x] Liberar movimento ao terminar cada estado.
 
 ---
 
@@ -749,7 +743,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
     * [x] `Use controle de PlayStation ou teclado`
 
-* [ ] Criar leve piscar no texto principal.
+* [x] Criar leve piscar no texto principal.
 
 * [x] Não exibir HUD.
 
@@ -815,7 +809,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 * [x] Criar limites laterais.
 * [x] Ajustar posição inicial de Danubia por cômodo.
 * [x] Garantir que Danubia não caia fora da tela.
-* [ ] Garantir que Danubia possa andar e pular em todos os cômodos.
+* [x] Garantir que Danubia possa andar e pular em todos os cômodos.
 * [ ] Não exigir plataforma difícil dentro da casa.
 
 ---
@@ -869,20 +863,20 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 8.6 Interações opcionais da sala
 
-* [ ] Criar zona invisível no sofá.
+* [x] Criar zona invisível no sofá.
 
 * [ ] Ao interagir com sofá, exibir:
 
     * [ ] `Nem sinal dos gatos no sofá. Isso já é suspeito.`
 
-* [ ] Criar zona invisível nos potes dos animais.
+* [x] Criar zona invisível nos potes dos animais.
 
 * [ ] Ao interagir com potes, exibir:
 
     * [ ] `Os potes estão cheios. Então eles não sumiram por causa de comida.`
     * [ ] `Pela primeira vez.`
 
-* [ ] Criar zona invisível no relógio da sala.
+* [x] Criar zona invisível no relógio da sala.
 
 * [ ] Ao interagir com relógio, exibir:
 
@@ -911,7 +905,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
     * [ ] `Tá. Vamos por partes.`
     * [ ] `Se isso for uma surpresa de aniversário, ela está ficando muito elaborada.`
 
-* [ ] Garantir que esse diálogo aconteça só uma vez.
+* [x] Garantir que esse diálogo aconteça só uma vez.
 
 ---
 
@@ -1024,7 +1018,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 10.5 Relógio completo
 
-* [ ] Detectar quando `collectedFragments` chegar a 3.
+* [x] Detectar quando `collectedFragments` chegar a 3.
 
 * [ ] Bloquear movimento da Danubia.
 
@@ -2098,9 +2092,9 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 22.3 Feedback visual
 
-* [ ] Fragmentos devem flutuar.
+* [x] Fragmentos devem flutuar.
 * [ ] Bolhas devem tremer ao interagir.
-* [ ] Portal deve pulsar.
+* [x] Portal deve pulsar.
 * [ ] Âncoras vulneráveis devem brilhar.
 * [ ] Checklist deve abrir automaticamente após resgates.
 * [ ] HUD deve atualizar imediatamente.
@@ -2360,18 +2354,18 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## Milestone 6 — HUD e checklist
 
-* [ ] Criar GameHud.
-* [ ] Criar PhoneChecklist.
-* [ ] Integrar com estado global.
-* [ ] Abrir checklist com Tab/Select.
+* [x] Criar GameHud.
+* [x] Criar PhoneChecklist.
+* [x] Integrar com estado global.
+* [x] Abrir checklist com Tab/Select.
 * [ ] Atualizar checklist em resgates.
-* [ ] Atualizar HUD em tempo real.
+* [x] Atualizar HUD em tempo real.
 
 ---
 
 ## Milestone 7 — Montmartre
 
-* [ ] Implementar background.
+* [x] Implementar background.
 * [ ] Implementar Pudim.
 * [ ] Implementar Zoe.
 * [ ] Implementar Drogo.

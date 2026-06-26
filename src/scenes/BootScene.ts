@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { ASSET_PATH, SCENE_KEYS } from '../game/constants';
+import { getInitialSceneTarget } from '../game/devMode';
 import { DANUBIA_ASSET_KEYS } from '../characters/Danubia';
 import { homeRoomBackgroundPaths, homeRooms } from '../data/homeRooms';
 
@@ -90,6 +91,7 @@ export class BootScene extends Phaser.Scene {
             });
         }
 
-        this.scene.start(SCENE_KEYS.menu);
+        const initialTarget = getInitialSceneTarget();
+        this.scene.start(initialTarget.sceneKey, initialTarget.data);
     }
 }

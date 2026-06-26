@@ -90,25 +90,19 @@ type GameProgress = {
 
 ### HUD compacto
 
-O HUD compacto aparece durante o gameplay.
+O HUD compacto aparece durante o gameplay somente depois da ligação misteriosa.
 
 Assets usados:
 
 | Elemento | Asset |
 |---|---|
 | Celular compacto | `public/assets/ui/ui-phone-compact.png` |
-| Ícone de gato | `public/assets/ui/ui-icon-cat.png` |
-| Ícone de cachorro | `public/assets/ui/ui-icon-dog.png` |
-| Ícone de família | `public/assets/ui/ui-icon-family.png` |
-| Coração | `public/assets/ui/ui-icon-heart.png` |
 
-Exibição recomendada:
+Exibição:
 
-```text
-🐱 0/6   🐶 0/3   👨‍👩‍👧‍👦 0/3
-```
-
-No jogo, use os ícones do asset em vez de emojis. Os números são renderizados por texto.
+- Apenas o celular compacto no canto inferior esquerdo.
+- Nenhum contador fica visível fora do celular.
+- Ao abrir, o celular primeiro expande no canto e depois se move para o centro da tela.
 
 ### Checklist expandida
 
@@ -123,31 +117,20 @@ public/assets/ui/ui-phone-expanded.png
 Conteúdo renderizado por código:
 
 ```text
-DESAPARECIDOS
+ENCONTRADOS
 
-Cachorros
-[ ] Pudim
-[ ] Drogo
-[ ] Pirata
+GATOS       0/6
+CACHORROS   0/3
 
-Gatos
-[ ] Zoe
-[ ] Batata
-[ ] Pituca
-[ ] Brecko
-[ ] Lelo
-[ ] Pure
+FAMÍLIA
+RAFA        0/1
+RÔ          0/1
+MARIDO      0/1
 
-Família
-[ ] Filho
-[ ] Filha
-[ ] Marido
-
-Presente
-[ ] ???
+PRESENTE: ???
 ```
 
-A checklist deve abrir ao apertar `Tab` ou Touchpad/Select. Ao resgatar alguém, ela aparece automaticamente por 2 segundos com o novo item marcado.
+A checklist deve abrir ao apertar `Tab` ou Touchpad/Select. Enquanto estiver aberta, a movimentação da Danubia fica bloqueada.
 
 ## 7. Sistema de diálogos
 

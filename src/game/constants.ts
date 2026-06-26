@@ -10,6 +10,20 @@ export const DANUBIA_MIN_SCALE = 1.6;
 export const DANUBIA_MAX_SCALE = 2.16;
 export const DEBUG_ROOM_GEOMETRY = false;
 export const DEV_SKIP_DIALOGUES = false;
+export const DEV_MODE = true;
+export type DevBootPreset =
+    | 'normal'
+    | 'home-start'
+    | 'home-fragments-ready'
+    | 'home-incoming-call'
+    | 'home-phone-call'
+    | 'home-portal-ready'
+    | 'montmartre-start'
+    | 'seine-start'
+    | 'garden-start'
+    | 'workshop-start'
+    | 'ending-start';
+export const DEV_BOOT_PRESET: DevBootPreset = 'normal';
 export const UI_FONT_FAMILY = 'monospace';
 
 export const ASSET_PATH = '/assets';

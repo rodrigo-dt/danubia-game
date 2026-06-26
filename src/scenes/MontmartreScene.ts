@@ -1,11 +1,23 @@
 import Phaser from 'phaser';
 import { Danubia } from '../characters/Danubia';
-import { GAME_HEIGHT, GAME_WIDTH, SCENE_KEYS } from '../game/constants';
+import { DEBUG_ROOM_GEOMETRY, GAME_HEIGHT, GAME_WIDTH, SCENE_KEYS } from '../game/constants';
+import { installDevModeHotkeys } from '../game/devMode';
+import type { RectArea } from '../game/types';
+import {
+    hasShownMontmartrePhoneHint,
+    hasUnlockedPhoneHud,
+    markMontmartrePhoneHintShown,
+    setHomePortalUnlocked,
+    setPhoneHudUnlocked,
+} from '../game/states';
+import { GameHud } from '../ui/GameHud';
+import { FragmentNotification } from '../ui/FragmentNotification';
+import { PHONE_CHECKLIST_CONFIG, PhoneChecklist } from '../ui/PhoneChecklist';
 
 const MONTMARTRE_WALK_AREA = {
-    x: 24,
-    y: 360,
-    width: 912,
+    x: 20,
+    y: 427,
+    width: 920,
     height: 168,
     baseScaleY: 418,
 } as const;
@@ -58,17 +70,30 @@ const PORTAL_ARRIVAL_CONFIG = {
     },
 } as const;
 
+const MONTMARTRE_PHONE_HINT_CONFIG = {
+    delayAfterArrivalMs: 1100,
+    visibleDurationMs: 2600,
+    message: 'Dica: pressione TAB para abrir o celular.',
+} as const;
+
 type MontmartreSceneData = {
     transitionFromPortal?: boolean;
 };
 
 export class MontmartreScene extends Phaser.Scene {
     private danubia?: Danubia;
+    private debugGraphics?: Phaser.GameObjects.Graphics;
+    private debugText?: Phaser.GameObjects.Text;
+    private gameHud?: GameHud;
+    private phoneChecklist?: PhoneChecklist;
+    private fragmentNotification?: FragmentNotification;
     private portalBackHalf?: Phaser.GameObjects.Image;
     private portalFrontHalf?: Phaser.GameObjects.Image;
     private portalPulseTween?: Phaser.Tweens.Tween;
     private portalDriftTween?: Phaser.Tweens.Tween;
     private arrivalOverlay?: Phaser.GameObjects.Container;
+    private togglePhoneKey?: Phaser.Input.Keyboard.Key;
+    private isArrivalCutsceneActive = false;
 
     constructor() {
         super(SCENE_KEYS.montmartre);
@@ -82,6 +107,24 @@ export class MontmartreScene extends Phaser.Scene {
 
         this.physics.world.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
         this.danubia = new Danubia(this, 156, 438);
+        this.gameHud = new GameHud(this);
+        this.phoneChecklist = new PhoneChecklist(this);
+        this.fragmentNotification = new FragmentNotification(this);
+        this.togglePhoneKey = this.input.keyboard?.addKey(PHONE_CHECKLIST_CONFIG.toggleKeyCode);
+        installDevModeHotkeys(this, {
+            onUnlockPhoneHud: () => {
+                setPhoneHudUnlocked(true);
+                this.fragmentNotification?.show('DEV: celular HUD desbloqueado.', {
+                    visibleDurationMs: 1800,
+                });
+            },
+            onUnlockHomePortal: () => {
+                setHomePortalUnlocked(true);
+                this.fragmentNotification?.show('DEV: portal da casa desbloqueado no estado.', {
+                    visibleDurationMs: 1800,
+                });
+            },
+        });
         this.danubia.setWalkPlaneMode(
             MONTMARTRE_WALK_AREA,
             [],
@@ -92,16 +135,37 @@ export class MontmartreScene extends Phaser.Scene {
         );
         this.danubia.setWalkPlaneSpawn({ x: 156, y: 438 }, 'right');
 
+        if (DEBUG_ROOM_GEOMETRY) {
+            this.debugGraphics = this.add.graphics();
+            this.debugText = this.add.text(12, 12, '', {
+                fontFamily: 'monospace',
+                fontSize: '14px',
+                color: '#ffffff',
+                backgroundColor: '#000000aa',
+                padding: { x: 6, y: 4 },
+            }).setScrollFactor(0).setDepth(1000);
+        }
+
         if (data?.transitionFromPortal) {
             this.startPortalArrivalCutscene();
             return;
         }
 
         this.cameras.main.fadeIn(220, 228, 244, 255);
+        this.schedulePhoneHint();
     }
 
     update(): void {
         this.danubia?.update();
+        this.gameHud?.setCompactPhoneVisible(!this.phoneChecklist?.isPhoneAnimatingOrVisible);
+        this.gameHud?.refresh();
+        this.phoneChecklist?.refresh();
+        this.updateChecklistToggle();
+        this.syncDanubiaMovementBlock();
+
+        if (DEBUG_ROOM_GEOMETRY) {
+            this.drawDebugGeometry();
+        }
     }
 
     private startPortalArrivalCutscene(): void {
@@ -109,6 +173,7 @@ export class MontmartreScene extends Phaser.Scene {
             return;
         }
 
+        this.isArrivalCutsceneActive = true;
         this.danubia.setMovementBlocked(true);
         this.danubia.setDepth(PORTAL_ARRIVAL_CONFIG.characterDepth);
         this.createPortalHalves();
@@ -169,7 +234,9 @@ export class MontmartreScene extends Phaser.Scene {
                 this.danubia?.playIdleCutscene('right');
 
                 this.time.delayedCall(PORTAL_ARRIVAL_CONFIG.inputUnlockDelayMs, () => {
+                    this.isArrivalCutsceneActive = false;
                     this.danubia?.setMovementBlocked(false);
+                    this.schedulePhoneHint();
                 });
             },
         });
@@ -361,6 +428,35 @@ export class MontmartreScene extends Phaser.Scene {
         this.arrivalOverlay = undefined;
     }
 
+    private drawDebugGeometry(): void {
+        if (!this.debugGraphics || !this.debugText || !this.danubia) {
+            return;
+        }
+
+        this.debugGraphics.clear();
+        this.fillRect(this.debugGraphics, MONTMARTRE_WALK_AREA, 0x00ff66, 0.18, 0x00ff66, 1);
+
+        const foot = this.danubia.getFootBounds();
+        this.fillRect(this.debugGraphics, foot, 0xffdd00, 0.28, 0xffdd00, 1);
+
+        const shadow = this.danubia.getShadowBounds();
+        this.fillRect(this.debugGraphics, shadow, 0x66aaff, 0.16, 0x66aaff, 1);
+
+        const logical = this.danubia.getLogicalPosition();
+        const pointer = this.input.activePointer;
+
+        this.debugText.setText(
+            [
+                'room: montmartre',
+                `mouse x:${Math.round(pointer.worldX)} y:${Math.round(pointer.worldY)}`,
+                `logical x:${Math.round(logical.x)} y:${Math.round(logical.y)}`,
+                `foot x:${Math.round(foot.x)} y:${Math.round(foot.y)} w:${Math.round(foot.width)} h:${Math.round(foot.height)}`,
+                `shadow x:${Math.round(shadow.x)} y:${Math.round(shadow.y)}`,
+                `shadow w:${Math.round(shadow.width)} h:${Math.round(shadow.height)} a:${this.danubia.getShadowAlpha().toFixed(2)}`,
+            ].join('\n'),
+        );
+    }
+
     private getPortalScaledHeight(): number {
         const textureFrame = this.textures.getFrame('effect-time-portal');
 
@@ -378,5 +474,60 @@ export class MontmartreScene extends Phaser.Scene {
 
         const foot = this.danubia.getFootBounds();
         return this.danubia.getLogicalPosition().y + (portalFootY - (foot.y + foot.height));
+    }
+
+    private updateChecklistToggle(): void {
+        if (
+            !this.danubia ||
+            !this.phoneChecklist ||
+            !this.togglePhoneKey ||
+            !hasUnlockedPhoneHud() ||
+            this.isArrivalCutsceneActive
+        ) {
+            return;
+        }
+
+        if (!Phaser.Input.Keyboard.JustDown(this.togglePhoneKey)) {
+            return;
+        }
+
+        this.phoneChecklist.toggle();
+        this.danubia.setMovementBlocked(this.phoneChecklist.blocksMovement);
+    }
+
+    private schedulePhoneHint(): void {
+        if (
+            hasShownMontmartrePhoneHint() ||
+            !hasUnlockedPhoneHud()
+        ) {
+            return;
+        }
+
+        markMontmartrePhoneHintShown();
+        this.time.delayedCall(MONTMARTRE_PHONE_HINT_CONFIG.delayAfterArrivalMs, () => {
+            this.fragmentNotification?.show(MONTMARTRE_PHONE_HINT_CONFIG.message, {
+                visibleDurationMs: MONTMARTRE_PHONE_HINT_CONFIG.visibleDurationMs,
+            });
+        });
+    }
+
+    private syncDanubiaMovementBlock(): void {
+        this.danubia?.setMovementBlocked(
+            this.isArrivalCutsceneActive || this.phoneChecklist?.blocksMovement === true,
+        );
+    }
+
+    private fillRect(
+        graphics: Phaser.GameObjects.Graphics,
+        rect: RectArea,
+        fillColor: number,
+        fillAlpha: number,
+        strokeColor: number,
+        strokeAlpha: number,
+    ): void {
+        graphics.fillStyle(fillColor, fillAlpha);
+        graphics.fillRect(rect.x, rect.y, rect.width, rect.height);
+        graphics.lineStyle(1, strokeColor, strokeAlpha);
+        graphics.strokeRect(rect.x, rect.y, rect.width, rect.height);
     }
 }

@@ -39,6 +39,22 @@ export type FragmentId =
     | 'home-fragment-daughter-bedroom'
     | 'home-fragment-office';
 
+export type PetId =
+    | 'pudim'
+    | 'zoe'
+    | 'drogo'
+    | 'pirata'
+    | 'batata'
+    | 'pituca'
+    | 'brecko'
+    | 'lelo'
+    | 'pure';
+
+export type FamilyMemberId =
+    | 'son'
+    | 'daughter'
+    | 'husband';
+
 export type RoomFragment = RectArea & {
     id: FragmentId;
     assetKey: string;

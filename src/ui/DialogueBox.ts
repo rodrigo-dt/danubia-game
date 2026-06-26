@@ -64,7 +64,7 @@ const PHONE_CALL_CONFIG = {
     bodyWidth: 468,
     bodyFontSize: '24px',
     bodyColor: '#111111',
-    leftPortraitX: 164,
+    leftPortraitX: 110,
     leftPortraitY: 334,
     leftPortraitWidth: 300,
     leftPortraitHeight: 300,
@@ -84,6 +84,9 @@ const PHONE_CALL_CONFIG = {
     continueY: 466,
     silhouetteTint: 0x000000,
     fallbackTint: 0xd6d3d1,
+    portraitBaseY:
+        PORTRAIT_CONFIG.portraitY + PORTRAIT_CONFIG.portraitHeight * 0.5,
+    portraitShadowOffsetY: 14,
 } as const;
 
 const BUBBLE_CONFIG = {
@@ -300,7 +303,7 @@ export class DialogueBox extends Phaser.GameObjects.Container {
 
         this.phoneCallLeftShadow = scene.add.ellipse(
             PHONE_CALL_CONFIG.leftPortraitX,
-            PHONE_CALL_CONFIG.leftPortraitY + 112,
+            0,
             PHONE_CALL_CONFIG.portraitShadowWidth,
             PHONE_CALL_CONFIG.portraitShadowHeight,
             PHONE_CALL_CONFIG.portraitShadowColor,
@@ -308,7 +311,7 @@ export class DialogueBox extends Phaser.GameObjects.Container {
         );
         this.phoneCallRightShadow = scene.add.ellipse(
             PHONE_CALL_CONFIG.rightPortraitX,
-            PHONE_CALL_CONFIG.rightPortraitY + 112,
+            0,
             PHONE_CALL_CONFIG.portraitShadowWidth,
             PHONE_CALL_CONFIG.portraitShadowHeight,
             PHONE_CALL_CONFIG.portraitShadowColor,
@@ -330,9 +333,26 @@ export class DialogueBox extends Phaser.GameObjects.Container {
             PHONE_CALL_CONFIG.rightPortraitY,
             'danubia-portrait-normal',
         );
+        this.phoneCallRightPortrait.setFlipX(true);
         this.phoneCallRightPortrait.setDisplaySize(
             PHONE_CALL_CONFIG.rightPortraitWidth,
             PHONE_CALL_CONFIG.rightPortraitHeight,
+        );
+        this.layoutPhoneCallPortrait(
+            this.phoneCallLeftPortrait,
+            this.phoneCallLeftShadow,
+            PHONE_CALL_CONFIG.leftPortraitX,
+            PHONE_CALL_CONFIG.leftPortraitWidth,
+            PHONE_CALL_CONFIG.leftPortraitHeight,
+            true,
+        );
+        this.layoutPhoneCallPortrait(
+            this.phoneCallRightPortrait,
+            this.phoneCallRightShadow,
+            PHONE_CALL_CONFIG.rightPortraitX,
+            PHONE_CALL_CONFIG.rightPortraitWidth,
+            PHONE_CALL_CONFIG.rightPortraitHeight,
+            false,
         );
 
         this.phoneCallNameText = scene.add.text(
@@ -425,6 +445,7 @@ export class DialogueBox extends Phaser.GameObjects.Container {
             this.bubbleGraphics,
             this.bubbleText,
         ]);
+        this.bringToTop(this.phoneCallContinuePrompt.container);
 
         this.setScrollFactor(0);
         this.setDepth(960);
@@ -578,6 +599,9 @@ export class DialogueBox extends Phaser.GameObjects.Container {
     }
 
     private updatePhoneCallPortraits(line: DialogueLine): void {
+        this.phoneCallRightPortrait.setFlipX(true);
+        this.bringToTop(this.phoneCallContinuePrompt.container);
+
         const activeSpeakerSide = line.activeSpeakerSide ?? 'left';
         const activePortraitKey =
             activeSpeakerSide === 'left' ? line.leftPortraitKey : line.rightPortraitKey;
@@ -657,8 +681,52 @@ export class DialogueBox extends Phaser.GameObjects.Container {
         active: boolean,
     ): void {
         portrait.setAlpha(active ? PHONE_CALL_CONFIG.activeAlpha : PHONE_CALL_CONFIG.inactiveAlpha);
-        portrait.setScale(active ? PHONE_CALL_CONFIG.activeScale : PHONE_CALL_CONFIG.inactiveScale);
+        const baseWidth = portrait === this.phoneCallLeftPortrait
+            ? PHONE_CALL_CONFIG.leftPortraitWidth
+            : PHONE_CALL_CONFIG.rightPortraitWidth;
+        const baseHeight = portrait === this.phoneCallLeftPortrait
+            ? PHONE_CALL_CONFIG.leftPortraitHeight
+            : PHONE_CALL_CONFIG.rightPortraitHeight;
+        const baseX = portrait === this.phoneCallLeftPortrait
+            ? PHONE_CALL_CONFIG.leftPortraitX
+            : PHONE_CALL_CONFIG.rightPortraitX;
+        const scale = active ? PHONE_CALL_CONFIG.activeScale : PHONE_CALL_CONFIG.inactiveScale;
+
+        this.layoutPhoneCallPortrait(
+            portrait,
+            shadow,
+            baseX,
+            baseWidth * scale,
+            baseHeight * scale,
+            portrait === this.phoneCallLeftPortrait,
+        );
         shadow.setAlpha(active ? PHONE_CALL_CONFIG.portraitShadowAlpha : PHONE_CALL_CONFIG.portraitShadowAlpha * 0.55);
+    }
+
+    private layoutPhoneCallPortrait(
+        portrait: Phaser.GameObjects.Image,
+        shadow: Phaser.GameObjects.Ellipse,
+        x: number,
+        width: number,
+        height: number,
+        isLeftPortrait: boolean,
+    ): void {
+        const portraitY = PHONE_CALL_CONFIG.portraitBaseY - height * 0.5;
+
+        portrait.setPosition(x, portraitY);
+        portrait.setDisplaySize(width, height);
+
+        shadow.setPosition(
+            x,
+            PHONE_CALL_CONFIG.portraitBaseY + PHONE_CALL_CONFIG.portraitShadowOffsetY,
+        );
+        shadow.setSize(
+            Math.max(
+                PHONE_CALL_CONFIG.portraitShadowWidth,
+                width * (isLeftPortrait ? 0.7 : 0.66),
+            ),
+            PHONE_CALL_CONFIG.portraitShadowHeight,
+        );
     }
 
     private redrawBubble(): void {

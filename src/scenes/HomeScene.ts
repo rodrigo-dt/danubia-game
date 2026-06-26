@@ -6,6 +6,7 @@ import {
     GAME_WIDTH,
     SCENE_KEYS,
 } from '../game/constants';
+import { installDevModeHotkeys, type HomeSceneDevData } from '../game/devMode';
 import { Danubia } from '../characters/Danubia';
 import {
     firstMonsieurCallDialogue,
@@ -27,6 +28,8 @@ import type {
 } from '../game/types';
 import {
     collectFragment,
+    collectAllHomeFragments,
+    FRAGMENT_IDS,
     getHomePortalState,
     hasStartedClockSequence,
     hasUnlockedHomePortal,
@@ -34,14 +37,17 @@ import {
     isFragmentCollected,
     markClockSequenceStarted,
     setHomePortalState,
+    setHomePortalUnlocked,
+    setPhoneHudUnlocked,
     unlockHomePortal,
     unlockPhoneHud,
 } from '../game/states';
 import { DialogueController } from '../systems/DialogueController';
 import { FragmentNotification } from '../ui/FragmentNotification';
+import { GameHud } from '../ui/GameHud';
 import { IncomingCallOverlay } from '../ui/IncomingCallOverlay';
 import { InteractionPrompt } from '../ui/InteractionPrompt';
-import { PHONE_HUD_CONFIG, PhoneHud } from '../ui/PhoneHud';
+import { PHONE_CHECKLIST_CONFIG, PhoneChecklist } from '../ui/PhoneChecklist';
 
 export class HomeScene extends Phaser.Scene {
     private static readonly DELAYED_ENTRY_DIALOGUE_MS = 950;
@@ -95,7 +101,8 @@ export class HomeScene extends Phaser.Scene {
     private interactionPrompt?: InteractionPrompt;
     private fragmentNotification?: FragmentNotification;
     private incomingCallOverlay?: IncomingCallOverlay;
-    private phoneHud?: PhoneHud;
+    private gameHud?: GameHud;
+    private phoneChecklist?: PhoneChecklist;
     private currentRoomId: HomeRoomId = 'living-room';
     private currentRoom: HomeRoomConfig = homeRooms['living-room'];
     private activeDoor?: RoomDoor;
@@ -124,7 +131,7 @@ export class HomeScene extends Phaser.Scene {
         super(SCENE_KEYS.home);
     }
 
-    create(): void {
+    create(data?: HomeSceneDevData): void {
         this.background = this.add
             .image(0, 0, this.currentRoom.backgroundKey)
             .setOrigin(0)
@@ -135,12 +142,13 @@ export class HomeScene extends Phaser.Scene {
         this.interactionPrompt = new InteractionPrompt(this);
         this.fragmentNotification = new FragmentNotification(this);
         this.incomingCallOverlay = new IncomingCallOverlay(this);
-        this.phoneHud = new PhoneHud(this);
+        this.gameHud = new GameHud(this);
+        this.phoneChecklist = new PhoneChecklist(this);
         this.interactKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.E);
-        this.togglePhoneKey = this.input.keyboard?.addKey(PHONE_HUD_CONFIG.toggleKeyCode);
+        this.togglePhoneKey = this.input.keyboard?.addKey(PHONE_CHECKLIST_CONFIG.toggleKeyCode);
         this.dialogueController = new DialogueController(this, {
             onStateChange: (active) => {
-                this.danubia?.setMovementBlocked(active || this.phoneHud?.isOpen === true);
+                this.danubia?.setMovementBlocked(active || this.phoneChecklist?.blocksMovement === true);
 
                 if (active) {
                     this.interactionPrompt?.hide();
@@ -172,10 +180,40 @@ export class HomeScene extends Phaser.Scene {
         }
 
         this.registerRoomTestHotkeys();
-        this.loadRoom(this.currentRoomId);
+        installDevModeHotkeys(this, {
+            onMarkFragments: () => {
+                this.devMarkAllFragmentsCollected();
+            },
+            onUnlockPhoneHud: () => {
+                this.devUnlockPhoneHud();
+            },
+            onUnlockHomePortal: () => {
+                this.devUnlockHomePortal();
+            },
+        });
+        this.loadRoom(data?.devStartRoomId ?? this.currentRoomId);
 
-        if (hasUnlockedPhoneHud()) {
-            this.phoneHud.unlock();
+        if (data?.devEnsurePortalState) {
+            this.storePortalSpawnForCurrentRoom();
+            this.refreshPortal();
+        }
+
+        if (data?.devTriggerIncomingCall) {
+            this.time.delayedCall(120, () => {
+                this.showIncomingCall();
+            });
+            return;
+        }
+
+        if (data?.devStartPhoneCall) {
+            this.time.delayedCall(120, () => {
+                this.startPhoneCallForTesting();
+            });
+            return;
+        }
+
+        if (data?.devSkipOpeningDialogue) {
+            return;
         }
 
         this.time.delayedCall(250, () => {
@@ -188,6 +226,10 @@ export class HomeScene extends Phaser.Scene {
         this.updateDoorInteraction();
         this.updatePhoneHudToggle();
         this.dialogueController?.update();
+        this.gameHud?.setCompactPhoneVisible(!this.phoneChecklist?.isPhoneAnimatingOrVisible);
+        this.gameHud?.refresh();
+        this.phoneChecklist?.refresh();
+        this.syncDanubiaMovementBlock();
 
         if (DEBUG_ROOM_GEOMETRY) {
             this.drawDebugGeometry();
@@ -336,7 +378,7 @@ export class HomeScene extends Phaser.Scene {
             return;
         }
 
-        if (this.phoneHud?.isOpen) {
+        if (this.phoneChecklist?.blocksMovement) {
             this.activeDoor = undefined;
             this.activeInteraction = undefined;
             this.activeFragment = undefined;
@@ -680,15 +722,7 @@ export class HomeScene extends Phaser.Scene {
         this.isIncomingCallActive = false;
         this.incomingCallOverlay?.hide();
 
-        const started = this.dialogueController?.start(firstMonsieurCallDialogue, {
-            onComplete: () => {
-                markClockSequenceStarted();
-                unlockHomePortal();
-                unlockPhoneHud();
-                this.phoneHud?.unlock();
-                this.refreshPortal();
-            },
-        }) ?? false;
+        const started = this.startMonsieurPhoneCallDialogue();
 
         if (!started) {
             this.danubia?.setMovementBlocked(false);
@@ -696,7 +730,7 @@ export class HomeScene extends Phaser.Scene {
     }
 
     private updatePhoneHudToggle(): void {
-        if (!this.phoneHud?.isUnlocked || !this.togglePhoneKey) {
+        if (!hasUnlockedPhoneHud() || !this.togglePhoneKey) {
             return;
         }
 
@@ -712,9 +746,9 @@ export class HomeScene extends Phaser.Scene {
             return;
         }
 
-        this.phoneHud.toggle();
+        this.phoneChecklist?.toggle();
         this.interactionPrompt?.hide();
-        this.danubia?.setMovementBlocked(this.phoneHud.isOpen);
+        this.danubia?.setMovementBlocked(this.phoneChecklist?.blocksMovement === true);
     }
 
     private isPortalAvailable(): boolean {
@@ -736,7 +770,7 @@ export class HomeScene extends Phaser.Scene {
         this.isPortalCutsceneActive = true;
         this.interactionPrompt?.hide();
         this.danubia.setMovementBlocked(true);
-        this.phoneHud?.close(false);
+        this.phoneChecklist?.close();
 
         const portalState = getHomePortalState();
 
@@ -975,6 +1009,75 @@ export class HomeScene extends Phaser.Scene {
         this.fragmentNotification?.show(message, {
             visibleDurationMs: 2600,
         });
+    }
+
+    private startMonsieurPhoneCallDialogue(): boolean {
+        return this.dialogueController?.start(firstMonsieurCallDialogue, {
+            onComplete: () => {
+                markClockSequenceStarted();
+                unlockHomePortal();
+                unlockPhoneHud();
+                this.refreshPortal();
+            },
+        }) ?? false;
+    }
+
+    private startPhoneCallForTesting(): void {
+        this.isIncomingCallActive = false;
+        this.incomingCallOverlay?.hide();
+
+        const started = this.startMonsieurPhoneCallDialogue();
+
+        if (!started) {
+            this.danubia?.setMovementBlocked(false);
+        }
+    }
+
+    private devMarkAllFragmentsCollected(): void {
+        collectAllHomeFragments();
+
+        for (const fragmentId of FRAGMENT_IDS) {
+            this.fragmentTweens.get(fragmentId)?.stop();
+            this.fragmentTweens.delete(fragmentId);
+            this.fragmentSprites.get(fragmentId)?.destroy();
+            this.fragmentSprites.delete(fragmentId);
+        }
+
+        this.activeFragment = undefined;
+        this.interactionPrompt?.hide();
+        this.refreshPortal();
+        this.fragmentNotification?.show('DEV: 3 fragmentos marcados como coletados.', {
+            visibleDurationMs: 1800,
+        });
+    }
+
+    private devUnlockPhoneHud(): void {
+        setPhoneHudUnlocked(true);
+        this.gameHud?.refresh();
+        this.fragmentNotification?.show('DEV: celular HUD desbloqueado.', {
+            visibleDurationMs: 1800,
+        });
+    }
+
+    private devUnlockHomePortal(): void {
+        setHomePortalUnlocked(true);
+        markClockSequenceStarted();
+        this.storePortalSpawnForCurrentRoom();
+        this.refreshPortal();
+        this.fragmentNotification?.show('DEV: portal da casa desbloqueado.', {
+            visibleDurationMs: 1800,
+        });
+    }
+
+    private syncDanubiaMovementBlock(): void {
+        const shouldBlockMovement =
+            this.isTransitioning
+            || this.isPortalCutsceneActive
+            || this.isIncomingCallActive
+            || this.dialogueController?.isActive === true
+            || this.phoneChecklist?.blocksMovement === true;
+
+        this.danubia?.setMovementBlocked(shouldBlockMovement);
     }
 
     private isInteractJustPressed(): boolean {
