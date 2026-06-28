@@ -868,6 +868,13 @@ Encontre os desaparecidos.
 
 Cada animal aparece dentro da bolha temporal. A bolha é o asset `effect-time-bubble.png`, redimensionado para envolver o animal.
 
+O surgimento dos animais deve parecer um pequeno impacto temporal:
+
+1. bolha e animal começam em escala quase zero;
+2. crescem com easing mais dramático;
+3. entram com alpha e partículas curtas;
+4. Danubia recua levemente antes de recuperar o controle.
+
 Ao se aproximar:
 
 ```text
@@ -881,6 +888,8 @@ Ao interagir:
 3. animal pula ou flutua levemente;
 4. checklist marca o item;
 5. animal some em partículas indo "para casa".
+
+Em `montmartre-b`, Zoe e Drogo devem surgir em sequência logo após a entrada na área, mantendo o jogador travado até o término da aparição.
 
 ## 12.7 Pudim
 

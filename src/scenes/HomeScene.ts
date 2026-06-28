@@ -67,6 +67,13 @@ export class HomeScene extends Phaser.Scene {
         pulseDurationMs: 920,
         pulseAlphaMin: 0.86,
         pulseAlphaMax: 1,
+        glowColor: 0x8b5cf6,
+        glowAlphaMin: 0.28,
+        glowAlphaMax: 0.5,
+        glowWidth: 236,
+        glowHeight: 308,
+        glowPulseScaleMultiplier: 1.18,
+        glowPulseDurationMs: 980,
         driftAngle: 1.4,
         driftDurationMs: 1600,
         interactionWidth: 248,
@@ -108,10 +115,12 @@ export class HomeScene extends Phaser.Scene {
     private activeDoor?: RoomDoor;
     private activeInteraction?: RoomInteraction;
     private activeFragment?: RoomFragment;
+    private portalGlow?: Phaser.GameObjects.Image;
     private portalBackSprite?: Phaser.GameObjects.Image;
     private portalFrontSprite?: Phaser.GameObjects.Image;
     private portalPulseTween?: Phaser.Tweens.Tween;
     private portalDriftTween?: Phaser.Tweens.Tween;
+    private portalGlowTween?: Phaser.Tweens.Tween;
     private portalInteractionZone?: RectArea;
     private portalTransitionOverlay?: Phaser.GameObjects.Container;
     private isTransitioning = false;
@@ -600,6 +609,10 @@ export class HomeScene extends Phaser.Scene {
         this.portalPulseTween = undefined;
         this.portalDriftTween?.stop();
         this.portalDriftTween = undefined;
+        this.portalGlowTween?.stop();
+        this.portalGlowTween = undefined;
+        this.portalGlow?.destroy();
+        this.portalGlow = undefined;
         this.portalBackSprite?.destroy();
         this.portalBackSprite = undefined;
         this.portalFrontSprite?.destroy();
@@ -624,6 +637,15 @@ export class HomeScene extends Phaser.Scene {
 
         const halfFrameWidth = Math.floor(textureFrame.width * 0.5);
         const remainingFrameWidth = textureFrame.width - halfFrameWidth;
+        const glow = this.add.image(
+            portalState.x,
+            portalState.y,
+            'effect-time-portal',
+        ).setDepth(HomeScene.PORTAL_CONFIG.backDepth - 0.1);
+        glow.setScale(HomeScene.PORTAL_CONFIG.scale * 1.14);
+        glow.setTint(HomeScene.PORTAL_CONFIG.glowColor);
+        glow.setAlpha(HomeScene.PORTAL_CONFIG.glowAlphaMin);
+        glow.setBlendMode(Phaser.BlendModes.ADD);
 
         const leftSprite = this.add
             .image(portalState.x, portalState.y, 'effect-time-portal')
@@ -641,6 +663,7 @@ export class HomeScene extends Phaser.Scene {
         leftSprite.setDepth(leftIsBehind ? HomeScene.PORTAL_CONFIG.backDepth : HomeScene.PORTAL_CONFIG.frontDepth);
         rightSprite.setDepth(leftIsBehind ? HomeScene.PORTAL_CONFIG.frontDepth : HomeScene.PORTAL_CONFIG.backDepth);
 
+        this.portalGlow = glow;
         this.portalBackSprite = leftIsBehind ? leftSprite : rightSprite;
         this.portalFrontSprite = leftIsBehind ? rightSprite : leftSprite;
         this.portalInteractionZone = {
@@ -672,6 +695,20 @@ export class HomeScene extends Phaser.Scene {
                 to: HomeScene.PORTAL_CONFIG.driftAngle,
             },
             duration: HomeScene.PORTAL_CONFIG.driftDurationMs,
+            ease: 'Sine.InOut',
+            yoyo: true,
+            repeat: -1,
+        });
+
+        this.portalGlowTween = this.tweens.add({
+            targets: glow,
+            alpha: {
+                from: HomeScene.PORTAL_CONFIG.glowAlphaMin,
+                to: HomeScene.PORTAL_CONFIG.glowAlphaMax,
+            },
+            scaleX: HomeScene.PORTAL_CONFIG.scale * 1.2,
+            scaleY: HomeScene.PORTAL_CONFIG.scale * 1.2,
+            duration: HomeScene.PORTAL_CONFIG.glowPulseDurationMs,
             ease: 'Sine.InOut',
             yoyo: true,
             repeat: -1,

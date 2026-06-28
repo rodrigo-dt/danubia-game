@@ -1190,15 +1190,15 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 * [x] Criar breve efeito de chegada do portal.
 
-* [ ] Exibir diálogo:
+* [x] Exibir diálogo:
 
-    * [ ] `Paris...`
-    * [ ] `Eu sempre quis vir para cá, mas imaginava uma viagem com menos sequestros.`
+    * [x] `Paris...`
+    * [x] `Eu sempre quis vir para cá, mas imaginava uma viagem com menos sequestros.`
 
 * [ ] Exibir mensagem do celular:
 
-    * [ ] `Checklist atualizada.`
-    * [ ] `Encontre os desaparecidos.`
+    * [x] `Checklist atualizada.`
+    * [x] `Encontre os desaparecidos.`
 
 * [x] Liberar movimento após a cutscene de chegada.
 
@@ -1206,109 +1206,109 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 12.2 Montmartre — Pudim
 
-* [ ] Posicionar Pudim perto de uma plataforma baixa.
+* [x] Posicionar Pudim perto de uma plataforma baixa.
 
-* [ ] Criar bolha temporal envolvendo Pudim.
+* [x] Criar bolha temporal envolvendo Pudim.
 
 * [ ] Criar pequena plataforma ou ponto que ensine pulo simples.
 
-* [ ] Ao se aproximar, mostrar:
+* [x] Ao se aproximar, mostrar:
 
-    * [ ] `Pressione Quadrado / E para libertar.`
+    * [x] `Pressione Quadrado / E para libertar.`
 
 * [ ] Ao interagir:
 
-    * [ ] tremer bolha
-    * [ ] sumir bolha
-    * [ ] animar Pudim
-    * [ ] marcar `pudim` como encontrado
-    * [ ] atualizar cachorros para `1/3`
-    * [ ] abrir checklist automática
+    * [x] tremer bolha
+    * [x] sumir bolha
+    * [x] animar Pudim
+    * [x] marcar `pudim` como encontrado
+    * [x] atualizar cachorros para `1/3`
+    * [x] abrir checklist automática
     * [ ] exibir diálogo:
 
-        * [ ] `Pudim!`
-        * [ ] `Um encontrado. Faltam... muitos.`
+        * [x] `Pudim!`
+        * [x] `Um encontrado. Faltam... muitos.`
 
-* [ ] Remover Pudim da tela com fade/partículas.
+* [x] Remover Pudim da tela com fade/partículas.
 
 ---
 
 ## 12.3 Montmartre — Zoe
 
-* [ ] Posicionar Zoe sobre ou perto da área do café.
+* [x] Posicionar Zoe sobre ou perto da área do café.
 
-* [ ] Criar bolha temporal envolvendo Zoe.
+* [x] Criar bolha temporal envolvendo Zoe.
 
-* [ ] Ao se aproximar, mostrar prompt de libertar.
+* [x] Ao se aproximar, mostrar prompt de libertar.
 
-* [ ] Ao interagir:
+* [x] Ao interagir:
 
-    * [ ] tremer bolha
-    * [ ] sumir bolha
-    * [ ] marcar `zoe` como encontrada
-    * [ ] atualizar gatos para `1/6`
-    * [ ] abrir checklist automática
-    * [ ] exibir diálogo:
+    * [x] tremer bolha
+    * [x] sumir bolha
+    * [x] marcar `zoe` como encontrada
+    * [x] atualizar gatos para `1/6`
+    * [x] abrir checklist automática
+    * [x] exibir diálogo:
 
-        * [ ] `Zoe?`
-        * [ ] `Você foi sequestrada e decidiu sentar em um café?`
-        * [ ] `Zoe: Miau.`
-        * [ ] `Paris mexeu com você.`
+        * [x] `Zoe?`
+        * [x] `Você foi sequestrada e decidiu sentar em um café?`
+        * [x] `Zoe: Miau.`
+        * [x] `Paris mexeu com você.`
 
-* [ ] Remover Zoe da tela com fade/partículas.
+* [x] Remover Zoe da tela com fade/partículas.
 
 ---
 
 ## 12.4 Montmartre — Drogo
 
-* [ ] Posicionar Drogo próximo a uma barreira temporal.
+* [x] Posicionar Drogo próximo a uma barreira temporal.
 
-* [ ] Criar bolha temporal ou área congelada de Drogo.
+* [x] Criar bolha temporal ou área congelada de Drogo.
 
-* [ ] Criar barreira temporal usando `effect-time-barrier`.
+* [x] Criar barreira temporal usando `effect-time-barrier`.
 
-* [ ] Criar ponto de interação para desligar barreira.
+* [x] Criar ponto de interação para desligar barreira.
 
-* [ ] Ao se aproximar da barreira, exibir diálogo:
+* [x] Ao se aproximar da barreira, exibir diálogo:
 
-    * [ ] `Drogo, espera! Eu vou tirar você daí.`
+    * [x] `Drogo, espera! Eu vou tirar você daí.`
 
-* [ ] Ao interagir no ponto correto:
+* [x] Ao interagir no ponto correto:
 
-    * [ ] desligar barreira
-    * [ ] liberar acesso a Drogo
+    * [x] desligar barreira
+    * [x] liberar acesso a Drogo
 
-* [ ] Ao interagir com Drogo:
+* [x] Ao interagir com Drogo:
 
-    * [ ] sumir bolha
-    * [ ] marcar `drogo` como encontrado
-    * [ ] atualizar cachorros para `2/3`
-    * [ ] abrir checklist automática
-    * [ ] exibir diálogo:
+    * [x] sumir bolha
+    * [x] marcar `drogo` como encontrado
+    * [x] atualizar cachorros para `2/3`
+    * [x] abrir checklist automática
+    * [x] exibir diálogo:
 
-        * [ ] `Muito bem. Agora volte para casa e não enfrente nenhum relojoeiro francês sem mim.`
+        * [x] `Muito bem. Agora volte para casa e não enfrente nenhum relojoeiro francês sem mim.`
 
-* [ ] Remover Drogo da tela com fade/partículas.
+* [x] Remover Drogo da tela com fade/partículas.
 
 ---
 
 ## 12.5 Montmartre — Fechamento
 
-* [ ] Detectar quando Pudim, Zoe e Drogo forem resgatados.
+* [x] Detectar quando Pudim, Zoe e Drogo forem resgatados.
 
-* [ ] Tocar ligação/mensagem de Monsieur:
+* [x] Tocar ligação/mensagem de Monsieur:
 
-    * [ ] `Eles deveriam ter permanecido perfeitamente imóveis.`
-    * [ ] `Você tentou manter nove animais imóveis?`
-    * [ ] `Foi um erro de planejamento.`
+    * [x] Usar tela de ligação recebida antes do diálogo.
+    * [x] Manter Monsieur em silhueta.
+    * [x] Liberar o portal para o Sena apenas após a ligação.
 
-* [ ] Liberar saída à direita.
+* [x] Substituir saída automática à direita por portal temporal interagível.
 
-* [ ] Ao chegar à saída:
+* [ ] Ao atravessar o portal:
 
     * [ ] salvar checkpoint `paris-seine`
-    * [ ] fazer fade
-    * [ ] iniciar `SeineScene`
+    * [x] fazer fade/efeito temporal
+    * [x] iniciar `SeineScene`
 
 ---
 
@@ -2358,7 +2358,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 * [x] Criar PhoneChecklist.
 * [x] Integrar com estado global.
 * [x] Abrir checklist com Tab/Select.
-* [ ] Atualizar checklist em resgates.
+* [x] Atualizar checklist em resgates.
 * [x] Atualizar HUD em tempo real.
 
 ---
@@ -2366,10 +2366,10 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 ## Milestone 7 — Montmartre
 
 * [x] Implementar background.
-* [ ] Implementar Pudim.
-* [ ] Implementar Zoe.
-* [ ] Implementar Drogo.
-* [ ] Implementar barreira temporal.
+* [x] Implementar Pudim.
+* [x] Implementar Zoe.
+* [x] Implementar Drogo.
+* [x] Implementar barreira temporal.
 * [ ] Implementar mensagem de Monsieur.
 * [ ] Ir para Sena.
 

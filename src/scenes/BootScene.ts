@@ -10,7 +10,8 @@ const ASSET_KEYS = {
     clockFragment02: 'clock-fragment-02',
     clockFragment03: 'clock-fragment-03',
     homePortal: 'effect-time-portal',
-    bgParisMontmartre: 'bg-paris-montmartre',
+    bgParisMontmartreA: 'bg-paris-montmartre-a',
+    bgParisMontmartreB: 'bg-paris-montmartre-b',
 } as const;
 
 export class BootScene extends Phaser.Scene {
@@ -24,13 +25,20 @@ export class BootScene extends Phaser.Scene {
         this.load.image(ASSET_KEYS.clockFragment02, `${ASSET_PATH}/effects/clock-fragment-02.png`);
         this.load.image(ASSET_KEYS.clockFragment03, `${ASSET_PATH}/effects/clock-fragment-03.png`);
         this.load.image(ASSET_KEYS.homePortal, `${ASSET_PATH}/effects/effect-time-portal.png`);
-        this.load.image(ASSET_KEYS.bgParisMontmartre, `${ASSET_PATH}/backgrounds/bg-paris-montmartre.png`);
+        this.load.image('effect-time-bubble', `${ASSET_PATH}/effects/effect-time-bubble.png`);
+        this.load.image('effect-time-barrier', `${ASSET_PATH}/effects/effect-time-barrier.png`);
+        this.load.image(ASSET_KEYS.bgParisMontmartreA, `${ASSET_PATH}/backgrounds/bg-paris-montmartre-a.png`);
+        this.load.image(ASSET_KEYS.bgParisMontmartreB, `${ASSET_PATH}/backgrounds/bg-paris-montmartre-b.png`);
         this.load.image('ui-dialogue-frame', `${ASSET_PATH}/ui/ui-dialogue-frame.png`);
         this.load.image('ui-phone-compact', `${ASSET_PATH}/ui/ui-phone-compact.png`);
         this.load.image('ui-phone-expanded', `${ASSET_PATH}/ui/ui-phone-expanded.png`);
         this.load.image(
             'danubia-portrait-normal',
             `${ASSET_PATH}/characters/danubia/portrait/danubia-portrait-normal.png`,
+        );
+        this.load.image(
+            'danubia-portrait-happy',
+            `${ASSET_PATH}/characters/danubia/portrait/danubia-portrait-happy.png`,
         );
         this.load.image(
             'danubia-portrait-angry',
@@ -44,6 +52,13 @@ export class BootScene extends Phaser.Scene {
             'monsieur-portrait-normal',
             `${ASSET_PATH}/characters/monsieur-minuit/portraits/monsieur-portrait-normal.png`,
         );
+        this.load.image(
+            'monsieur-portrait-angry',
+            `${ASSET_PATH}/characters/monsieur-minuit/portraits/monsieur-portrait-angry.png`,
+        );
+        this.load.image('pet-pudim', `${ASSET_PATH}/characters/pets/pudim.png`);
+        this.load.image('pet-zoe', `${ASSET_PATH}/characters/pets/zoe.png`);
+        this.load.image('pet-drogo', `${ASSET_PATH}/characters/pets/drogo.png`);
 
         for (const roomId of Object.keys(homeRooms) as Array<keyof typeof homeRooms>) {
             const room = homeRooms[roomId];

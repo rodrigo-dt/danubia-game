@@ -295,3 +295,187 @@ export const firstMonsieurCallDialogue: DialogueSequence = [
         lockMovement: true,
     },
 ];
+
+export const montmartreArrivalDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Paris...',
+        portraitKey: 'danubia-portrait-happy',
+        lockMovement: true,
+    },
+    {
+        mode: 'bubble',
+        text: 'Eu sempre quis vir para cá, mas imaginava uma viagem com menos sequestros.',
+        lockMovement: true,
+    },
+];
+
+export const montmartrePudimRescueDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Pudim!',
+        portraitKey: 'danubia-portrait-happy',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Um encontrado. Faltam... muitos.',
+        portraitKey: 'danubia-portrait-normal',
+        lockMovement: true,
+    },
+];
+
+export const montmartreZoeRescueDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Zoe?',
+        portraitKey: 'danubia-portrait-sad',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Você foi sequestrada e decidiu sentar em um café?',
+        portraitKey: 'danubia-portrait-normal',
+        lockMovement: true,
+    },
+    {
+        mode: 'bubble',
+        text: 'Miau.',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Paris mexeu com você.',
+        portraitKey: 'danubia-portrait-happy',
+        lockMovement: true,
+    },
+];
+
+export const montmartreDrogoBarrierDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Drogo, espera! Eu vou tirar você daí.',
+        portraitKey: 'danubia-portrait-sad',
+        lockMovement: true,
+    },
+];
+
+export const montmartreDrogoRescueDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Muito bem. Agora volte para casa e não enfrente nenhum relojoeiro francês sem mim.',
+        portraitKey: 'danubia-portrait-normal',
+        lockMovement: true,
+    },
+];
+
+export const montmartreMonsieurFollowUpDialogue: DialogueSequence = [
+    {
+        mode: 'phoneCall',
+        speaker: 'Monsieur Minuit',
+        text: 'Interessante.',
+        leftPortraitKey: 'danubia-portrait-normal',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'right',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Danúbia',
+        text: 'Isso é elogio ou ameaça?',
+        leftPortraitKey: 'danubia-portrait-angry',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'left',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Monsieur Minuit',
+        text: 'Digamos que você está se saindo melhor do que o previsto.',
+        leftPortraitKey: 'danubia-portrait-angry',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'right',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Danúbia',
+        text: 'Você previu mal. Eu tenho experiência com caos doméstico.',
+        leftPortraitKey: 'danubia-portrait-happy',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'left',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Monsieur Minuit',
+        text: 'Mesmo assim, não se anime tanto. Você recuperou apenas uma pequena parte do que foi congelado.',
+        leftPortraitKey: 'danubia-portrait-happy',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'right',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Danúbia',
+        text: 'Então fala logo onde está o resto.',
+        leftPortraitKey: 'danubia-portrait-angry',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'left',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Monsieur Minuit',
+        text: 'Seu próximo destino é o Sena.',
+        leftPortraitKey: 'danubia-portrait-angry',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'right',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Danúbia',
+        text: 'Claro. Porque uma perseguição temporal em Paris precisava de passeio turístico.',
+        leftPortraitKey: 'danubia-portrait-sad',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'left',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Monsieur Minuit',
+        text: 'Bon voyage, Madame Danubia.',
+        leftPortraitKey: 'danubia-portrait-sad',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'right',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Danúbia',
+        text: 'Eu odeio quando ele fala francês antes de desligar.',
+        leftPortraitKey: 'danubia-portrait-angry',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'left',
+        lockMovement: true,
+    },
+];

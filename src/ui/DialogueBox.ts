@@ -16,60 +16,59 @@ const PORTRAIT_CONFIG = {
     overlayColor: 0x040404,
     overlayAlpha: 0.58,
     panelX: 150,
-    panelY: 342,
+    panelY: 334,
     panelWidth: 760,
-    panelHeight: 168,
+    panelHeight: 184,
     panelColor: 0xf8f5ef,
     panelStrokeColor: 0xe5ddd0,
     panelStrokeWidth: 2,
     panelRadius: 24,
-    nameX: 290,
-    nameY: 364,
-    nameFontSize: '19px',
+    nameX: 318,
+    nameY: 356,
+    nameFontSize: '18px',
     nameColor: '#111111',
-    bodyX: 290,
-    bodyY: 402,
-    bodyWidth: 500,
-    bodyFontSize: '24px',
+    bodyX: 318,
+    bodyY: 392,
+    bodyWidth: 430,
+    bodyFontSize: '22px',
     bodyColor: '#111111',
-    portraitX: 162,
-    portraitY: 361,
+    portraitX: 196,
+    portraitBaseY: 520,
     portraitWidth: 300,
     portraitHeight: 300,
     portraitShadowColor: 0x000000,
     portraitShadowAlpha: 0.18,
-    portraitShadowOffsetX: 12,
     portraitShadowOffsetY: 14,
     portraitFallbackColor: 0xd6d3d1,
     continueX: 806,
-    continueY: 468,
+    continueY: 476,
 } as const;
 
 const PHONE_CALL_CONFIG = {
     overlayColor: 0x030712,
     overlayAlpha: 0.64,
     panelX: 170,
-    panelY: 336,
-    panelWidth: 620,
-    panelHeight: 174,
+    panelY: 328,
+    panelWidth: 632,
+    panelHeight: 188,
     panelColor: 0xf8f5ef,
     panelStrokeColor: 0xe5ddd0,
     panelStrokeWidth: 2,
     nameX: 218,
-    nameY: 360,
-    nameFontSize: '19px',
+    nameY: 352,
+    nameFontSize: '18px',
     nameColor: '#111111',
     bodyX: 218,
-    bodyY: 400,
-    bodyWidth: 468,
-    bodyFontSize: '24px',
+    bodyY: 390,
+    bodyWidth: 414,
+    bodyFontSize: '22px',
     bodyColor: '#111111',
-    leftPortraitX: 110,
-    leftPortraitY: 334,
+    leftPortraitX: 116,
+    leftPortraitY: 460,
     leftPortraitWidth: 300,
     leftPortraitHeight: 300,
-    rightPortraitX: 796,
-    rightPortraitY: 334,
+    rightPortraitX: 794,
+    rightPortraitY: 460,
     rightPortraitWidth: 300,
     rightPortraitHeight: 300,
     portraitShadowColor: 0x000000,
@@ -81,20 +80,20 @@ const PHONE_CALL_CONFIG = {
     activeScale: 1,
     inactiveScale: 0.92,
     continueX: 698,
-    continueY: 466,
+    continueY: 474,
     silhouetteTint: 0x000000,
     fallbackTint: 0xd6d3d1,
     portraitBaseY:
-        PORTRAIT_CONFIG.portraitY + PORTRAIT_CONFIG.portraitHeight * 0.5,
+        PORTRAIT_CONFIG.portraitBaseY,
     portraitShadowOffsetY: 14,
 } as const;
 
 const BUBBLE_CONFIG = {
-    maxWidth: 360,
+    maxWidth: 332,
     minWidth: 190,
     minHeight: 62,
-    paddingX: 18,
-    paddingY: 14,
+    paddingX: 20,
+    paddingY: 16,
     offsetY: 118,
     clampPadding: 16,
     backgroundColor: 0xfafaf9,
@@ -105,7 +104,7 @@ const BUBBLE_CONFIG = {
     radius: 16,
     tailWidth: 24,
     tailHeight: 16,
-    textFontSize: '17px',
+    textFontSize: '18px',
     textColor: '#111111',
     textVerticalOffset: -2,
 } as const;
@@ -206,8 +205,8 @@ export class DialogueBox extends Phaser.GameObjects.Container {
         this.portraitPanel.setOrigin(0.5);
 
         this.portraitShadow = scene.add.ellipse(
-            PORTRAIT_CONFIG.portraitX + PORTRAIT_CONFIG.portraitShadowOffsetX,
-            PORTRAIT_CONFIG.portraitY + PORTRAIT_CONFIG.portraitShadowOffsetY,
+            PORTRAIT_CONFIG.portraitX,
+            PORTRAIT_CONFIG.portraitBaseY + PORTRAIT_CONFIG.portraitShadowOffsetY,
             PORTRAIT_CONFIG.portraitWidth * 0.7,
             PORTRAIT_CONFIG.portraitHeight * 0.18,
             PORTRAIT_CONFIG.portraitShadowColor,
@@ -216,13 +215,14 @@ export class DialogueBox extends Phaser.GameObjects.Container {
 
         this.portraitImage = scene.add.image(
             PORTRAIT_CONFIG.portraitX,
-            PORTRAIT_CONFIG.portraitY,
+            PORTRAIT_CONFIG.portraitBaseY - PORTRAIT_CONFIG.portraitHeight * 0.5,
             'danubia-portrait-normal',
         );
         this.portraitImage.setDisplaySize(
             PORTRAIT_CONFIG.portraitWidth,
             PORTRAIT_CONFIG.portraitHeight,
         );
+        this.layoutPortrait();
 
         this.portraitNameText = scene.add.text(
             PORTRAIT_CONFIG.nameX,
@@ -581,6 +581,8 @@ export class DialogueBox extends Phaser.GameObjects.Container {
     }
 
     private updatePortrait(portraitKey?: string): void {
+        this.layoutPortrait();
+
         if (portraitKey && this.scene.textures.exists(portraitKey)) {
             this.portraitImage.setVisible(true);
             this.portraitImage.setTexture(portraitKey);
@@ -596,6 +598,21 @@ export class DialogueBox extends Phaser.GameObjects.Container {
         }
 
         this.portraitImage.setVisible(false);
+    }
+
+    private layoutPortrait(): void {
+        this.portraitImage.setPosition(
+            PORTRAIT_CONFIG.portraitX,
+            PORTRAIT_CONFIG.portraitBaseY - PORTRAIT_CONFIG.portraitHeight * 0.5,
+        );
+        this.portraitImage.setDisplaySize(
+            PORTRAIT_CONFIG.portraitWidth,
+            PORTRAIT_CONFIG.portraitHeight,
+        );
+        this.portraitShadow.setPosition(
+            PORTRAIT_CONFIG.portraitX,
+            PORTRAIT_CONFIG.portraitBaseY + PORTRAIT_CONFIG.portraitShadowOffsetY,
+        );
     }
 
     private updatePhoneCallPortraits(line: DialogueLine): void {

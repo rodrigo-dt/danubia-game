@@ -200,6 +200,7 @@ export class PhoneChecklist extends Phaser.GameObjects.Container {
     private readonly phoneImage: Phaser.GameObjects.Image;
     private readonly contentContainer: Phaser.GameObjects.Container;
     private readonly counterRows: CounterRowVisual[] = [];
+    private temporaryCloseTimer?: Phaser.Time.TimerEvent;
     private open = false;
     private transitionActive = false;
 
@@ -264,6 +265,36 @@ export class PhoneChecklist extends Phaser.GameObjects.Container {
         this.openOverlay();
     }
 
+    openTemporarily(visibleDurationMs: number): void {
+        if (!hasUnlockedPhoneHud()) {
+            return;
+        }
+
+        this.temporaryCloseTimer?.remove(false);
+        this.temporaryCloseTimer = undefined;
+
+        if (!this.open && !this.transitionActive) {
+            this.openOverlay();
+        }
+
+        const transitionInMs = this.open
+            ? 0
+            : PHONE_CHECKLIST_CONFIG.animation.cornerExpandDurationMs
+                + PHONE_CHECKLIST_CONFIG.animation.moveToCenterDurationMs
+                + PHONE_CHECKLIST_CONFIG.animation.fadeInContentDurationMs;
+
+        this.temporaryCloseTimer = this.scene.time.delayedCall(
+            transitionInMs + visibleDurationMs,
+            () => {
+                this.temporaryCloseTimer = undefined;
+
+                if (this.open) {
+                    this.close();
+                }
+            },
+        );
+    }
+
     refresh(): void {
         if (!hasUnlockedPhoneHud()) {
             if (this.blocksMovement) {
@@ -283,6 +314,8 @@ export class PhoneChecklist extends Phaser.GameObjects.Container {
             return;
         }
 
+        this.temporaryCloseTimer?.remove(false);
+        this.temporaryCloseTimer = undefined;
         this.transitionActive = true;
         this.open = false;
 
@@ -323,6 +356,8 @@ export class PhoneChecklist extends Phaser.GameObjects.Container {
     }
 
     forceClose(): void {
+        this.temporaryCloseTimer?.remove(false);
+        this.temporaryCloseTimer = undefined;
         this.scene.tweens.killTweensOf(this.overlay);
         this.scene.tweens.killTweensOf(this.phoneContainer);
         this.scene.tweens.killTweensOf(this.contentContainer);
