@@ -53,11 +53,23 @@ const DEFAULT_SHADOW_CONFIG: Required<CharacterShadowConfig> = {
 type DanubiaMovementMode =
     | { type: 'platform' }
     | {
-      type: 'walk-plane';
+          type: 'walk-plane';
           walkArea: WalkArea;
           blockers: RoomBlocker[];
           depthScale: Required<DepthScaleConfig>;
       };
+
+type WalkPlaneScaleReference = 'logical-y' | 'foot-area';
+
+type WalkPlaneConfigOptions = {
+    horizontalSpeedMultiplier?: number;
+    verticalSpeedMultiplier?: number;
+    minScale?: number;
+    maxScale?: number;
+    smoothScale?: boolean;
+    smoothSpeed?: boolean;
+    scaleReference?: WalkPlaneScaleReference;
+};
 
 export class Danubia extends Phaser.Physics.Arcade.Sprite {
     private readonly cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -78,6 +90,8 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
     private jumpOffsetY = 0;
     private isJumping = false;
     private jumpElapsedMs = 0;
+    private isCutsceneControlled = false;
+    private readonly baseFrameHeight: number;
     private currentScale = DANUBIA_BASE_SCALE;
     private shadowConfig: Required<CharacterShadowConfig> = DEFAULT_SHADOW_CONFIG;
     private visualAlpha = 1;
@@ -90,9 +104,22 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
         nearScale: DANUBIA_MAX_SCALE,
         intensity: 1,
     };
+    private walkPlaneHorizontalSpeedMultiplier = 1;
+    private walkPlaneVerticalSpeedMultiplier = 1;
+    private targetWalkPlaneHorizontalSpeedMultiplier = 1;
+    private targetWalkPlaneVerticalSpeedMultiplier = 1;
+    private walkPlaneMinScale = DANUBIA_MIN_SCALE;
+    private walkPlaneMaxScale = DANUBIA_MAX_SCALE;
+    private walkPlaneScaleSmoothingEnabled = false;
+    private walkPlaneSpeedSmoothingEnabled = false;
+    private walkPlaneScaleReference: WalkPlaneScaleReference = 'logical-y';
+    private currentHorizontalInput: -1 | 0 | 1 = 0;
+    private currentVerticalInput: -1 | 0 | 1 = 0;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, DANUBIA_ASSET_KEYS.idle);
+
+        this.baseFrameHeight = this.height;
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -141,7 +168,11 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
         if (this.movementBlocked) {
             body.setVelocity(0, 0);
             this.updateJumpState(delta);
-            this.applyVisualState(false);
+
+            if (!this.isCutsceneControlled) {
+                this.applyVisualState(false);
+            }
+
             this.updateShadowVisual();
             return;
         }
@@ -161,14 +192,22 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
     }
 
     setMovementBlocked(blocked: boolean): void {
+        if (this.movementBlocked === blocked) {
+            return;
+        }
+
         this.movementBlocked = blocked;
 
         if (blocked) {
             const body = this.body;
+
             if (body instanceof Phaser.Physics.Arcade.Body) {
                 body.setVelocity(0, 0);
             }
-            this.applyIdleState();
+
+            if (!this.isCutsceneControlled) {
+                this.applyIdleState();
+            }
         }
     }
 
@@ -197,6 +236,7 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
         blockers: RoomBlocker[],
         depthScale: DepthScaleConfig,
         shadowConfig?: CharacterShadowConfig,
+        options?: WalkPlaneConfigOptions,
     ): void {
         const body = this.body;
         const resolvedDepthScale = this.resolveDepthScaleConfig(walkArea, depthScale);
@@ -213,6 +253,18 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
             ...DEFAULT_SHADOW_CONFIG,
             ...shadowConfig,
         };
+        this.walkPlaneMinScale = options?.minScale ?? DANUBIA_MIN_SCALE;
+        this.walkPlaneMaxScale = options?.maxScale ?? DANUBIA_MAX_SCALE;
+        this.walkPlaneScaleSmoothingEnabled = options?.smoothScale ?? false;
+        this.walkPlaneSpeedSmoothingEnabled = options?.smoothSpeed ?? false;
+        this.walkPlaneScaleReference = options?.scaleReference ?? 'logical-y';
+        this.targetWalkPlaneHorizontalSpeedMultiplier = options?.horizontalSpeedMultiplier ?? 1;
+        this.targetWalkPlaneVerticalSpeedMultiplier = options?.verticalSpeedMultiplier ?? 1;
+
+        if (!this.walkPlaneSpeedSmoothingEnabled) {
+            this.walkPlaneHorizontalSpeedMultiplier = this.targetWalkPlaneHorizontalSpeedMultiplier;
+            this.walkPlaneVerticalSpeedMultiplier = this.targetWalkPlaneVerticalSpeedMultiplier;
+        }
 
         this.logicalX = this.x;
         this.logicalY = this.y;
@@ -232,6 +284,24 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
         this.updateShadowVisual();
     }
 
+    getFootMetrics(scale = this.currentScale): {
+        width: number;
+        height: number;
+        offsetFromBottom: number;
+    } {
+        const scaleRatio = Phaser.Math.Clamp(
+            scale / DANUBIA_BASE_SCALE,
+            0.32,
+            1.15,
+        );
+
+        return {
+            width: FOOT_WIDTH * scaleRatio,
+            height: FOOT_HEIGHT * scaleRatio,
+            offsetFromBottom: FOOT_OFFSET_FROM_BOTTOM * scaleRatio,
+        };
+    }
+
     getFootBounds(): RectArea {
         return this.createFootRect(this.logicalX, this.logicalY);
     }
@@ -241,6 +311,61 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
             x: this.logicalX,
             y: this.logicalY,
         };
+    }
+
+    getMovementIntent(): {
+        horizontal: -1 | 0 | 1;
+        vertical: -1 | 0 | 1;
+    } {
+        return {
+            horizontal: this.currentHorizontalInput,
+            vertical: this.currentVerticalInput,
+        };
+    }
+
+    getCurrentScale(): number {
+        return this.currentScale;
+    }
+
+    getBaseDisplayHeight(): number {
+        return this.baseFrameHeight;
+    }
+
+    setCutsceneControlled(controlled: boolean): void {
+        this.isCutsceneControlled = controlled;
+    }
+
+    setWalkPlaneCutscenePositionUnclamped(position: Point2D, forcedScale?: number): void {
+        this.logicalX = position.x;
+        this.logicalY = position.y;
+        this.jumpOffsetY = 0;
+        this.isJumping = false;
+        this.jumpElapsedMs = 0;
+
+        if (this.movementMode.type === 'walk-plane') {
+            if (typeof forcedScale === 'number') {
+                this.currentScale = Phaser.Math.Clamp(
+                    forcedScale,
+                    this.walkPlaneMinScale,
+                    this.walkPlaneMaxScale,
+                );
+                this.setScale(this.currentScale);
+            } else {
+                this.applyScaleForDepth();
+            }
+
+            this.applyRenderedPosition();
+            this.updateShadowVisual();
+
+            const body = this.body;
+            if (body instanceof Phaser.Physics.Arcade.Body) {
+                body.updateFromGameObject();
+            }
+
+            return;
+        }
+
+        this.setPosition(position.x, position.y);
     }
 
     getWalkPlaneFloorY(): number {
@@ -285,8 +410,19 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
         this.setPosition(position.x, position.y);
     }
 
-    playWalkCutscene(direction: 'left' | 'right'): void {
+    playWalkCutscene(
+        direction: 'left' | 'right',
+        options?: { stableFrame?: boolean },
+    ): void {
         this.setFacingDirection(direction);
+
+        if (options?.stableFrame) {
+            this.anims.stop();
+            this.setTexture(DANUBIA_ASSET_KEYS.walk02);
+            this.setFlipX(this.lastFacingDirection === 'left');
+            return;
+        }
+
         this.anims.play(DANUBIA_ASSET_KEYS.walkAnimation, true);
     }
 
@@ -346,6 +482,8 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
 
     private updatePlatform(body: Phaser.Physics.Arcade.Body): void {
         const horizontalInput = this.getHorizontalInput();
+        this.currentHorizontalInput = horizontalInput;
+        this.currentVerticalInput = 0;
         const wantsJump = this.isJumpPressed();
         const isGrounded = body.blocked.down || body.touching.down;
 
@@ -367,6 +505,8 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
     private updateWalkPlane(body: Phaser.Physics.Arcade.Body, delta: number): void {
         const horizontalInput = this.getHorizontalInput();
         const verticalInput = this.getVerticalInput();
+        this.currentHorizontalInput = horizontalInput;
+        this.currentVerticalInput = verticalInput;
         const wantsJump = this.isJumpPressed();
         const movementVector = new Phaser.Math.Vector2(horizontalInput, verticalInput);
 
@@ -386,8 +526,14 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
         }
 
         const deltaSeconds = delta / 1000;
-        const nextX = this.logicalX + movementVector.x * PLAYER_SPEED * deltaSeconds;
-        const nextY = this.logicalY + movementVector.y * PLAYER_VERTICAL_SPEED * deltaSeconds;
+        this.updateWalkPlaneSpeedSmoothing();
+
+        const nextX =
+            this.logicalX
+            + movementVector.x * PLAYER_SPEED * this.walkPlaneHorizontalSpeedMultiplier * deltaSeconds;
+        const nextY =
+            this.logicalY
+            + movementVector.y * PLAYER_VERTICAL_SPEED * this.walkPlaneVerticalSpeedMultiplier * deltaSeconds;
         const resolvedPosition = this.resolveWalkPlaneMovement(nextX, nextY);
 
         this.logicalX = resolvedPosition.x;
@@ -441,11 +587,22 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
 
     private clampToWalkArea(): void {
         const walkArea = this.getWalkArea();
-        const minX = walkArea.x + FOOT_WIDTH * 0.5;
-        const maxX = walkArea.x + walkArea.width - FOOT_WIDTH * 0.5;
-        const halfHeight = this.displayHeight * 0.5;
-        const minY = walkArea.y - halfHeight + FOOT_OFFSET_FROM_BOTTOM + FOOT_HEIGHT;
-        const maxY = walkArea.y + walkArea.height - halfHeight + FOOT_OFFSET_FROM_BOTTOM;
+        const foot = this.getFootMetrics();
+        const halfHeight = this.getBaseDisplayHeight() * this.currentScale * 0.5;
+        const minX = walkArea.x + foot.width * 0.5;
+        const maxX = walkArea.x + walkArea.width - foot.width * 0.5;
+
+        const minY =
+            walkArea.y
+            - halfHeight
+            + foot.offsetFromBottom
+            + foot.height;
+
+        const maxY =
+            walkArea.y
+            + walkArea.height
+            - halfHeight
+            + foot.offsetFromBottom;
 
         this.logicalX = Phaser.Math.Clamp(this.logicalX, minX, maxX);
         this.logicalY = Phaser.Math.Clamp(this.logicalY, minY, maxY);
@@ -700,13 +857,81 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
             return;
         }
 
-        const { farY, nearY, farScale, nearScale } = walkSettings.depthScale;
+        const rawScale =
+            this.walkPlaneScaleReference === 'foot-area'
+                ? this.calculateFootAreaDepthScale(walkSettings.walkArea, walkSettings.depthScale)
+                : this.calculateLogicalYDepthScale(walkSettings.depthScale);
+
+        const clampedScale = Phaser.Math.Clamp(
+            rawScale,
+            this.walkPlaneMinScale,
+            this.walkPlaneMaxScale,
+        );
+
+        if (!this.walkPlaneScaleSmoothingEnabled) {
+            this.setScalePreservingFootBottom(clampedScale);
+            return;
+        }
+
+        let nextScale = Phaser.Math.Linear(this.currentScale, clampedScale, 0.22);
+
+        if (Math.abs(nextScale - clampedScale) <= 0.01) {
+            nextScale = clampedScale;
+        }
+
+        this.setScalePreservingFootBottom(nextScale);
+    }
+
+    private calculateLogicalYDepthScale(depthScale: Required<DepthScaleConfig>): number {
+        const { farY, nearY, farScale, nearScale } = depthScale;
         const clampedY = Phaser.Math.Clamp(this.logicalY, farY, nearY);
         const t = Phaser.Math.Clamp((clampedY - farY) / Math.max(nearY - farY, 1), 0, 1);
-        const scale = Phaser.Math.Linear(farScale, nearScale, t);
 
-        this.currentScale = Phaser.Math.Clamp(scale, DANUBIA_MIN_SCALE, DANUBIA_MAX_SCALE);
-        this.setScale(this.currentScale);
+        return Phaser.Math.Linear(farScale, nearScale, t);
+    }
+
+    private calculateFootAreaDepthScale(
+        walkArea: WalkArea,
+        depthScale: Required<DepthScaleConfig>,
+    ): number {
+        let scale = this.currentScale;
+
+        for (let index = 0; index < 3; index += 1) {
+            const foot = this.getFootMetrics(scale);
+            const footBottom = this.getFootBottomYForScale(this.logicalY, scale);
+            const minFootBottom = walkArea.y + foot.height;
+            const travelSpan = Math.max(walkArea.height - foot.height, 1);
+            const t = Phaser.Math.Clamp((footBottom - minFootBottom) / travelSpan, 0, 1);
+
+            scale = Phaser.Math.Linear(depthScale.farScale, depthScale.nearScale, t);
+        }
+
+        return scale;
+    }
+
+    private updateWalkPlaneSpeedSmoothing(): void {
+        if (!this.walkPlaneSpeedSmoothingEnabled) {
+            return;
+        }
+
+        this.walkPlaneHorizontalSpeedMultiplier = Phaser.Math.Linear(
+            this.walkPlaneHorizontalSpeedMultiplier,
+            this.targetWalkPlaneHorizontalSpeedMultiplier,
+            0.16,
+        );
+        this.walkPlaneVerticalSpeedMultiplier = Phaser.Math.Linear(
+            this.walkPlaneVerticalSpeedMultiplier,
+            this.targetWalkPlaneVerticalSpeedMultiplier,
+            0.16,
+        );
+
+        if (Math.abs(this.walkPlaneHorizontalSpeedMultiplier - this.targetWalkPlaneHorizontalSpeedMultiplier) <= 0.01) {
+            this.walkPlaneHorizontalSpeedMultiplier = this.targetWalkPlaneHorizontalSpeedMultiplier;
+        }
+
+        if (Math.abs(this.walkPlaneVerticalSpeedMultiplier - this.targetWalkPlaneVerticalSpeedMultiplier) <= 0.01) {
+            this.walkPlaneVerticalSpeedMultiplier = this.targetWalkPlaneVerticalSpeedMultiplier;
+        }
     }
 
     private resolveDepthScaleConfig(
@@ -736,14 +961,47 @@ export class Danubia extends Phaser.Physics.Arcade.Sprite {
         };
     }
 
-    private createFootRect(x: number, y: number): RectArea {
-        const bottomY = y + this.displayHeight * 0.5 - FOOT_OFFSET_FROM_BOTTOM;
+    private getFootBottomYForScale(logicalY: number, scale: number): number {
+        const displayHeight = this.getBaseDisplayHeight() * scale;
+        const foot = this.getFootMetrics(scale);
+
+        return logicalY + displayHeight * 0.5 - foot.offsetFromBottom;
+    }
+
+    private setScalePreservingFootBottom(nextScale: number): void {
+        if (Math.abs(nextScale - this.currentScale) <= 0.0001) {
+            this.currentScale = nextScale;
+            this.setScale(this.currentScale);
+            return;
+        }
+
+        if (this.movementMode.type !== 'walk-plane') {
+            this.currentScale = nextScale;
+            this.setScale(this.currentScale);
+            return;
+        }
+
+        // In walk-plane scenes the logical position represents the sprite center.
+        // Shrinking the sprite without compensating `logicalY` makes the foot box
+        // visually climb the floor, which reads as a fake forward jump in depth.
+        const previousFootBottom = this.getFootBottomYForScale(this.logicalY, this.currentScale);
+
+        this.currentScale = nextScale;
+        this.setScale(this.currentScale);
+
+        const nextFootBottom = this.getFootBottomYForScale(this.logicalY, this.currentScale);
+        this.logicalY += previousFootBottom - nextFootBottom;
+    }
+
+    private createFootRect(x: number, y: number, scale = this.currentScale): RectArea {
+        const foot = this.getFootMetrics(scale);
+        const bottomY = this.getFootBottomYForScale(y, scale);
 
         return {
-            x: x - FOOT_WIDTH * 0.5,
-            y: bottomY - FOOT_HEIGHT,
-            width: FOOT_WIDTH,
-            height: FOOT_HEIGHT,
+            x: x - foot.width * 0.5,
+            y: bottomY - foot.height,
+            width: foot.width,
+            height: foot.height,
         };
     }
 

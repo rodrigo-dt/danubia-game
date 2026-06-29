@@ -106,7 +106,7 @@ export class IncomingCallOverlay extends Phaser.GameObjects.Container {
         return this.readyToAccept;
     }
 
-    show(promptText = INCOMING_CALL_OVERLAY_CONFIG.promptText): void {
+    show(promptText: string = INCOMING_CALL_OVERLAY_CONFIG.promptText): void {
         this.updatePromptText(promptText);
         this.clearSequence();
         this.readyToAccept = false;

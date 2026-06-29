@@ -12,6 +12,9 @@ const ASSET_KEYS = {
     homePortal: 'effect-time-portal',
     bgParisMontmartreA: 'bg-paris-montmartre-a',
     bgParisMontmartreB: 'bg-paris-montmartre-b',
+    bgParisSeine: 'bg-paris-seine',
+    bgParisGarden: 'bg-paris-garden',
+    bgParisWorkshop: 'bg-paris-workshop',
 } as const;
 
 export class BootScene extends Phaser.Scene {
@@ -27,8 +30,14 @@ export class BootScene extends Phaser.Scene {
         this.load.image(ASSET_KEYS.homePortal, `${ASSET_PATH}/effects/effect-time-portal.png`);
         this.load.image('effect-time-bubble', `${ASSET_PATH}/effects/effect-time-bubble.png`);
         this.load.image('effect-time-barrier', `${ASSET_PATH}/effects/effect-time-barrier.png`);
+        this.load.image('effect-time-anchor', `${ASSET_PATH}/effects/effect-time-anchor.png`);
+        this.load.image('effect-time-switch', `${ASSET_PATH}/effects/effect-time-switch.png`);
+        this.load.image('effect-time-golden-pulse', `${ASSET_PATH}/effects/effect-time-golden-pulse.png`);
         this.load.image(ASSET_KEYS.bgParisMontmartreA, `${ASSET_PATH}/backgrounds/bg-paris-montmartre-a.png`);
         this.load.image(ASSET_KEYS.bgParisMontmartreB, `${ASSET_PATH}/backgrounds/bg-paris-montmartre-b.png`);
+        this.load.image(ASSET_KEYS.bgParisSeine, `${ASSET_PATH}/backgrounds/bg-paris-seine.png`);
+        this.load.image(ASSET_KEYS.bgParisGarden, `${ASSET_PATH}/backgrounds/bg-paris-garden.png`);
+        this.load.image(ASSET_KEYS.bgParisWorkshop, `${ASSET_PATH}/backgrounds/bg-paris-workshop.png`);
         this.load.image('ui-dialogue-frame', `${ASSET_PATH}/ui/ui-dialogue-frame.png`);
         this.load.image('ui-phone-compact', `${ASSET_PATH}/ui/ui-phone-compact.png`);
         this.load.image('ui-phone-expanded', `${ASSET_PATH}/ui/ui-phone-expanded.png`);
@@ -56,9 +65,67 @@ export class BootScene extends Phaser.Scene {
             'monsieur-portrait-angry',
             `${ASSET_PATH}/characters/monsieur-minuit/portraits/monsieur-portrait-angry.png`,
         );
+        this.load.image(
+            'monsieur-portrait-sad-01',
+            `${ASSET_PATH}/characters/monsieur-minuit/portraits/monsieur-portrait-sad-01.png`,
+        );
+        this.load.image(
+            'monsieur-idle',
+            `${ASSET_PATH}/characters/monsieur-minuit/monsieur-idle.png`,
+        );
+        this.load.image(
+            'monsieur-gesture-01',
+            `${ASSET_PATH}/characters/monsieur-minuit/gesture/monsieur-gesture-01.png`,
+        );
+        this.load.image(
+            'monsieur-gesture-02',
+            `${ASSET_PATH}/characters/monsieur-minuit/gesture/monsieur-gesture-02.png`,
+        );
+        this.load.image(
+            'monsieur-watch-01',
+            `${ASSET_PATH}/characters/monsieur-minuit/watch/monsieur-watch-01.png`,
+        );
+        this.load.image(
+            'monsieur-watch-02',
+            `${ASSET_PATH}/characters/monsieur-minuit/watch/monsieur-watch-02.png`,
+        );
+        this.load.image(
+            'family-husband',
+            `${ASSET_PATH}/characters/family/husband.png`,
+        );
+        this.load.image(
+            'family-husband-portrait',
+            `${ASSET_PATH}/characters/family/husband-portrait.png`,
+        );
+        this.load.image(
+            'family-daughter',
+            `${ASSET_PATH}/characters/family/daughter.png`,
+        );
+        this.load.image(
+            'family-daughter-portrait',
+            `${ASSET_PATH}/characters/family/daughter-portrait.png`,
+        );
+        this.load.image(
+            'family-son',
+            `${ASSET_PATH}/characters/family/son.png`,
+        );
+        this.load.image(
+            'family-son-portrait',
+            `${ASSET_PATH}/characters/family/son-portrait.png`,
+        );
+        this.load.image('hazard-gear', `${ASSET_PATH}/hazards/hazard-gear.png`);
+        this.load.image('hazard-clock-hand', `${ASSET_PATH}/hazards/hazard-clock-hand.png`);
+        this.load.image('hazard-alarm-clock', `${ASSET_PATH}/hazards/hazard-alarm-clock.png`);
+        this.load.image('hazard-calendar', `${ASSET_PATH}/hazards/hazard-calendar.png`);
+        this.load.image('hazard-meeting', `${ASSET_PATH}/hazards/hazard-meeting.png`);
+        this.load.image('hazard-cloud', `${ASSET_PATH}/hazards/hazard-cloud.png`);
         this.load.image('pet-pudim', `${ASSET_PATH}/characters/pets/pudim.png`);
         this.load.image('pet-zoe', `${ASSET_PATH}/characters/pets/zoe.png`);
         this.load.image('pet-drogo', `${ASSET_PATH}/characters/pets/drogo.png`);
+        this.load.image('pet-pirata', `${ASSET_PATH}/characters/pets/pirata.png`);
+        this.load.image('pet-batata', `${ASSET_PATH}/characters/pets/batata.png`);
+        this.load.image('pet-pituca', `${ASSET_PATH}/characters/pets/pituca.png`);
+        this.load.image('pet-brecko-lelo-pure', `${ASSET_PATH}/characters/pets/brecko-lelo-pure.png`);
 
         for (const roomId of Object.keys(homeRooms) as Array<keyof typeof homeRooms>) {
             const room = homeRooms[roomId];
@@ -72,6 +139,22 @@ export class BootScene extends Phaser.Scene {
         this.load.image(
             DANUBIA_ASSET_KEYS.jump,
             `${ASSET_PATH}/characters/danubia/danubia-jump.png`,
+        );
+        this.load.image(
+            'danubia-power-01',
+            `${ASSET_PATH}/characters/danubia/power/danubia-power-01.png`,
+        );
+        this.load.image(
+            'danubia-power-02',
+            `${ASSET_PATH}/characters/danubia/power/danubia-power-02.png`,
+        );
+        this.load.image(
+            'danubia-victory',
+            `${ASSET_PATH}/characters/danubia/danubia-victory.png`,
+        );
+        this.load.image(
+            'monsieur-defeated',
+            `${ASSET_PATH}/characters/monsieur-minuit/monsieur-defeated.png`,
         );
         this.load.image(
             DANUBIA_ASSET_KEYS.walk01,

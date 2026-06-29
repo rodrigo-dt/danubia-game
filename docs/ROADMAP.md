@@ -1316,11 +1316,11 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 13.1 Entrada da cena
 
-* [ ] Renderizar `bg-paris-seine`.
+* [x] Renderizar `bg-paris-seine`.
 
-* [ ] Posicionar Danubia à esquerda.
+* [x] Posicionar Danubia à esquerda.
 
-* [ ] Criar chão invisível.
+* [x] Criar chão invisível.
 
 * [ ] Criar plataformas simples sobre:
 
@@ -1337,22 +1337,26 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
     * [ ] não causar Game Over definitivo
     * [ ] opcionalmente perder um coração ou apenas reposicionar
 
-* [ ] Exibir diálogo:
+* [x] Exibir diálogo:
 
-    * [ ] `Margem do Sena.`
-    * [ ] `Espero que ninguém espere que eu atravesse isso nadando.`
+    * [x] `Margem do Sena.`
+    * [x] `Espero que ninguém espere que eu atravesse isso nadando.`
+
+* [x] Fazer Danubia entrar por portal vindo de Montmartre.
+
+* [x] Reaproveitar sequência de surgimento temporal dos pets antes de liberar movimento.
 
 ---
 
 ## 13.2 Seine — Pirata
 
-* [ ] Posicionar Pirata dentro ou próximo ao barco.
+* [x] Posicionar Pirata dentro ou próximo ao barco.
 
-* [ ] Criar bolha temporal envolvendo Pirata.
+* [x] Criar bolha temporal envolvendo Pirata.
 
-* [ ] Ao se aproximar, mostrar prompt de libertar.
+* [x] Ao se aproximar, mostrar prompt de libertar.
 
-* [ ] Ao interagir:
+* [x] Ao interagir:
 
     * [ ] tremer bolha
     * [ ] sumir bolha
@@ -1361,26 +1365,26 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
     * [ ] abrir checklist automática
     * [ ] exibir diálogo:
 
-        * [ ] `Pirata em um barco.`
-        * [ ] `Claro.`
+        * [x] `Pirata em um barco.`
+        * [x] `Claro.`
 
 * [ ] Exibir mensagem:
 
     * [ ] `Todos os cachorros foram encontrados.`
 
-* [ ] Remover Pirata da tela.
+* [x] Remover Pirata da tela.
 
 ---
 
 ## 13.3 Seine — Batata
 
-* [ ] Posicionar Batata perto da barraca de comida.
+* [x] Posicionar Batata perto da barraca de comida.
 
-* [ ] Criar bolha temporal envolvendo Batata.
+* [x] Criar bolha temporal envolvendo Batata.
 
-* [ ] Ao se aproximar, mostrar prompt.
+* [x] Ao se aproximar, mostrar prompt.
 
-* [ ] Ao interagir:
+* [x] Ao interagir:
 
     * [ ] sumir bolha
     * [ ] marcar `batata` como encontrada
@@ -1388,24 +1392,24 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
     * [ ] abrir checklist automática
     * [ ] exibir diálogo:
 
-        * [ ] `Batata...`
-        * [ ] `Você não tentou escapar. Você veio comer.`
-        * [ ] `Batata: Miau.`
-        * [ ] `Resolvemos isso depois.`
+        * [x] `Batata...`
+        * [x] `Você não tentou escapar. Você veio comer.`
+        * [x] `Batata: Miau.`
+        * [x] `Resolvemos isso depois.`
 
-* [ ] Remover Batata da tela.
+* [x] Remover Batata da tela.
 
 ---
 
 ## 13.4 Seine — Pituca
 
-* [ ] Posicionar Pituca entre caixas ou malas.
+* [x] Posicionar Pituca entre caixas ou malas.
 
-* [ ] Criar bolha temporal envolvendo Pituca.
+* [x] Criar bolha temporal envolvendo Pituca.
 
-* [ ] Ao se aproximar, mostrar prompt.
+* [x] Ao se aproximar, mostrar prompt.
 
-* [ ] Ao interagir:
+* [x] Ao interagir:
 
     * [ ] sumir bolha
     * [ ] marcar `pituca` como encontrada
@@ -1413,27 +1417,29 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
     * [ ] abrir checklist automática
     * [ ] exibir diálogo:
 
-        * [ ] `Pituca! Encontrei você.`
-        * [ ] `Tá tudo bem. A mamãe chegou.`
+        * [x] `Pituca! Encontrei você.`
+        * [x] `Tá tudo bem. A mamãe chegou.`
 
-* [ ] Remover Pituca da tela.
+* [x] Remover Pituca da tela.
 
 ---
 
 ## 13.5 Seine — Mensagem misteriosa
 
-* [ ] Detectar quando Pirata, Batata e Pituca forem resgatados.
+* [x] Detectar quando Pirata, Batata e Pituca forem resgatados.
 
-* [ ] Exibir mensagem do celular:
+* [x] Exibir mensagem do celular:
 
-    * [ ] `Você está procurando apenas quem desapareceu...`
-    * [ ] `ou também o momento que perdeu?`
+    * [x] `Você está procurando apenas quem desapareceu...`
+    * [x] `...ou também o momento que perdeu?`
 
-* [ ] Exibir fala de Danubia:
+* [x] Exibir fala de Danubia:
 
-    * [ ] `Eu nem sei o que isso significa.`
+    * [x] `Eu nem sei o que isso significa.`
 
-* [ ] Liberar saída à direita.
+* [x] Gerar portal temporal final após a mensagem.
+
+* [x] Entrar no portal para iniciar `GardenScene`.
 
 * [ ] Ao sair:
 
@@ -1447,132 +1453,143 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 14.1 Entrada da cena
 
-* [ ] Renderizar `bg-paris-garden`.
-* [ ] Posicionar Danubia à esquerda.
-* [ ] Criar chão invisível.
-* [ ] Criar limites.
-* [ ] Exibir diálogo:
+* [x] Renderizar `bg-paris-garden`.
+* [x] Posicionar Danubia à esquerda.
+* [x] Criar chão invisível.
+* [x] Criar limites.
+* [x] Exibir diálogo:
 
-    * [ ] `Esse lugar tem cara de quem guarda segredos.`
-    * [ ] `E provavelmente gatos.`
+    * [x] `Esse lugar tem cara de quem guarda segredos.`
+    * [x] `E provavelmente gatos.`
+
+* [x] Fazer Danubia chegar por portal vindo do Sena.
+
+* [x] Simplificar o jardim para duas walk areas estáveis: base e topo.
 
 ---
 
 ## 14.2 Prisão temporal coletiva
 
-* [ ] Posicionar sprite `brecko-lelo-pure`.
-* [ ] Criar bolha temporal grande envolvendo o grupo.
-* [ ] Criar três interruptores temporais.
-* [ ] Posicionar interruptores em pontos diferentes do jardim.
-* [ ] Criar estado de interruptores ativados.
-* [ ] A bolha deve começar totalmente visível.
-* [ ] A cada interruptor ativado:
+* [x] Posicionar sprite `brecko-lelo-pure`.
+* [x] Criar bolha temporal grande envolvendo o grupo.
+* [x] Criar três ecos temporais por código.
+* [x] Posicionar ecos em pontos diferentes do jardim.
+* [x] Criar estado de ecos ativados.
+* [x] A bolha deve começar totalmente visível.
+* [x] A cada eco ativado:
 
-    * [ ] tocar feedback visual
-    * [ ] aplicar tint no interruptor
-    * [ ] tremer bolha
-    * [ ] reduzir opacidade da bolha
-    * [ ] salvar estado local da cena
-
----
-
-## 14.3 Interruptor 1
-
-* [ ] Criar zona invisível do interruptor 1.
-* [ ] Mostrar prompt de interação.
-* [ ] Ao ativar:
-
-    * [ ] marcar interruptor 1 como ativo
-    * [ ] exibir:
-
-        * [ ] `A prisão temporal ficou mais fraca.`
+    * [x] tocar feedback visual
+    * [x] aplicar tint/brilho dourado no eco
+    * [x] tremer bolha
+    * [x] reduzir opacidade da bolha
+    * [x] salvar estado local da cena
 
 ---
 
-## 14.4 Interruptor 2
+## 14.3 Echo 1
 
-* [ ] Criar zona invisível do interruptor 2.
-* [ ] Mostrar prompt de interação.
-* [ ] Ao ativar:
+* [x] Criar zona invisível do eco 1.
+* [x] Mostrar prompt de interação.
+* [x] Ao ativar:
 
-    * [ ] marcar interruptor 2 como ativo
-    * [ ] exibir:
+    * [x] marcar eco 1 como ativo
+    * [x] exibir:
 
-        * [ ] `Quase lá.`
+        * [x] `A prisão temporal ficou mais fraca.`
 
 ---
 
-## 14.5 Interruptor 3
+## 14.4 Echo 2
 
-* [ ] Criar zona invisível do interruptor 3.
+* [x] Criar zona invisível do eco 2.
+* [x] Mostrar prompt de interação.
+* [x] Ao ativar:
 
-* [ ] Mostrar prompt de interação.
+    * [x] marcar eco 2 como ativo
+    * [x] exibir:
 
-* [ ] Ao ativar:
+        * [x] `Quase lá.`
 
-    * [ ] marcar interruptor 3 como ativo
-    * [ ] exibir:
+---
 
-        * [ ] `O tempo voltou a correr.`
+## 14.5 Echo 3
 
-* [ ] Remover bolha temporal.
+* [x] Criar zona invisível do eco 3.
 
-* [ ] Animar Brecko/Lelo/Pure com salto e fade.
+* [x] Mostrar prompt de interação.
+
+* [x] Ao ativar:
+
+    * [x] marcar eco 3 como ativo
+    * [x] exibir:
+
+        * [x] `O tempo voltou a correr.`
+
+* [x] Remover bolha temporal.
+
+* [x] Animar Brecko/Lelo/Pure com salto e fade.
 
 ---
 
 ## 14.6 Resgate coletivo dos gatos
 
-* [ ] Marcar `brecko` como encontrado.
+* [x] Marcar `brecko` como encontrado.
 
-* [ ] Marcar `lelo` como encontrado.
+* [x] Marcar `lelo` como encontrado.
 
-* [ ] Marcar `pure` como encontrado.
+* [x] Marcar `pure` como encontrado.
 
-* [ ] Atualizar gatos para `6/6`.
+* [x] Atualizar gatos para `6/6`.
 
-* [ ] Abrir checklist automática mostrando:
+* [x] Abrir checklist automática mostrando:
 
     * [ ] `Brecko encontrado`
     * [ ] `Lelo encontrado`
     * [ ] `Pure encontrado`
 
-* [ ] Exibir mensagem:
+* [x] Exibir mensagem:
 
-    * [ ] `Todos os animais foram encontrados!`
+    * [x] `Todos os animais foram encontrados!`
 
-* [ ] Exibir diálogo:
+* [x] Exibir diálogo:
 
-    * [ ] `Brecko, Lelo e Pure...`
-    * [ ] `Os três juntos. É claro.`
-    * [ ] `Um de cada vez!`
-    * [ ] `Os três ignoraram completamente.`
-    * [ ] `Eu deveria ter imaginado.`
+    * [x] `Brecko, Lelo e Pure...`
+    * [x] `Os três juntos. É claro.`
+    * [x] `Um de cada vez!`
+    * [x] `...`
+    * [x] `Eu deveria ter imaginado.`
 
 ---
 
 ## 14.7 Caminho para a oficina
 
-* [ ] Após todos os animais, ativar entrada da oficina.
+* [x] Após todos os animais, iniciar a ligação da oficina automaticamente.
 
-* [ ] Exibir mensagem do celular:
+* [x] Exibir ligação de Monsieur Minuit sem exigir subida manual até a porta.
 
-    * [ ] `Sinal temporal localizado.`
-    * [ ] `Destino: Oficina de Monsieur Minuit.`
+    * [x] `Vejo que chegou ao meu jardim.`
+    * [x] `Você está me vendo?`
+    * [x] `Da janela da minha oficina. É uma vista excelente.`
 
-* [ ] Exibir fala:
+* [x] Liberar portal temporal na área inferior depois da ligação.
 
-    * [ ] `Então é lá que todo mundo está.`
+* [x] Fazer Danubia atravessar o portal da área inferior e reaparecer no topo da oficina sem usar escada.
 
-* [ ] Criar zona de interação da oficina.
+* [x] Destacar a porta da oficina depois da ligação com brilho/partículas douradas.
 
-* [ ] Mostrar prompt para entrar.
+* [x] Criar zona de interação da oficina.
 
-* [ ] Ao interagir:
+* [x] Mostrar prompt para entrar.
+
+* [x] Antes do resgate coletivo, bloquear entrada com:
+
+    * [x] `Ainda há algo prendendo este lugar.`
+
+* [x] Ao interagir depois da ligação:
 
     * [ ] salvar checkpoint `workshop`
-    * [ ] fazer fade
-    * [ ] iniciar `WorkshopScene`
+    * [x] fazer fade
+    * [x] iniciar `WorkshopScene`
 
 ---
 
@@ -1580,44 +1597,44 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 15.1 Entrada visual
 
-* [ ] Renderizar `bg-paris-workshop`.
-* [ ] Posicionar Danubia à esquerda.
-* [ ] Posicionar Monsieur no centro ou à direita.
-* [ ] Posicionar filho ao fundo.
-* [ ] Posicionar filha ao fundo.
-* [ ] Posicionar marido ao fundo.
-* [ ] Aplicar tint azul claro nos familiares.
-* [ ] Aplicar alpha levemente reduzido nos familiares.
-* [ ] Criar bolha temporal sobre cada familiar.
-* [ ] Aplicar flutuação leve nos familiares.
-* [ ] Criar partículas simples opcionais ao redor das bolhas.
+* [x] Renderizar `bg-paris-workshop`.
+* [x] Posicionar Danubia à esquerda.
+* [x] Posicionar Monsieur no centro ou à direita.
+* [x] Posicionar filho preso na bolha familiar.
+* [x] Posicionar filha presa na bolha familiar.
+* [x] Posicionar marido preso na bolha familiar.
+* [x] Aplicar tint azul claro nos familiares.
+* [x] Aplicar alpha levemente reduzido nos familiares.
+* [x] Criar uma única bolha temporal grande prendendo a família junta.
+* [x] Aplicar flutuação leve na bolha e nos familiares.
+* [x] Aplicar pulsação mágica azul-roxa na prisão temporal.
 
 ---
 
 ## 15.2 Entrada narrativa
 
-* [ ] Bloquear movimento no início.
+* [x] Bloquear movimento no início.
 
-* [ ] Exibir diálogo:
+* [x] Fazer Danubia entrar caminhando pela esquerda.
 
-    * [ ] `Então era isso.`
-    * [ ] `Você congelou todo mundo.`
-    * [ ] `Eu preservei este instante.`
-    * [ ] `Sem pedir para ninguém.`
-    * [ ] `Momentos perfeitos sempre acabam.`
-    * [ ] `Pessoas mudam. Filhos crescem. Animais chegam, envelhecem, partem.`
-    * [ ] `Eu apenas impeço que o tempo estrague aquilo que é bonito.`
-    * [ ] `Impedindo todo mundo de viver?`
-    * [ ] `Mantendo tudo exatamente como deveria ser.`
-    * [ ] `Exatamente como deveria ser não existe.`
+* [x] Exibir falas iniciais em balões no cenário:
 
-* [ ] Fazer Monsieur ativar o relógio.
+    * [x] `Rodrigo? Rafa? Rô?!`
+    * [x] `Mãe!`
+    * [x] `Cuidado!`
+    * [x] `Danúbia!`
+    * [x] `Bienvenue, Madame Danúbia.`
+    * [x] `Tá. Chega. Devolve minha família.`
 
-* [ ] Desbloquear poder temporal.
+* [x] Exibir diálogo principal com portraits:
 
-* [ ] Marcar `hasTemporalPower` como verdadeiro.
+    * [x] motivação melancólica do Monsieur
+    * [x] contraponto direto da Danubia
+    * [x] falas curtas da família durante a conversa
+    * [x] preparação clara para o combate
+* [x] Encerrar a conversa mantendo a família presa e Monsieur presente.
 
-* [ ] Salvar progresso.
+* [x] Deixar um ponto limpo para iniciar a batalha na próxima etapa.
 
 ---
 
@@ -1632,13 +1649,26 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 * [ ] Garantir que o jogador entenda que deve usar o poder, não interagir com E.
 
+* [x] Preparar a arena final com layout jogável amplo e pontos fixos de combate.
+
+* [x] Preparar Monsieur Minuit como presença de boss com pose de canalização da oficina.
+
+* [x] Preparar a prisão temporal da família com estados:
+
+    * [x] intacta
+    * [x] rachadura leve
+    * [x] rachadura forte
+    * [x] quebrada
+
+* [x] Preparar prompt de interação para âncoras temporais.
+
 ---
 
 # 16. WorkshopScene — Sistema da batalha
 
 ## 16.1 Âncoras temporais
 
-* [ ] Criar três âncoras usando `effect-time-anchor`.
+* [x] Criar três âncoras usando `effect-time-anchor`.
 
 * [ ] Apenas uma âncora deve estar vulnerável por vez.
 
@@ -1658,6 +1688,14 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
     * [ ] exibir pulso dourado
     * [ ] desativar âncora
     * [ ] avançar fase da batalha
+
+* [x] Estruturar runtime das âncoras com estados `idle`, `active`, `syncing` e `disabled`.
+
+* [x] Preparar zonas de proximidade/interação para cada âncora.
+
+* [x] Preparar checkpoint interno da luta para fases 1, 2 e 3.
+
+* [x] Preparar seleção de âncora ativa por índice.
 
 ---
 
@@ -1690,6 +1728,14 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
         * [ ] `De novo. Agora eu já sei como esse relógio funciona.`
 
+* [x] Preparar base de hazards para:
+
+    * [x] pulso temporal
+    * [x] engrenagem rolando
+    * [x] ponteiro gigante
+
+* [x] Preparar lista de hazards ativos e helpers de spawn/cleanup.
+
 ---
 
 ## 16.3 Obstáculos gerais
@@ -1701,6 +1747,24 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 * [ ] Garantir que obstáculos sejam simples e legíveis.
 * [ ] Garantir que a batalha não fique difícil demais.
 * [ ] Parar todos os obstáculos ao vencer.
+
+## 16.4 Implementação atual da luta
+
+* [x] Iniciar o combate automaticamente após a conversa inicial da oficina.
+* [x] Rodar 3 fases sequenciais com uma âncora temporal por fase.
+* [x] Destacar apenas a âncora ativa de cada fase.
+* [x] Permitir desativar a âncora ativa segurando `Quadrado / E`.
+* [x] Manter o progresso de cada âncora acumulado entre tentativas e esquivas.
+* [x] Interromper a desativação ao levar hit.
+* [x] Escalonar hazards por fase:
+
+    * [x] fase 1: pulsos temporais
+    * [x] fase 2: pulsos temporais + engrenagem rolando
+    * [x] fase 3: pulsos temporais + engrenagem rolando + ponteiro gigante
+
+* [x] Reiniciar apenas a fase atual ao falhar, preservando âncoras já concluídas.
+* [x] Enfraquecer a bolha da família a cada âncora concluída.
+* [x] Encerrar o combate após a terceira âncora com colapso inicial da bolha.
 
 ---
 
@@ -1878,11 +1942,11 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 20.1 Vitória visual
 
-* [ ] Parar spawn de obstáculos.
-* [ ] Destruir obstáculos restantes.
-* [ ] Tremer câmera.
+* [x] Parar spawn de obstáculos.
+* [x] Destruir obstáculos restantes.
+* [x] Tremer câmera.
 * [ ] Reduzir brilho do relógio.
-* [ ] Trocar Monsieur para `monsieur-defeated`.
+* [x] Trocar Monsieur para `monsieur-defeated`.
 * [ ] Atualizar HUD:
 
     * [ ] gatos `6/6`
@@ -1893,7 +1957,7 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 20.2 Diálogo final com Monsieur
 
-* [ ] Exibir diálogo:
+* [x] Exibir diálogo:
 
     * [ ] `Agora o momento terminará.`
     * [ ] `Sim.`
@@ -1907,7 +1971,18 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 * [ ] Salvar checkpoint `ending`.
 
-* [ ] Iniciar `EndingScene`.
+* [x] Iniciar `EndingScene`.
+
+## 20.3 Libertação da família
+
+* [x] Andar automaticamente com Danubia para posição de casting.
+* [x] Virar Danubia para Monsieur e usar pose de poder.
+* [x] Lançar projétil mágico simples com glow e impacto.
+* [x] Fazer Monsieur piscar e desaparecer após o diálogo.
+* [x] Estourar a bolha da família após a fala final.
+* [x] Derrubar Rodrigo, Rafa e Rô no chão com tween.
+* [x] Virar a família para a esquerda ao encontrar Danubia.
+* [x] Fazer Danubia caminhar até a família antes da transição final.
 
 ---
 
@@ -1915,33 +1990,33 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 21.1 Setup visual
 
-* [ ] Renderizar `bg-paris-workshop`.
+* [x] Renderizar `bg-home-living-room`.
 
-* [ ] Aplicar overlay dourado transparente.
+* [x] Aplicar overlay final para a tela de encerramento.
 
-* [ ] Posicionar Danubia usando `danubia-victory` ou idle.
+* [x] Posicionar Danubia usando `danubia-victory` ou fallback seguro.
 
-* [ ] Posicionar filho.
+* [x] Posicionar filho.
 
-* [ ] Posicionar filha.
+* [x] Posicionar filha.
 
-* [ ] Posicionar marido.
+* [x] Posicionar marido.
 
 * [ ] Posicionar Monsieur em estado derrotado ou calmo.
 
-* [ ] Posicionar pets:
+* [x] Posicionar pets:
 
-    * [ ] Pudim
-    * [ ] Zoe
-    * [ ] Drogo
+    * [x] Pudim
+    * [x] Zoe
+    * [x] Drogo
     * [ ] Pirata
     * [ ] Batata
     * [ ] Pituca
-    * [ ] Brecko/Lelo/Pure
+    * [x] Brecko/Lelo/Pure
 
-* [ ] Fazer personagens aparecerem com fade-in.
+* [x] Fazer tela final aparecer com fade-in.
 
-* [ ] Fazer animais darem pequenos saltos ou flutuação leve.
+* [x] Fazer animais darem pequenos saltos ou flutuação leve.
 
 * [ ] Não exigir animação complexa para todos.
 
@@ -1949,13 +2024,13 @@ Implementar o jogo completo em ordem lógica de desenvolvimento, começando pela
 
 ## 21.2 Diálogo final da família
 
-* [ ] Exibir fala do filho:
+* [x] Exibir diálogo final da família na sala.
 
-    * [ ] `Então... feliz aniversário!`
+* [x] Exibir fallback para imagem final caso `ending-family-victory` ainda não exista.
 
-* [ ] Exibir fala da filha:
+* [x] Encerrar com a instrução final:
 
-    * [ ] `Desculpa pelo sequestro.`
+    * [x] `Olhe para sua família.`
 
 * [ ] Exibir fala do marido:
 

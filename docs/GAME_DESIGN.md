@@ -1058,9 +1058,9 @@ Resgatar:
 
 ## 13.5 Mecânicas
 
-- Plataformas simples sobre elementos do cenário.
-- Cair na água não causa Game Over; Danubia reaparece no último ponto seguro.
-- Usar pequenas colisões invisíveis em barcos, caixas e calçada.
+- Cena única, sem subárea `seine-b`.
+- Reaproveitar a entrada por portal, o reveal em time-bubble e os resgates curtos de Montmartre.
+- Os pets surgem em sequência após a fala inicial e só ficam interagíveis depois que a animação termina.
 
 ## 13.6 Entrada da cena
 
@@ -1186,6 +1186,28 @@ Gatos 3/6 | Cachorros 3/3 | Família 0/3
 
 ## 13.10 Mensagem misteriosa
 
+Após resgatar Pirata, Batata e Pituca:
+
+- o celular toca no mesmo estilo compacto -> centro já usado antes;
+- o jogador atende com `Quadrado` ou `E`;
+- Monsieur Minuit envia a mensagem:
+
+```text
+Você está procurando apenas quem desapareceu...
+...ou também o momento que perdeu?
+```
+
+- Danubia responde:
+
+```text
+Eu nem sei o que isso significa.
+```
+
+- surge um portal temporal para a próxima fase;
+- Danubia permanece travada durante o surgimento;
+- o portal só fica interagível depois da animação;
+- a transição segue para `GardenScene`.
+
 Após os três resgates, o celular recebe uma mensagem.
 
 Mensagem do celular:
@@ -1234,8 +1256,14 @@ public/assets/backgrounds/bg-paris-garden.png
 | Efeito | Asset |
 |---|---|
 | Bolha temporal | `effect-time-bubble.png` |
-| Interruptor temporal | `effect-time-switch.png` |
 | Portal, opcional | `effect-time-portal.png` |
+
+Os três pontos temporais do jardim são feitos por código:
+
+- anéis/círculos de luz;
+- alpha e pulsação por tween;
+- partículas simples roxas e douradas;
+- sem sprite dedicada para mecanismo.
 
 ## 14.4 Objetivo
 
@@ -1267,16 +1295,16 @@ E provavelmente gatos.
 
 Brecko, Lelo e Pure aparecem juntos dentro de uma grande bolha temporal. Usar `effect-time-bubble.png` em escala maior.
 
-A prisão possui três interruptores `effect-time-switch.png`.
+A prisão possui três ecos temporais espalhados pelo jardim.
 
 ### Mecânica
 
-Danubia deve ativar três interruptores. Cada interruptor:
+Danubia deve ativar três ecos temporais. Cada eco:
 
-1. toca um som curto;
-2. muda de cor por tint;
-3. faz a bolha tremer;
-4. reduz a opacidade da bolha.
+1. acende com brilho mais forte enquanto o botão é segurado;
+2. preenche uma barra pequena de sincronização;
+3. faz a bolha tremer e enfraquecer;
+4. fica dourado depois de ativado.
 
 Após o terceiro interruptor, a bolha desaparece.
 
@@ -1294,7 +1322,7 @@ Brecko, Lelo e Pure...
 Os três juntos. É claro.
 ```
 
-### Ao ativar o primeiro interruptor
+### Ao ativar o primeiro eco
 
 ```text
 A prisão temporal ficou mais fraca.
@@ -1352,20 +1380,25 @@ Gatos 6/6 | Cachorros 3/3 | Família 0/3
 
 ## 14.8 Caminho para a oficina
 
-Após todos os animais, a porta ou entrada da oficina fica disponível.
+Após todos os animais, Danubia sobe até a área superior do jardim e recebe uma ligação de Monsieur Minuit.
 
-Mensagem do celular:
-
-```text
-Sinal temporal localizado.
-Destino: Oficina de Monsieur Minuit.
-```
-
-**Danubia normal:**
+Ligação:
 
 ```text
-Então é lá que todo mundo está.
+Vejo que chegou ao meu jardim.
+Você está me vendo?
+Da janela da minha oficina. É uma vista excelente.
+Claro. Além de sequestrar minha família, ainda fica observando.
+Venha em minha direção, Madame Danubia.
+O tempo está quase pronto para parar de vez.
+Então é melhor eu chegar antes disso.
 ```
+
+Depois da ligação:
+
+- a porta da oficina ganha um brilho dourado simples feito por código;
+- a entrada passa a aceitar interação;
+- antes disso, a porta responde com `Ainda há algo prendendo este lugar.`
 
 ### Saída
 

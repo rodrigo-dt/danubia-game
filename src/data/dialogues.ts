@@ -306,7 +306,7 @@ export const montmartreArrivalDialogue: DialogueSequence = [
     },
     {
         mode: 'bubble',
-        text: 'Eu sempre quis vir para cá, mas imaginava uma viagem com menos sequestros.',
+        text: 'Eu sempre quis voltar para cá, mas imaginava uma viagem com menos sequestros.',
         lockMovement: true,
     },
 ];
@@ -339,7 +339,7 @@ export const montmartreZoeRescueDialogue: DialogueSequence = [
     {
         mode: 'portrait',
         speaker: 'Danúbia',
-        text: 'Você foi sequestrada e decidiu sentar em um café?',
+        text: 'Você foi sequestrada e mesmo assim continua sem miar?',
         portraitKey: 'danubia-portrait-normal',
         lockMovement: true,
     },
@@ -371,7 +371,7 @@ export const montmartreDrogoRescueDialogue: DialogueSequence = [
     {
         mode: 'portrait',
         speaker: 'Danúbia',
-        text: 'Muito bem. Agora volte para casa e não enfrente nenhum relojoeiro francês sem mim.',
+        text: 'Muito bem. Agora volte para casa e não tente matar nenhum outro animal.',
         portraitKey: 'danubia-portrait-normal',
         lockMovement: true,
     },
@@ -421,7 +421,7 @@ export const montmartreMonsieurFollowUpDialogue: DialogueSequence = [
     {
         mode: 'phoneCall',
         speaker: 'Monsieur Minuit',
-        text: 'Mesmo assim, não se anime tanto. Você recuperou apenas uma pequena parte do que foi congelado.',
+        text: 'Mesmo assim, não se anime tanto. Você recuperou apenas uma pequena parte do que te foi tirado.',
         leftPortraitKey: 'danubia-portrait-happy',
         rightPortraitKey: 'monsieur-portrait-normal',
         rightPortraitSilhouette: true,
@@ -479,3 +479,593 @@ export const montmartreMonsieurFollowUpDialogue: DialogueSequence = [
         lockMovement: true,
     },
 ];
+
+export const seineArrivalDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Margem do Sena.',
+        portraitKey: 'danubia-portrait-normal',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Espero que ninguém espere que eu atravesse isso nadando.',
+        portraitKey: 'danubia-portrait-sad',
+        lockMovement: true,
+    },
+];
+
+export const seinePirataRescueDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Pirata em um barco.',
+        portraitKey: 'danubia-portrait-normal',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Que ironia.',
+        portraitKey: 'danubia-portrait-happy',
+        lockMovement: true,
+    },
+];
+
+export const seineBatataRescueDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Batata...',
+        portraitKey: 'danubia-portrait-sad',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Você não tentou escapar. Você veio descansar dos seus filhotes..',
+        portraitKey: 'danubia-portrait-normal',
+        lockMovement: true,
+    },
+    {
+        mode: 'bubble',
+        text: 'Miau.',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Coitada.',
+        portraitKey: 'danubia-portrait-angry',
+        lockMovement: true,
+    },
+];
+
+export const seinePitucaRescueDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Pituca! Encontrei você.',
+        portraitKey: 'danubia-portrait-happy',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Tá tudo bem, volte para casa.',
+        portraitKey: 'danubia-portrait-sad',
+        lockMovement: true,
+    },
+];
+
+export const seineMonsieurFollowUpDialogue: DialogueSequence = [
+    {
+        mode: 'phoneCall',
+        speaker: 'Monsieur Minuit',
+        text: 'Você está procurando apenas quem desapareceu...',
+        leftPortraitKey: 'danubia-portrait-sad',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'right',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Monsieur Minuit',
+        text: '...ou algo a mais?',
+        leftPortraitKey: 'danubia-portrait-sad',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'right',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Danúbia',
+        text: 'Por que você tenta a todo custo parecer filosófico?',
+        leftPortraitKey: 'danubia-portrait-angry',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'left',
+        lockMovement: true,
+    },
+];
+
+export const gardenArrivalDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Esse lugar não tem uma cara boa.',
+        portraitKey: 'danubia-portrait-normal',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Faltam só alguns animais.',
+        portraitKey: 'danubia-portrait-sad',
+        lockMovement: true,
+    },
+];
+
+export const gardenEchoOneFeedbackDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'A prisão temporal parece ter ficado mais fraca.',
+        portraitKey: 'danubia-portrait-normal',
+        lockMovement: true,
+    },
+];
+
+export const gardenEchoTwoFeedbackDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Quase lá.',
+        portraitKey: 'danubia-portrait-angry',
+        lockMovement: true,
+    },
+];
+
+export const gardenEchoThreeFeedbackDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Agora sim!',
+        portraitKey: 'danubia-portrait-happy',
+        lockMovement: true,
+    },
+];
+
+export const gardenCollectiveRescueDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Brecko, Lelo e Pure...',
+        portraitKey: 'danubia-portrait-happy',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Os três juntos. É claro.',
+        portraitKey: 'danubia-portrait-normal',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Eu deveria ter imaginado.',
+        portraitKey: 'danubia-portrait-normal',
+        lockMovement: true,
+    },
+];
+
+export const gardenDoorBlockedDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Ainda há algo prendendo este lugar.',
+        portraitKey: 'danubia-portrait-sad',
+        lockMovement: true,
+    },
+];
+
+export const gardenMonsieurCallDialogue: DialogueSequence = [
+    {
+        mode: 'phoneCall',
+        speaker: 'Monsieur Minuit',
+        text: 'Vejo que chegou ao meu jardim.',
+        leftPortraitKey: 'danubia-portrait-normal',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'right',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Danúbia',
+        text: 'Você está me vendo?',
+        leftPortraitKey: 'danubia-portrait-sad',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'left',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Monsieur Minuit',
+        text: 'Da janela da minha oficina. É uma vista excelente.',
+        leftPortraitKey: 'danubia-portrait-sad',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'right',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Danúbia',
+        text: 'Claro. Além de sequestrar minha família, ainda fica me observando.',
+        leftPortraitKey: 'danubia-portrait-angry',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'left',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Monsieur Minuit',
+        text: 'Venha em minha direção, Madame Danúbia.',
+        leftPortraitKey: 'danubia-portrait-angry',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'right',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Monsieur Minuit',
+        text: 'O tempo está quase pronto para parar de vez.',
+        leftPortraitKey: 'danubia-portrait-angry',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'right',
+        lockMovement: true,
+    },
+    {
+        mode: 'phoneCall',
+        speaker: 'Danúbia',
+        text: 'Não se eu chegar antes que isso aconteça.',
+        leftPortraitKey: 'danubia-portrait-angry',
+        rightPortraitKey: 'monsieur-portrait-normal',
+        rightPortraitSilhouette: true,
+        activeSpeakerSide: 'left',
+        lockMovement: true,
+    },
+];
+
+export const workshopOpeningSceneBubbles = [
+    {
+        speakerId: 'danubia',
+        text: 'Rodrigo? Rafa? Rô?!',
+    },
+    {
+        speakerId: 'daughter',
+        text: 'Mãe!',
+    },
+    {
+        speakerId: 'son',
+        text: 'Cuidado!',
+    },
+    {
+        speakerId: 'husband',
+        text: 'Danúbia!',
+    },
+    {
+        speakerId: 'monsieur',
+        text: 'Bienvenue, Madame Danúbia.',
+    },
+    {
+        speakerId: 'danubia',
+        text: 'Tá. Chega. Devolve minha família.',
+    },
+] as const;
+
+export const workshopMainDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Monsieur Minuit',
+        text: 'Passei a vida cercado por relógios... e todos eles me ensinaram a mesma crueldade.',
+        portraitKey: 'monsieur-portrait-normal',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Monsieur Minuit',
+        text: 'Tudo o que é belo passa.',
+        portraitKey: 'monsieur-portrait-normal',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Monsieur Minuit',
+        text: 'Um aniversário. Uma risada. Um abraço em família.',
+        portraitKey: 'monsieur-portrait-normal',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Monsieur Minuit',
+        text: 'São perfeitos justamente quando já estão indo embora.',
+        portraitKey: 'monsieur-portrait-sad-01',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'E a sua solução foi sequestrar todo mundo?',
+        portraitKey: 'danubia-portrait-angry',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Monsieur Minuit',
+        text: 'Congelar. Preservar. Proteger do fim.',
+        portraitKey: 'monsieur-portrait-normal',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Você não protegeu nada.',
+        portraitKey: 'danubia-portrait-angry',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Você arrancou a vida deles.',
+        portraitKey: 'danubia-portrait-sad',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Momento feliz não vale porque dura pra sempre.',
+        portraitKey: 'danubia-portrait-normal',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Vale porque a gente vive... e depois vive outro.',
+        portraitKey: 'danubia-portrait-happy',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Rodrigo',
+        text: 'Danúbia, estamos bem!',
+        portraitKey: 'family-husband-portrait',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Rafa',
+        text: 'Mãe, não deixa ele fazer isso de novo!',
+        portraitKey: 'family-daughter-portrait',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Rô',
+        text: 'Tem alguma coisa prendendo essa bolha!',
+        portraitKey: 'family-son-portrait',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Monsieur Minuit',
+        text: 'Se deseja levá-los... prove que aceita o movimento do tempo.',
+        portraitKey: 'monsieur-portrait-angry',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Monsieur Minuit',
+        text: 'Enfrente a minha oficina.',
+        portraitKey: 'monsieur-portrait-angry',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Com prazer.',
+        portraitKey: 'danubia-portrait-angry',
+        lockMovement: true,
+    },
+] as const;
+
+export const workshopEndingDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Monsieur Minuit',
+        text: 'Eu só queria preservar o instante perfeito...',
+        portraitKey: 'monsieur-portrait-sad-01',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Monsieur Minuit',
+        text: 'Antes que ele desaparecesse.',
+        portraitKey: 'monsieur-portrait-sad-01',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Mas um momento parado não é um momento vivido.',
+        portraitKey: 'danubia-portrait-normal',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Ele importa porque passa.',
+        portraitKey: 'danubia-portrait-happy',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Porque depois dele vêm outros.',
+        portraitKey: 'danubia-portrait-happy',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Rodrigo',
+        text: 'E a gente vive todos juntos.',
+        portraitKey: 'family-husband-portrait',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Rafa',
+        text: 'Mesmo os bagunçados.',
+        portraitKey: 'family-daughter-portrait',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Rô',
+        text: 'Principalmente os bagunçados.',
+        portraitKey: 'family-son-portrait',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Monsieur Minuit',
+        text: 'Então... talvez o tempo não roube os momentos.',
+        portraitKey: 'monsieur-portrait-sad-01',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Monsieur Minuit',
+        text: 'Talvez ele só abra espaço para os próximos.',
+        portraitKey: 'monsieur-portrait-normal',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Agora você entendeu.',
+        portraitKey: 'danubia-portrait-happy',
+        lockMovement: true,
+    },
+] as const;
+
+export const endingLivingRoomDialogue: DialogueSequence = [
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Então acabou?',
+        portraitKey: 'danubia-portrait-normal',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Rodrigo',
+        text: 'Acabou.',
+        portraitKey: 'family-husband-portrait',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Rô',
+        text: 'Pelo menos até alguém inventar outro portal estranho.',
+        portraitKey: 'family-son-portrait',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Rafa',
+        text: 'Por favor, hoje não.',
+        portraitKey: 'family-daughter-portrait',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Eu só queria um aniversário normal.',
+        portraitKey: 'danubia-portrait-sad',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Rodrigo',
+        text: 'Com a nossa família?',
+        portraitKey: 'family-husband-portrait',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Rafa',
+        text: 'Com cachorro, gato, susto e confusão?',
+        portraitKey: 'family-daughter-portrait',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Rô',
+        text: 'Isso já é o normal.',
+        portraitKey: 'family-son-portrait',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'É... acho que é mesmo.',
+        portraitKey: 'danubia-portrait-happy',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'E quer saber?',
+        portraitKey: 'danubia-portrait-happy',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Danúbia',
+        text: 'Eu não trocaria por nenhum momento congelado.',
+        portraitKey: 'danubia-portrait-happy',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Rodrigo',
+        text: 'Nem a gente.',
+        portraitKey: 'family-husband-portrait',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Rafa',
+        text: 'Feliz aniversário, mãe.',
+        portraitKey: 'family-daughter-portrait',
+        lockMovement: true,
+    },
+    {
+        mode: 'portrait',
+        speaker: 'Rô',
+        text: 'Feliz aniversário!',
+        portraitKey: 'family-son-portrait',
+        lockMovement: true,
+    },
+] as const;

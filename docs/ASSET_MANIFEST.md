@@ -29,7 +29,7 @@ Se o projeto estiver usando apenas `assets/`, mantenha os mesmos caminhos relati
 - O código deve carregar os arquivos usando os nomes reais abaixo, não os nomes planejados anteriormente.
 - Os assets de Brecko, Lelo e Pure existem como uma única imagem agrupada: `brecko-lelo-pure.png`.
 - Danubia possui apenas um arquivo de idle: `danubia-idle.png`.
-- Monsieur Minuit possui apenas um arquivo de idle: `monsieur-idle.png`.
+- Monsieur Minuit usa `monsieur-idle.png` como pose base e também possui poses extras `gesture` e `watch`.
 - A sprite de dano de Danubia se chama `danubia-damage.png`, não `danubia-hurt.png`.
 
 ---
