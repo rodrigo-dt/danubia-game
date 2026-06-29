@@ -26,6 +26,7 @@ import { GameHud } from '../ui/GameHud';
 import { FragmentNotification } from '../ui/FragmentNotification';
 import { IncomingCallOverlay } from '../ui/IncomingCallOverlay';
 import { PHONE_CHECKLIST_CONFIG, PhoneChecklist } from '../ui/PhoneChecklist';
+import {playMusic} from "../systems/musicManager.ts";
 
 type MontmartreAreaId = 'montmartre-a' | 'montmartre-b';
 
@@ -121,7 +122,7 @@ const PORTAL_ARRIVAL_CONFIG = {
 const MONTMARTRE_PHONE_HINT_CONFIG = {
     delayAfterArrivalMs: 1100,
     visibleDurationMs: 2600,
-    message: 'Dica: pressione TAB para abrir o celular.',
+    message: 'Dica: pressione Touchpad para abrir o celular.',
 } as const;
 
 const AREA_TRANSITION_CONFIG = {
@@ -155,7 +156,7 @@ const SEINE_PORTAL_CONFIG = {
     driftDurationMs: 1600,
     interactionWidth: 500,
     interactionHeight: 500,
-    promptText: 'Pressione Quadrado / E para atravessar o portal',
+    promptText: 'Pressione Quadrado para atravessar o portal',
     pullSpeedPxPerSecond: 122,
     fadeDurationMs: 320,
     fadeStartDistancePx: 52,
@@ -343,7 +344,7 @@ const DROGO_BARRIER_CONFIG = {
         width: 154,
         height: 214,
     },
-    promptText: 'Pressione Quadrado / E repetidamente para romper',
+    promptText: 'Pressione Quadrado repetidamente para romper',
     idleAlphaMin: 0.64,
     idleAlphaMax: 0.86,
     pulseScaleMultiplier: 1.04,
@@ -638,6 +639,11 @@ export class MontmartreScene extends Phaser.Scene {
             .image(0, 0, MONTMARTRE_AREA_CONFIGS['montmartre-a'].backgroundKey)
             .setOrigin(0)
             .setDisplaySize(GAME_WIDTH, GAME_HEIGHT);
+        playMusic(this, 'music-paris', {
+            volume: 0.38,
+            fadeInMs: 1200,
+            fadeOutMs: 1000,
+        });
 
         this.physics.world.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
         this.areaRoot = this.add.container(0, 0).setDepth(0);

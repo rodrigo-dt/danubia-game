@@ -208,7 +208,7 @@ const CAT_PRISON_CONFIG = {
 } as const;
 
 const ECHO_SYNC_CONFIG = {
-    promptText: 'Segure Quadrado / E para sincronizar',
+    promptText: 'Segure Quadrado para sincronizar',
     progressPerSecond: 82,
     decayPerSecond: 58,
     uiX: GAME_WIDTH / 2,
@@ -261,7 +261,7 @@ const TEMPORAL_ECHO_CONFIGS: TemporalEchoConfig[] = [
 ];
 
 const WORKSHOP_DOOR_CONFIG = {
-    promptText: 'Pressione Quadrado / E para entrar na oficina',
+    promptText: 'Pressione Quadrado para entrar na oficina',
     interactionZone: {
         x: 665,
         y: 193,
@@ -278,7 +278,7 @@ const WORKSHOP_DOOR_CONFIG = {
 } as const;
 
 const LOWER_TO_UPPER_PORTAL_CONFIG = {
-    promptText: 'Pressione Quadrado / E para atravessar o portal',
+    promptText: 'Pressione Quadrado para atravessar o portal',
     lower: {
         x: 726,
         y: 362,

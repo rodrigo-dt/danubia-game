@@ -48,6 +48,7 @@ import { GameHud } from '../ui/GameHud';
 import { IncomingCallOverlay } from '../ui/IncomingCallOverlay';
 import { InteractionPrompt } from '../ui/InteractionPrompt';
 import { PHONE_CHECKLIST_CONFIG, PhoneChecklist } from '../ui/PhoneChecklist';
+import {playMusic} from "../systems/musicManager.ts";
 
 export class HomeScene extends Phaser.Scene {
     private static readonly DELAYED_ENTRY_DIALOGUE_MS = 950;
@@ -145,7 +146,11 @@ export class HomeScene extends Phaser.Scene {
             .image(0, 0, this.currentRoom.backgroundKey)
             .setOrigin(0)
             .setDisplaySize(GAME_WIDTH, GAME_HEIGHT);
-
+        playMusic(this, 'music-home', {
+            volume: 0.42,
+            fadeInMs: 1200,
+            fadeOutMs: 900,
+        });
         this.physics.world.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
         this.danubia = new Danubia(this, this.currentRoom.playerSpawn.x, this.currentRoom.playerSpawn.y);
         this.interactionPrompt = new InteractionPrompt(this);

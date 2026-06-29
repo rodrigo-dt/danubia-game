@@ -80,6 +80,7 @@ export class IncomingCallOverlay extends Phaser.GameObjects.Container {
                 badgeStrokeColor: 0xe8d09a,
                 badgeStrokeAlpha: 0.34,
                 keyFontSize: '13px',
+                keyLabel: '▢',
                 labelFontSize: '13px',
                 labelMaxWidth: 300,
             },

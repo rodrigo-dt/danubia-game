@@ -21,6 +21,7 @@ export type ActionPromptStyle = {
     badgeStrokeWidth: number;
     keyFontSize: string;
     keyColor: string;
+    keyLabel: string;
     labelFontSize: string;
     labelColor: string;
     labelMaxWidth?: number;
@@ -56,6 +57,7 @@ const DEFAULT_ACTION_PROMPT_STYLE: ActionPromptStyle = {
     badgeStrokeWidth: 1,
     keyFontSize: '13px',
     keyColor: '#f9f3de',
+    keyLabel: '▢',
     labelFontSize: '13px',
     labelColor: '#f8fafc',
     labelMaxWidth: 300,
@@ -98,7 +100,7 @@ export function createActionPromptWidget(
         style.badgeStrokeAlpha,
     );
 
-    const keyText = scene.add.text(0, 0, 'E', {
+    const keyText = scene.add.text(0, 0, style.keyLabel, {
         fontFamily: UI_FONT_FAMILY,
         fontSize: style.keyFontSize,
         color: style.keyColor,

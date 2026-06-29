@@ -9,11 +9,13 @@ import {
 } from '../data/dialogues';
 import { hasUnlockedPhoneHud, markFamilyMemberRescued } from '../game/states';
 import { DialogueController } from '../systems/DialogueController';
+import { isInteractHeld as isControllerInteractHeld } from '../systems/controllerInput';
 import type { RectArea } from '../game/types';
 import { FragmentNotification } from '../ui/FragmentNotification';
 import { GameHud } from '../ui/GameHud';
 import { InteractionPrompt } from '../ui/InteractionPrompt';
 import { PHONE_CHECKLIST_CONFIG, PhoneChecklist } from '../ui/PhoneChecklist';
+import {playMusic} from "../systems/musicManager.ts";
 
 const WORKSHOP_ARENA_CONFIG = {
     walkArea: {
@@ -78,7 +80,7 @@ const COMBAT_PREP_NOTIFICATION = {
     visibleDurationMs: 2400,
 } as const;
 
-const ANCHOR_PROMPT_TEXT = 'Segure Quadrado / E para desativar';
+const ANCHOR_PROMPT_TEXT = 'Segure Quadrado para desativar';
 const PHASE_RESTART_NOTIFICATION = 'A sincronização foi interrompida.';
 const COMBAT_COMPLETE_NOTIFICATION = 'A prisão temporal entrou em colapso.';
 const WORKSHOP_ENDING_SEQUENCE = {
@@ -298,6 +300,11 @@ export class WorkshopScene extends Phaser.Scene {
             .image(0, 0, 'bg-paris-workshop')
             .setOrigin(0)
             .setDisplaySize(GAME_WIDTH, GAME_HEIGHT);
+        playMusic(this, 'music-workshop', {
+            volume: 0.5,
+            fadeInMs: 900,
+            fadeOutMs: 900,
+        });
 
         this.cameras.main.setZoom(1);
         this.cameras.main.centerOn(GAME_WIDTH / 2, GAME_HEIGHT / 2);
@@ -2072,19 +2079,7 @@ export class WorkshopScene extends Phaser.Scene {
     }
 
     private isInteractHeld(): boolean {
-        const keyboardHeld = this.interactKey?.isDown ?? false;
-
-        return keyboardHeld || this.isSquarePressed();
-    }
-
-    private isSquarePressed(): boolean {
-        const pad = this.input.gamepad?.getPad(0);
-
-        if (!pad) {
-            return false;
-        }
-
-        return pad.buttons[2]?.pressed ?? false;
+        return isControllerInteractHeld(this, this.interactKey);
     }
 
     private rectsIntersect(a: RectArea, b: RectArea): boolean {

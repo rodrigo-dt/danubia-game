@@ -518,7 +518,7 @@ export class PhoneChecklist extends Phaser.GameObjects.Container {
         const bottomHint = this.scene.add.text(
             0,
             config.layout.bottomHintY,
-            'TAB PARA FECHAR',
+            'TOUCHPAD PARA FECHAR',
             {
                 fontFamily: config.font.family,
                 fontSize: config.font.hintSize,

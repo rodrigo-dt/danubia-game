@@ -5,6 +5,7 @@ import {DEBUG_ROOM_GEOMETRY, GAME_HEIGHT, GAME_WIDTH, SCENE_KEYS, UI_FONT_FAMILY
 import { installDevModeHotkeys } from '../game/devMode';
 import type { RectArea } from '../game/types';
 import { DialogueController } from '../systems/DialogueController';
+import {playMusic} from "../systems/musicManager.ts";
 
 const ENDING_LAYOUT = {
     danubia: { x: 390, y: 390, scale: 1.86, flipX: false, key: 'danubia-idle' },
@@ -48,6 +49,12 @@ export class EndingScene extends Phaser.Scene {
             .image(0, 0, homeRooms['living-room'].backgroundKey)
             .setOrigin(0)
             .setDisplaySize(GAME_WIDTH, GAME_HEIGHT);
+
+        playMusic(this, 'music-ending', {
+            volume: 0.36,
+            fadeInMs: 1600,
+            fadeOutMs: 1000,
+        });
 
         this.cameras.main.setZoom(1);
         this.cameras.main.centerOn(GAME_WIDTH / 2, GAME_HEIGHT / 2);

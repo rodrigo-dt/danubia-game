@@ -10,7 +10,7 @@ export const DANUBIA_MIN_SCALE = 1.6;
 export const DANUBIA_MAX_SCALE = 2.16;
 export const DEBUG_ROOM_GEOMETRY = false;
 export const DEV_SKIP_DIALOGUES = false;
-export const DEV_MODE = true;
+export const DEV_MODE = false;
 export type DevBootPreset =
     | 'normal'
     | 'home-start'

@@ -126,7 +126,7 @@ const GARDEN_PORTAL_CONFIG = {
     driftDurationMs: 1600,
     interactionWidth: 400,
     interactionHeight: 400,
-    promptText: 'Pressione Quadrado / E para atravessar o portal',
+    promptText: 'Pressione Quadrado para atravessar o portal',
     pullSpeedPxPerSecond: 122,
     fadeDurationMs: 320,
     fadeStartDistancePx: 52,

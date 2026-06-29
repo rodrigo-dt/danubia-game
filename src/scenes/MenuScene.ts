@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH, SCENE_KEYS, UI_FONT_FAMILY } from '../game/constants';
 import { installDevModeHotkeys } from '../game/devMode';
+import { isConfirmJustPressed } from '../systems/controllerInput';
 
 const ASSET_KEYS = {
     cover: 'bg-cover',
@@ -19,7 +20,7 @@ export class MenuScene extends Phaser.Scene {
 
         const titleGroup = this.add.container(GAME_WIDTH / 2, GAME_HEIGHT - 92);
 
-        const titleGlow = this.add.text(0, 0, 'PRESSIONE ESPAÇO PARA COMEÇAR', {
+        const titleGlow = this.add.text(0, 0, 'PRESSIONE ✕ PARA COMEÇAR', {
             fontFamily: UI_FONT_FAMILY,
             fontSize: '25px',
             color: '#d8b46a',
@@ -30,7 +31,7 @@ export class MenuScene extends Phaser.Scene {
         }).setOrigin(0.5);
         titleGlow.setAlpha(0.28);
 
-        const titleShadow = this.add.text(0, 1, 'PRESSIONE ESPAÇO PARA COMEÇAR', {
+        const titleShadow = this.add.text(0, 1, 'PRESSIONE ✕ PARA COMEÇAR', {
             fontFamily: UI_FONT_FAMILY,
             fontSize: '25px',
             color: '#1b102f',
@@ -40,7 +41,7 @@ export class MenuScene extends Phaser.Scene {
             letterSpacing: 1.8,
         }).setOrigin(0.5);
 
-        const titleText = this.add.text(0, -1, 'PRESSIONE ESPAÇO PARA COMEÇAR', {
+        const titleText = this.add.text(0, -1, 'PRESSIONE ✕ PARA COMEÇAR', {
             fontFamily: UI_FONT_FAMILY,
             fontSize: '25px',
             color: '#f8e9b3',
@@ -50,7 +51,7 @@ export class MenuScene extends Phaser.Scene {
             letterSpacing: 1.8,
         }).setOrigin(0.5);
 
-        const subtitleText = this.add.text(0, 28, 'USE O TECLADO OU O CONTROLE', {
+        const subtitleText = this.add.text(0, 28, 'USE SEU CONTROLE PLAYSTATION', {
             fontFamily: UI_FONT_FAMILY,
             fontSize: '13px',
             color: '#e7d6a1',
@@ -82,15 +83,12 @@ export class MenuScene extends Phaser.Scene {
             repeat: -1,
         });
 
-        this.input.keyboard?.once('keydown-SPACE', () => {
-            this.startHomeScene();
-        });
+    }
 
-        this.input.gamepad?.once('down', (_pad: Phaser.Input.Gamepad.Gamepad, button: Phaser.Input.Gamepad.Button) => {
-            if (button.index === 0) {
-                this.startHomeScene();
-            }
-        });
+    update(): void {
+        if (isConfirmJustPressed(this)) {
+            this.startHomeScene();
+        }
     }
 
     private startHomeScene(): void {

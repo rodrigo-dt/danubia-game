@@ -126,6 +126,10 @@ export class BootScene extends Phaser.Scene {
         this.load.image('pet-batata', `${ASSET_PATH}/characters/pets/batata.png`);
         this.load.image('pet-pituca', `${ASSET_PATH}/characters/pets/pituca.png`);
         this.load.image('pet-brecko-lelo-pure', `${ASSET_PATH}/characters/pets/brecko-lelo-pure.png`);
+        this.load.audio('music-home', 'assets/audio/music/music-home-pathetique-adagio.mp3');
+        this.load.audio('music-paris', 'assets/audio/music/music-paris-arabesque-no1.mp3');
+        this.load.audio('music-workshop', 'assets/audio/music/music-workshop-danse-macabre.mp3');
+        this.load.audio('music-ending', 'assets/audio/music/music-ending-bach-prelude-c.mp3');
 
         for (const roomId of Object.keys(homeRooms) as Array<keyof typeof homeRooms>) {
             const room = homeRooms[roomId];

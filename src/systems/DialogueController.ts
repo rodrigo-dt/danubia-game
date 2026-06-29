@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { DEV_SKIP_DIALOGUES } from '../game/constants';
 import type { DialogueLine, DialogueSequence, Point2D } from '../game/types';
+import { isConfirmJustPressed } from './controllerInput';
 import { DialogueBox } from '../ui/DialogueBox';
 
 type BubbleAnimationTarget = Phaser.GameObjects.GameObject & {
@@ -36,14 +37,12 @@ type StartDialogueOptions = {
 export class DialogueController {
     private readonly scene: Phaser.Scene;
     private readonly dialogueBox: DialogueBox;
-    private readonly advanceKey?: Phaser.Input.Keyboard.Key;
     private readonly onStateChange?: (active: boolean) => void;
     private readonly getBubbleAnchor?: () => Point2D | undefined;
     private readonly getBubbleAnimationTarget?: () => BubbleAnimationTarget | undefined;
     private activeDialogue?: DialogueSequence;
     private currentIndex = 0;
     private onComplete?: () => void;
-    private wasSquarePressed = false;
     private movementLocked = false;
     private bubbleTalkTween?: Phaser.Tweens.Tween;
     private bubbleTalkBaseScale?: { x: number; y: number };
@@ -56,7 +55,6 @@ export class DialogueController {
     constructor(scene: Phaser.Scene, options: DialogueControllerOptions = {}) {
         this.scene = scene;
         this.dialogueBox = new DialogueBox(scene);
-        this.advanceKey = scene.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.E);
         this.onStateChange = options.onStateChange;
         this.getBubbleAnchor = options.getBubbleAnchor;
         this.getBubbleAnimationTarget = options.getBubbleAnimationTarget;
@@ -79,7 +77,6 @@ export class DialogueController {
         this.activeDialogue = dialogue;
         this.currentIndex = 0;
         this.onComplete = options.onComplete;
-        this.wasSquarePressed = false;
         this.renderCurrentLine();
 
         return true;
@@ -87,7 +84,6 @@ export class DialogueController {
 
     update(): void {
         if (!this.activeDialogue) {
-            this.wasSquarePressed = this.isSquarePressed();
             return;
         }
 
@@ -96,9 +92,7 @@ export class DialogueController {
             this.dialogueBox.updateBubbleAnchor(this.getBubbleAnchor?.());
         }
 
-        const advancePressed =
-            (this.advanceKey ? Phaser.Input.Keyboard.JustDown(this.advanceKey) : false) ||
-            this.isSquareJustPressed();
+        const advancePressed = isConfirmJustPressed(this.scene);
 
         if (currentLine?.mode === 'bubble') {
             return;
@@ -342,22 +336,4 @@ export class DialogueController {
         this.typewriterEvent = undefined;
     }
 
-    private isSquarePressed(): boolean {
-        const pad = this.scene.input.gamepad?.getPad(0);
-
-        if (!pad) {
-            return false;
-        }
-
-        return pad.buttons[2]?.pressed ?? false;
-    }
-
-    private isSquareJustPressed(): boolean {
-        const isPressed = this.isSquarePressed();
-        const justPressed = isPressed && !this.wasSquarePressed;
-
-        this.wasSquarePressed = isPressed;
-
-        return justPressed;
-    }
 }
