@@ -43,7 +43,7 @@ const WORKSHOP_LAYOUT = {
     danubiaSpawn: { x: 54, y: 416 },
     danubiaStop: { x: 252, y: 416 },
     monsieur: { x: 704, y: 415, scale: 1.8 },
-    familyBubble: { x: 504, y: 176, bubbleScale: 0.44 },
+    familyBubble: { x: 504, y: 176, bubbleScale: 0.5 },
     husband: { x: 504, y: 185, scale: 1.02 },
     daughter: { x: 450, y: 180, scale: 0.95 },
     son: { x: 560, y: 180, scale: 0.95 },
@@ -85,40 +85,9 @@ const WORKSHOP_ENDING_SEQUENCE = {
     danubiaCastX: 208,
     danubiaFamilyMeetX: 388,
     walkSpeedPxPerSecond: 210,
-    powerChargeDurationMs: 700,
-    projectileDurationMs: 940,
-    impactHoldDurationMs: 420,
-    monsieurFlickerDurationMs: 1380,
-    familyDropDurationMs: 920,
-    familyBounceDurationMs: 180,
-    victoryHoldDurationMs: 1300,
-} as const;
-
-const WORKSHOP_SCENE_BUBBLE_CONFIG = {
-    maxWidth: 332,
-    minWidth: 190,
-    minHeight: 62,
-    paddingX: 20,
-    paddingY: 16,
-    offsetY: 146,
-    clampPadding: 16,
-    backgroundColor: 0xfafaf9,
-    backgroundAlpha: 0.97,
-    borderColor: 0x111827,
-    borderAlpha: 0.18,
-    borderWidth: 2,
-    radius: 16,
-    tailWidth: 24,
-    tailHeight: 16,
-    textFontSize: '18px',
-    textColor: '#111111',
-    textVerticalOffset: -2,
-} as const;
-
-const FAMILY_FREED_SCALE = {
-    daughter: 1.5,
-    husband: 1.58,
-    son: 1.5,
+    projectileDurationMs: 360,
+    monsieurFlickerDurationMs: 880,
+    familyDropDurationMs: 560,
 } as const;
 
 const COMBAT_LAYOUT = {
@@ -134,7 +103,8 @@ const COMBAT_LAYOUT = {
     ],
     pulseLaneY: 414,
     gearLaneY: 430,
-        familyGroundPositions: {
+    clockHandSweepY: 304,
+    familyGroundPositions: {
         daughter: { x: 446, y: 420 },
         husband: { x: 505, y: 428 },
         son: { x: 564, y: 420 },
@@ -144,7 +114,7 @@ const COMBAT_LAYOUT = {
 const ANCHOR_SYNC_CONFIG = {
     progressPerSecond: 74,
     uiX: GAME_WIDTH * 0.5,
-    uiY: 68,
+    uiY: GAME_HEIGHT - 74,
     uiDepth: 250,
     barWidth: 300,
     barHeight: 18,
@@ -179,7 +149,7 @@ const COMBAT_PHASE_CONFIG = {
         feedbackText: 'Então venha até o fim.',
         pulseIntervalMs: 1120,
         gearIntervalMs: 2650,
-        clockIntervalMs: 0,
+        clockIntervalMs: 3900,
     },
 } as const;
 
@@ -189,7 +159,7 @@ type WorkshopSpeakerId =
 type CombatPhase = 1 | 2 | 3;
 type FamilyPrisonState = 'intact' | 'cracked-light' | 'cracked-strong' | 'broken';
 type AnchorState = 'idle' | 'active' | 'syncing' | 'disabled';
-type HazardKind = 'temporal-pulse' | 'rolling-gear';
+type HazardKind = 'temporal-pulse' | 'rolling-gear' | 'clock-hand-sweep';
 
 type SceneBubbleRuntime = {
     container: Phaser.GameObjects.Container;
@@ -379,8 +349,46 @@ export class WorkshopScene extends Phaser.Scene {
     }
 
     private createArenaProps(): void {
-        // Decorative time-switch and side time-barriers were removed from the final arena.
-        // They were visually noisy and did not contribute to the combat readability.
+        const pedestalGlow = this.add.image(
+            WORKSHOP_LAYOUT.arenaCenter.x,
+            WORKSHOP_LAYOUT.arenaCenter.y - 6,
+            'effect-time-bubble',
+        );
+        pedestalGlow.setScale(0.28, 0.16);
+        pedestalGlow.setTint(0x60a5fa);
+        pedestalGlow.setAlpha(0.18);
+        pedestalGlow.setBlendMode(Phaser.BlendModes.ADD);
+        pedestalGlow.setDepth(1.1);
+
+        const pedestal = this.add.image(
+            WORKSHOP_LAYOUT.arenaCenter.x,
+            WORKSHOP_LAYOUT.arenaCenter.y,
+            'effect-time-switch',
+        );
+        pedestal.setScale(0.66);
+        pedestal.setAlpha(0.8);
+        pedestal.setDepth(1.2);
+
+        const leftBarrier = this.add.image(44, 320, 'effect-time-barrier');
+        leftBarrier.setDepth(0.9);
+        leftBarrier.setScale(0.62);
+        leftBarrier.setAlpha(0.24);
+
+        const rightBarrier = this.add.image(916, 320, 'effect-time-barrier');
+        rightBarrier.setDepth(0.9);
+        rightBarrier.setScale(0.62);
+        rightBarrier.setAlpha(0.24);
+
+        this.tweens.add({
+            targets: pedestalGlow,
+            alpha: { from: 0.12, to: 0.24 },
+            scaleX: 0.32,
+            scaleY: 0.18,
+            duration: 1200,
+            ease: 'Sine.InOut',
+            yoyo: true,
+            repeat: -1,
+        });
     }
 
     private createFamilyPrison(): void {
@@ -1048,6 +1056,17 @@ export class WorkshopScene extends Phaser.Scene {
             }));
         }
 
+        if (config.clockIntervalMs > 0) {
+            this.activeHazardTimers.push(this.time.addEvent({
+                delay: config.clockIntervalMs,
+                loop: true,
+                callback: () => {
+                    this.playMonsieurAttackPose('watch', 480);
+                    this.spawnClockHandSweep();
+                },
+            }));
+        }
+
         this.time.delayedCall(420, () => {
             if (this.isCombatActive && this.battlePhase === phase) {
                 this.playMonsieurAttackPose(phase === 1 ? 'watch' : 'gesture', phase === 1 ? 320 : 360);
@@ -1114,89 +1133,49 @@ export class WorkshopScene extends Phaser.Scene {
     ): void {
         this.destroyCurrentSceneBubble();
 
-        const config = WORKSHOP_SCENE_BUBBLE_CONFIG;
-        const measurementText = this.add.text(0, 0, text, {
-            fontFamily: UI_FONT_FAMILY,
-            fontSize: config.textFontSize,
-            color: config.textColor,
-            align: 'center',
-            wordWrap: {
-                width: config.maxWidth - config.paddingX * 2,
-                useAdvancedWrap: true,
-            },
-            lineSpacing: 3,
-        }).setOrigin(0.5);
-        measurementText.setVisible(false);
-
-        const bubbleWidth = Math.min(
-            config.maxWidth,
-            Math.max(config.minWidth, measurementText.width + config.paddingX * 2),
-        );
-        const bubbleHeight = Math.max(
-            config.minHeight,
-            measurementText.height + config.paddingY * 2,
-        );
-        const halfWidth = bubbleWidth * 0.5;
-        const containerX = Phaser.Math.Clamp(
-            anchor.x,
-            halfWidth + config.clampPadding,
-            GAME_WIDTH - halfWidth - config.clampPadding,
-        );
-        const containerY = Phaser.Math.Clamp(
-            anchor.y - config.offsetY,
-            74,
-            GAME_HEIGHT - 120,
-        );
-        measurementText.destroy();
-
-        const container = this.add.container(containerX, containerY);
+        const container = this.add.container(anchor.x, anchor.y - 74);
         container.setDepth(50);
-        container.setScrollFactor(0);
 
-        const background = this.add.graphics();
-        const textObject = this.add.text(0, config.textVerticalOffset, text, {
+        const textObject = this.add.text(0, 0, text, {
             fontFamily: UI_FONT_FAMILY,
-            fontSize: config.textFontSize,
-            color: config.textColor,
+            fontSize: '18px',
+            color: '#111111',
             align: 'center',
             wordWrap: {
-                width: config.maxWidth - config.paddingX * 2,
+                width: 240,
                 useAdvancedWrap: true,
             },
-            lineSpacing: 3,
+            lineSpacing: 4,
         }).setOrigin(0.5);
 
-        const left = -bubbleWidth / 2;
-        const top = -bubbleHeight / 2;
-        const tailHalfWidth = config.tailWidth / 2;
-        const tailStartY = bubbleHeight / 2 - 2;
-
-        background.fillStyle(config.backgroundColor, config.backgroundAlpha);
-        background.lineStyle(config.borderWidth, config.borderColor, config.borderAlpha);
-        background.fillRoundedRect(left, top, bubbleWidth, bubbleHeight, config.radius);
-        background.strokeRoundedRect(left, top, bubbleWidth, bubbleHeight, config.radius);
-        background.fillTriangle(
-            -tailHalfWidth,
-            tailStartY,
-            tailHalfWidth,
-            tailStartY,
-            0,
-            tailStartY + config.tailHeight,
+        const paddingX = 18;
+        const paddingY = 14;
+        const bubbleWidth = Math.max(148, textObject.width + paddingX * 2);
+        const bubbleHeight = Math.max(54, textObject.height + paddingY * 2);
+        const background = this.add.graphics();
+        background.fillStyle(0xfafaf9, 0.98);
+        background.lineStyle(2, 0x111827, 0.16);
+        background.fillRoundedRect(
+            -bubbleWidth * 0.5,
+            -bubbleHeight * 0.5,
+            bubbleWidth,
+            bubbleHeight,
+            16,
         );
-        background.strokeTriangle(
-            -tailHalfWidth,
-            tailStartY,
-            tailHalfWidth,
-            tailStartY,
-            0,
-            tailStartY + config.tailHeight,
+        background.strokeRoundedRect(
+            -bubbleWidth * 0.5,
+            -bubbleHeight * 0.5,
+            bubbleWidth,
+            bubbleHeight,
+            16,
         );
+        background.fillTriangle(-12, bubbleHeight * 0.5 - 2, 0, bubbleHeight * 0.5 + 14, 12, bubbleHeight * 0.5 - 2);
 
         container.add([background, textObject]);
         container.setAlpha(0);
         this.currentSceneBubble = { container };
 
-        const visibleDurationMs = Phaser.Math.Clamp(1100 + text.length * 28, 1450, 2400);
+        const visibleDurationMs = Phaser.Math.Clamp(1100 + text.length * 28, 1350, 2200);
         let completed = false;
 
         const completeSafely = () => {
@@ -1217,7 +1196,7 @@ export class WorkshopScene extends Phaser.Scene {
             targets: container,
             alpha: 1,
             y: container.y - 4,
-            duration: 170,
+            duration: 150,
             ease: 'Sine.Out',
             onComplete: () => {
                 this.time.delayedCall(visibleDurationMs, () => {
@@ -1225,7 +1204,7 @@ export class WorkshopScene extends Phaser.Scene {
                         targets: container,
                         alpha: 0,
                         y: container.y - 4,
-                        duration: 190,
+                        duration: 170,
                         ease: 'Sine.In',
                         onComplete: () => {
                             failsafeTimer.remove(false);
@@ -1480,7 +1459,7 @@ export class WorkshopScene extends Phaser.Scene {
             'left',
             () => {
                 this.danubia?.playIdleCutscene('right');
-                this.time.delayedCall(320, () => {
+                this.time.delayedCall(180, () => {
                     this.launchDanubiaFinalPower();
                 });
             },
@@ -1528,74 +1507,27 @@ export class WorkshopScene extends Phaser.Scene {
         }
 
         this.danubia.setFacing('right');
-        this.danubia.anims.stop();
         this.danubia.setTexture(this.getDanubiaPowerTextureKey());
 
         const start = this.danubia.getLogicalPosition();
-        const castX = start.x + 34;
-        const castY = start.y - 50;
-        const targetX = this.monsieurRuntime.sprite.x - 18;
-        const targetY = this.monsieurRuntime.sprite.y - 38;
-
-        const chargeCore = this.add.circle(castX, castY, 12, 0xf4d35e, 0.86);
-        chargeCore.setDepth(4.25);
-        chargeCore.setBlendMode(Phaser.BlendModes.ADD);
-        const chargeGlow = this.add.circle(castX, castY, 34, 0x8b5cf6, 0.22);
-        chargeGlow.setDepth(4.2);
-        chargeGlow.setBlendMode(Phaser.BlendModes.ADD);
-        const chargeRing = this.add.circle(castX, castY, 22);
-        chargeRing.setStrokeStyle(4, 0xf8fafc, 0.58);
-        chargeRing.setDepth(4.26);
-        chargeRing.setBlendMode(Phaser.BlendModes.ADD);
+        const projectile = this.add.circle(start.x + 28, start.y - 50, 12, 0xf4d35e, 0.92);
+        projectile.setDepth(4.2);
+        projectile.setBlendMode(Phaser.BlendModes.ADD);
+        const glow = this.add.circle(start.x + 28, start.y - 50, 24, 0x8b5cf6, 0.28);
+        glow.setDepth(4.1);
+        glow.setBlendMode(Phaser.BlendModes.ADD);
 
         this.tweens.add({
-            targets: chargeGlow,
-            scaleX: 1.28,
-            scaleY: 1.28,
-            alpha: { from: 0.16, to: 0.42 },
-            duration: 260,
-            ease: 'Sine.InOut',
-            yoyo: true,
-            repeat: Math.max(1, Math.floor(WORKSHOP_ENDING_SEQUENCE.powerChargeDurationMs / 520)),
-        });
-        this.tweens.add({
-            targets: chargeRing,
-            scaleX: 1.55,
-            scaleY: 1.55,
-            alpha: 0,
-            duration: WORKSHOP_ENDING_SEQUENCE.powerChargeDurationMs,
+            targets: [projectile, glow],
+            x: this.monsieurRuntime.sprite.x - 18,
+            y: this.monsieurRuntime.sprite.y - 38,
+            duration: WORKSHOP_ENDING_SEQUENCE.projectileDurationMs,
             ease: 'Cubic.Out',
-        });
-
-        this.time.delayedCall(WORKSHOP_ENDING_SEQUENCE.powerChargeDurationMs, () => {
-            chargeCore.destroy();
-            chargeGlow.destroy();
-            chargeRing.destroy();
-
-            const projectile = this.add.circle(castX, castY, 13, 0xf4d35e, 0.94);
-            projectile.setDepth(4.32);
-            projectile.setBlendMode(Phaser.BlendModes.ADD);
-            const glow = this.add.circle(castX, castY, 32, 0x8b5cf6, 0.34);
-            glow.setDepth(4.3);
-            glow.setBlendMode(Phaser.BlendModes.ADD);
-            const travelRing = this.add.circle(castX, castY, 20);
-            travelRing.setStrokeStyle(3, 0xf8fafc, 0.55);
-            travelRing.setDepth(4.33);
-            travelRing.setBlendMode(Phaser.BlendModes.ADD);
-
-            this.tweens.add({
-                targets: [projectile, glow, travelRing],
-                x: targetX,
-                y: targetY,
-                duration: WORKSHOP_ENDING_SEQUENCE.projectileDurationMs,
-                ease: 'Sine.InOut',
-                onComplete: () => {
-                    projectile.destroy();
-                    glow.destroy();
-                    travelRing.destroy();
-                    this.resolveFinalPowerImpact();
-                },
-            });
+            onComplete: () => {
+                projectile.destroy();
+                glow.destroy();
+                this.resolveFinalPowerImpact();
+            },
         });
     }
 
@@ -1614,7 +1546,7 @@ export class WorkshopScene extends Phaser.Scene {
         impact.setDepth(4.3);
         impact.setBlendMode(Phaser.BlendModes.ADD);
 
-        for (let index = 0; index < 14; index += 1) {
+        for (let index = 0; index < 8; index += 1) {
             const particle = this.add.circle(
                 this.monsieurRuntime.sprite.x,
                 this.monsieurRuntime.sprite.y - 36,
@@ -1624,13 +1556,13 @@ export class WorkshopScene extends Phaser.Scene {
             );
             particle.setDepth(4.25);
             particle.setBlendMode(Phaser.BlendModes.ADD);
-            const angle = Phaser.Math.DegToRad((360 / 14) * index);
+            const angle = Phaser.Math.DegToRad(index * 45);
             this.tweens.add({
                 targets: particle,
-                x: particle.x + Math.cos(angle) * Phaser.Math.Between(32, 58),
-                y: particle.y + Math.sin(angle) * Phaser.Math.Between(32, 58),
+                x: particle.x + Math.cos(angle) * Phaser.Math.Between(20, 34),
+                y: particle.y + Math.sin(angle) * Phaser.Math.Between(20, 34),
                 alpha: 0,
-                duration: 620,
+                duration: 380,
                 ease: 'Quad.Out',
                 onComplete: () => {
                     particle.destroy();
@@ -1640,17 +1572,17 @@ export class WorkshopScene extends Phaser.Scene {
 
         this.tweens.add({
             targets: impact,
-            scaleX: 3.1,
-            scaleY: 3.1,
+            scaleX: 2.2,
+            scaleY: 2.2,
             alpha: 0,
-            duration: 520,
+            duration: 260,
             ease: 'Quad.Out',
             onComplete: () => {
                 impact.destroy();
             },
         });
 
-        this.cameras.main.shake(260, 0.0052);
+        this.cameras.main.shake(180, 0.0044);
         this.startMonsieurDefeatedFlicker();
         this.time.delayedCall(WORKSHOP_ENDING_SEQUENCE.monsieurFlickerDurationMs, () => {
             this.danubia?.playIdleCutscene('right');
@@ -1700,12 +1632,7 @@ export class WorkshopScene extends Phaser.Scene {
         this.interactionPrompt?.hide();
         this.syncDanubiaMovementBlock();
 
-        if (this.familyPrison) {
-            this.tweens.killTweensOf(this.familyPrison.container);
-            this.familyPrison.container.setY(0);
-        }
-
-        this.time.delayedCall(420, () => {
+        this.time.delayedCall(260, () => {
             this.cameras.main.shake(320, 0.006);
             this.fragmentNotification?.show(COMBAT_COMPLETE_NOTIFICATION, {
                 visibleDurationMs: 2200,
@@ -1729,37 +1656,25 @@ export class WorkshopScene extends Phaser.Scene {
             return;
         }
 
-        this.familyPrison.container.setY(0);
         this.familyPrison.daughter.setFlipX(true);
         this.familyPrison.husband.setFlipX(true);
         this.familyPrison.son.setFlipX(true);
-        this.familyPrison.daughter.setDepth(2.6);
-        this.familyPrison.husband.setDepth(2.65);
-        this.familyPrison.son.setDepth(2.6);
 
-        const landings: Array<{
-            target: Phaser.GameObjects.Image;
-            x: number;
-            y: number;
-            scale: number;
-        }> = [
+        const landings: Array<{ target: Phaser.GameObjects.Image; x: number; y: number }> = [
             {
                 target: this.familyPrison.daughter,
                 x: COMBAT_LAYOUT.familyGroundPositions.daughter.x,
                 y: COMBAT_LAYOUT.familyGroundPositions.daughter.y,
-                scale: FAMILY_FREED_SCALE.daughter,
             },
             {
                 target: this.familyPrison.husband,
                 x: COMBAT_LAYOUT.familyGroundPositions.husband.x,
                 y: COMBAT_LAYOUT.familyGroundPositions.husband.y,
-                scale: FAMILY_FREED_SCALE.husband,
             },
             {
                 target: this.familyPrison.son,
                 x: COMBAT_LAYOUT.familyGroundPositions.son.x,
                 y: COMBAT_LAYOUT.familyGroundPositions.son.y,
-                scale: FAMILY_FREED_SCALE.son,
             },
         ];
 
@@ -1769,15 +1684,13 @@ export class WorkshopScene extends Phaser.Scene {
                 targets: landing.target,
                 x: landing.x,
                 y: landing.y,
-                scaleX: landing.scale,
-                scaleY: landing.scale,
                 duration: WORKSHOP_ENDING_SEQUENCE.familyDropDurationMs,
                 ease: 'Cubic.In',
                 onComplete: () => {
                     this.tweens.add({
                         targets: landing.target,
                         y: landing.y - 8,
-                        duration: WORKSHOP_ENDING_SEQUENCE.familyBounceDurationMs,
+                        duration: 130,
                         yoyo: true,
                         ease: 'Quad.Out',
                         onComplete: () => {
@@ -1803,7 +1716,7 @@ export class WorkshopScene extends Phaser.Scene {
             'right',
             () => {
                 this.danubia?.setTexture(this.textures.exists('danubia-victory') ? 'danubia-victory' : DANUBIA_ASSET_KEYS.idle);
-                this.time.delayedCall(WORKSHOP_ENDING_SEQUENCE.victoryHoldDurationMs, () => {
+                this.time.delayedCall(420, () => {
                     this.finishWorkshopScene();
                 });
             },
@@ -1901,7 +1814,7 @@ export class WorkshopScene extends Phaser.Scene {
         this.anchorSyncUi.container.setVisible(true);
         this.anchorSyncUi.fill.width = (ANCHOR_SYNC_CONFIG.barWidth - 4) * (progress / 100);
         this.anchorSyncUi.label.setText(
-            `Âncora temporal ${activeAnchor.index + 1}/3  (${Math.round(progress)}%)`,
+            `Âncora temporal ${activeAnchor.index + 1}/3 — ${Math.round(progress)}%`,
         );
     }
 
@@ -2008,6 +1921,52 @@ export class WorkshopScene extends Phaser.Scene {
                 this.activeHazards = this.activeHazards.filter((hazard) => hazard !== runtime);
             },
         };
+
+        this.activeHazards.push(runtime);
+        return runtime;
+    }
+
+    public spawnClockHandSweep(): HazardRuntime {
+        const sprite = this.add.image(GAME_WIDTH / 2, COMBAT_LAYOUT.clockHandSweepY, 'hazard-clock-hand');
+        sprite.setScale(0.78);
+        sprite.setDepth(3.05);
+        sprite.setOrigin(0.5, 0.92);
+
+        const runtime: HazardRuntime = {
+            id: `clock-hand-sweep-${this.time.now}`,
+            kind: 'clock-hand-sweep',
+            sprite,
+            hitbox: {
+                x: sprite.x - 144,
+                y: sprite.y - 160,
+                width: 288,
+                height: 160,
+            },
+            velocityX: 0,
+            active: true,
+            update: () => {
+                runtime.hitbox.x = sprite.x - runtime.hitbox.width * 0.5;
+                runtime.hitbox.y = sprite.y - runtime.hitbox.height * 0.5;
+            },
+            destroy: () => {
+                runtime.active = false;
+                this.tweens.killTweensOf(sprite);
+                sprite.destroy();
+                this.activeHazards = this.activeHazards.filter((hazard) => hazard !== runtime);
+            },
+        };
+
+        this.tweens.add({
+            targets: sprite,
+            angle: { from: -64, to: 58 },
+            duration: 620,
+            ease: 'Cubic.InOut',
+            yoyo: true,
+            hold: 120,
+            onComplete: () => {
+                runtime.destroy();
+            },
+        });
 
         this.activeHazards.push(runtime);
         return runtime;

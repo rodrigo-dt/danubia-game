@@ -461,7 +461,7 @@ export const montmartreMonsieurFollowUpDialogue: DialogueSequence = [
     {
         mode: 'phoneCall',
         speaker: 'Monsieur Minuit',
-        text: 'Bon voyage, Madame Danubia.',
+        text: 'Bon voyage, Madame Danúbia.',
         leftPortraitKey: 'danubia-portrait-sad',
         rightPortraitKey: 'monsieur-portrait-normal',
         rightPortraitSilhouette: true,
@@ -491,7 +491,7 @@ export const seineArrivalDialogue: DialogueSequence = [
     {
         mode: 'portrait',
         speaker: 'Danúbia',
-        text: 'Espero que ninguém espere que eu atravesse isso nadando.',
+        text: 'Tomara que ninguém espere que eu atravesse isso nadando.',
         portraitKey: 'danubia-portrait-sad',
         lockMovement: true,
     },
@@ -644,7 +644,7 @@ export const gardenCollectiveRescueDialogue: DialogueSequence = [
     {
         mode: 'portrait',
         speaker: 'Danúbia',
-        text: 'Brecko, Lelo e Pure...',
+        text: 'Brecko, Lelo e Purê...',
         portraitKey: 'danubia-portrait-happy',
         lockMovement: true,
     },
@@ -762,7 +762,7 @@ export const workshopOpeningSceneBubbles = [
     },
     {
         speakerId: 'husband',
-        text: 'Danúbia!',
+        text: 'Amor!',
     },
     {
         speakerId: 'monsieur',

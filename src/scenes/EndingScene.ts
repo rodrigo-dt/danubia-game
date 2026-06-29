@@ -1,31 +1,41 @@
 import Phaser from 'phaser';
 import { endingLivingRoomDialogue } from '../data/dialogues';
 import { homeRooms } from '../data/homeRooms';
-import { GAME_HEIGHT, GAME_WIDTH, SCENE_KEYS, UI_FONT_FAMILY } from '../game/constants';
+import {DEBUG_ROOM_GEOMETRY, GAME_HEIGHT, GAME_WIDTH, SCENE_KEYS, UI_FONT_FAMILY} from '../game/constants';
 import { installDevModeHotkeys } from '../game/devMode';
+import type { RectArea } from '../game/types';
 import { DialogueController } from '../systems/DialogueController';
 
 const ENDING_LAYOUT = {
-    danubia: { x: 404, y: 418, scale: 1.78, flipX: false, key: 'danubia-victory' },
-    husband: { x: 514, y: 422, scale: 0.98, flipX: true },
-    daughter: { x: 586, y: 414, scale: 0.92, flipX: true },
-    son: { x: 648, y: 416, scale: 0.92, flipX: true },
+    danubia: { x: 390, y: 390, scale: 1.86, flipX: false, key: 'danubia-idle' },
+    husband: { x: 520, y: 330, scale: 2.0, flipX: true },
+    daughter: { x: 602, y: 360, scale: 1.90, flipX: true },
+    son: { x: 676, y: 390, scale: 1.90, flipX: true },
     pets: [
-        { key: 'pet-pudim', x: 274, y: 472, scale: 0.7, flipX: false },
-        { key: 'pet-drogo', x: 736, y: 470, scale: 0.68, flipX: true },
-        { key: 'pet-zoe', x: 330, y: 472, scale: 0.62, flipX: false },
-        { key: 'pet-brecko-lelo-pure', x: 814, y: 455, scale: 0.6, flipX: true },
+        { key: 'pet-pudim', x: 203, y: 394, scale: 0.85, flipX: false },
+        { key: 'pet-drogo', x: 777, y: 250, scale: 1.1, flipX: true },
+        { key: 'pet-pirata', x: 72, y: 330, scale: 1.2, flipX: false },
+        { key: 'pet-zoe', x: 280, y: 470, scale: 0.85, flipX: false },
+        { key: 'pet-batata', x: 856, y: 410, scale: 0.75, flipX: true },
+        { key: 'pet-pituca', x: 770, y: 415, scale: 0.70, flipX: true },
+        { key: 'pet-brecko-lelo-pure', x: 850, y: 452, scale: 1.2, flipX: true },
     ],
 } as const;
 
-const ENDING_FINALE = {
-    overlayFadeDurationMs: 520,
-    finalCardDelayMs: 260,
-    finalInstructionDelayMs: 1400,
+const ENDING_TIMING = {
+    dialogueStartDelayMs: 1900,
 } as const;
+
+type EndingSpriteRuntime = {
+    label: string;
+    sprite: Phaser.GameObjects.Image;
+};
 
 export class EndingScene extends Phaser.Scene {
     private dialogueController?: DialogueController;
+    private debugGraphics?: Phaser.GameObjects.Graphics;
+    private debugText?: Phaser.GameObjects.Text;
+    private reunionSprites: EndingSpriteRuntime[] = [];
 
     constructor() {
         super(SCENE_KEYS.ending);
@@ -46,13 +56,29 @@ export class EndingScene extends Phaser.Scene {
         this.createFamilyReunionLayout();
 
         this.dialogueController = new DialogueController(this);
-        this.time.delayedCall(460, () => {
+
+        if (DEBUG_ROOM_GEOMETRY) {
+            this.debugGraphics = this.add.graphics().setDepth(1000);
+            this.debugText = this.add.text(12, 12, '', {
+                fontFamily: 'monospace',
+                fontSize: '14px',
+                color: '#ffffff',
+                backgroundColor: '#000000aa',
+                padding: { x: 6, y: 4 },
+            }).setScrollFactor(0).setDepth(1001);
+        }
+
+        this.time.delayedCall(ENDING_TIMING.dialogueStartDelayMs, () => {
             this.startEndingDialogue();
         });
     }
 
     update(): void {
         this.dialogueController?.update();
+
+        if (DEBUG_ROOM_GEOMETRY) {
+            this.drawDebugGeometry();
+        }
     }
 
     private createFamilyReunionLayout(): void {
@@ -63,6 +89,7 @@ export class EndingScene extends Phaser.Scene {
             ENDING_LAYOUT.danubia.scale,
             ENDING_LAYOUT.danubia.flipX,
             3.2,
+            'danubia',
         );
         this.addCharacter(
             ENDING_LAYOUT.husband.x,
@@ -71,6 +98,7 @@ export class EndingScene extends Phaser.Scene {
             ENDING_LAYOUT.husband.scale,
             ENDING_LAYOUT.husband.flipX,
             3.1,
+            'husband',
         );
         this.addCharacter(
             ENDING_LAYOUT.daughter.x,
@@ -79,6 +107,7 @@ export class EndingScene extends Phaser.Scene {
             ENDING_LAYOUT.daughter.scale,
             ENDING_LAYOUT.daughter.flipX,
             3.1,
+            'daughter',
         );
         this.addCharacter(
             ENDING_LAYOUT.son.x,
@@ -87,6 +116,7 @@ export class EndingScene extends Phaser.Scene {
             ENDING_LAYOUT.son.scale,
             ENDING_LAYOUT.son.flipX,
             3.1,
+            'son',
         );
 
         for (const pet of ENDING_LAYOUT.pets) {
@@ -98,6 +128,7 @@ export class EndingScene extends Phaser.Scene {
             sprite.setScale(pet.scale);
             sprite.setFlipX(pet.flipX);
             sprite.setDepth(2.8);
+            this.reunionSprites.push({ label: pet.key, sprite });
 
             this.tweens.add({
                 targets: sprite,
@@ -117,106 +148,134 @@ export class EndingScene extends Phaser.Scene {
         scale: number,
         flipX: boolean,
         depth: number,
+        label: string,
     ): Phaser.GameObjects.Image {
         const sprite = this.add.image(x, y, textureKey);
         sprite.setScale(scale);
         sprite.setFlipX(flipX);
         sprite.setDepth(depth);
+        this.reunionSprites.push({ label, sprite });
         return sprite;
     }
 
     private getDanubiaEndingTextureKey(): string {
-        if (this.textures.exists('danubia-victory')) {
-            return 'danubia-victory';
+        if (this.textures.exists('danubia-idle')) {
+            return 'danubia-idle';
         }
 
         return this.textures.exists('danubia-power-01') ? 'danubia-power-01' : 'danubia-idle';
     }
 
     private startEndingDialogue(): void {
-        const started = this.dialogueController?.start(endingLivingRoomDialogue, {
+        this.dialogueController?.start(endingLivingRoomDialogue, {
             onComplete: () => {
-                this.showFinalVictoryCard();
+                this.completeEndingDialogue();
             },
-        }) ?? false;
-
-        if (!started) {
-            this.showFinalVictoryCard();
-        }
+        });
     }
 
-    private showFinalVictoryCard(): void {
-        const overlay = this.add.container(0, 0).setDepth(950);
-        const shade = this.add.rectangle(
-            GAME_WIDTH / 2,
-            GAME_HEIGHT / 2,
-            GAME_WIDTH,
-            GAME_HEIGHT,
-            0x030712,
-            0.78,
+    private completeEndingDialogue(): void {
+        this.time.delayedCall(800, () => {
+            const fade = this.add.rectangle(
+                GAME_WIDTH / 2,
+                GAME_HEIGHT / 2,
+                GAME_WIDTH,
+                GAME_HEIGHT,
+                0x000000,
+                1,
+            )
+                .setDepth(10000)
+                .setScrollFactor(0)
+                .setAlpha(0);
+
+            this.tweens.add({
+                targets: fade,
+                alpha: 1,
+                duration: 2600,
+                ease: 'Sine.InOut',
+                onComplete: () => {
+                    const finalMessage = this.add.text(
+                        GAME_WIDTH / 2,
+                        GAME_HEIGHT / 2,
+                        'Feliz aniversário,\nNós te amamos muito!',
+                        {
+                            fontFamily: UI_FONT_FAMILY,
+                            fontSize: '34px',
+                            color: '#ffffff',
+                            align: 'center',
+                            lineSpacing: 12,
+                        },
+                    )
+                        .setOrigin(0.5)
+                        .setDepth(10001)
+                        .setScrollFactor(0)
+                        .setAlpha(0);
+
+                    // Garante que o texto fique acima do retângulo preto
+                    this.children.bringToTop(finalMessage);
+
+                    this.tweens.add({
+                        targets: finalMessage,
+                        alpha: 1,
+                        duration: 1100,
+                        ease: 'Sine.Out',
+                    });
+                },
+            });
+        });
+    }
+
+    private drawDebugGeometry(): void {
+        if (!this.debugGraphics || !this.debugText) {
+            return;
+        }
+
+        this.debugGraphics.clear();
+        const pointer = this.input.activePointer;
+
+        for (const runtime of this.reunionSprites) {
+            const bounds = runtime.sprite.getBounds();
+            this.fillRect(
+                this.debugGraphics,
+                {
+                    x: bounds.x,
+                    y: bounds.y,
+                    width: bounds.width,
+                    height: bounds.height,
+                },
+                0x60a5fa,
+                0.1,
+                0x60a5fa,
+                0.9,
+            );
+
+            this.debugGraphics.lineStyle(1, 0xfde68a, 0.9);
+            this.debugGraphics.strokeCircle(runtime.sprite.x, runtime.sprite.y, 4);
+        }
+
+        this.debugText.setText(
+            [
+                'room: ending',
+                `mouse x:${Math.round(pointer.worldX)} y:${Math.round(pointer.worldY)}`,
+                `sprites:${this.reunionSprites.length}`,
+                ...this.reunionSprites.map((runtime) =>
+                    `${runtime.label} x:${Math.round(runtime.sprite.x)} y:${Math.round(runtime.sprite.y)} scale:${runtime.sprite.scaleX.toFixed(2)}`,
+                ),
+            ].join('\n'),
         );
-        overlay.add(shade);
-
-        if (this.textures.exists('ending-family-victory')) {
-            const image = this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, 'ending-family-victory');
-            image.setDisplaySize(GAME_WIDTH, GAME_HEIGHT);
-            overlay.add(image);
-        } else {
-            const panel = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 520, 240, 0x07111f, 0.9);
-            panel.setStrokeStyle(2, 0xf6d365, 0.36);
-            const title = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 34, 'Danúbia em: O Desaparecimento', {
-                fontFamily: UI_FONT_FAMILY,
-                fontSize: '30px',
-                color: '#f8fafc',
-                align: 'center',
-            }).setOrigin(0.5);
-            const subtitle = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 12, 'Família reunida.', {
-                fontFamily: UI_FONT_FAMILY,
-                fontSize: '24px',
-                color: '#fde68a',
-                align: 'center',
-            }).setOrigin(0.5);
-            const ending = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 62, 'Fim', {
-                fontFamily: UI_FONT_FAMILY,
-                fontSize: '38px',
-                color: '#ffffff',
-                align: 'center',
-            }).setOrigin(0.5);
-            overlay.add([panel, title, subtitle, ending]);
-        }
-
-        overlay.setAlpha(0);
-
-        this.tweens.add({
-            targets: overlay,
-            alpha: 1,
-            duration: ENDING_FINALE.overlayFadeDurationMs,
-            ease: 'Sine.Out',
-            onComplete: () => {
-                this.time.delayedCall(ENDING_FINALE.finalInstructionDelayMs, () => {
-                    this.showFinalInstruction();
-                });
-            },
-        });
     }
 
-    private showFinalInstruction(): void {
-        const instruction = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 58, 'Olhe para sua família.', {
-            fontFamily: UI_FONT_FAMILY,
-            fontSize: '28px',
-            color: '#ffffff',
-            align: 'center',
-            backgroundColor: '#000000aa',
-            padding: { x: 14, y: 8 },
-        }).setOrigin(0.5).setDepth(980);
-
-        instruction.setAlpha(0);
-
-        this.tweens.add({
-            targets: instruction,
-            alpha: 1,
-            duration: 420,
-            ease: 'Sine.Out',
-        });
+    private fillRect(
+        graphics: Phaser.GameObjects.Graphics,
+        rect: RectArea,
+        fillColor: number,
+        fillAlpha: number,
+        strokeColor: number,
+        strokeAlpha: number,
+    ): void {
+        graphics.fillStyle(fillColor, fillAlpha);
+        graphics.fillRect(rect.x, rect.y, rect.width, rect.height);
+        graphics.lineStyle(1, strokeColor, strokeAlpha);
+        graphics.strokeRect(rect.x, rect.y, rect.width, rect.height);
     }
 }
